@@ -1,8 +1,7 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box, Button, FormControlLabel, FormHelperText, FormLabel, IconButton, InputAdornment, MenuItem, Radio, RadioGroup, TextField, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import React, { useState, FocusEvent } from 'react';
-
+import React, { useState, FocusEvent, useContext } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { countries, tiposDeResidencia } from '../../utils/addressTypes';
 import { extractAddressType, extractLogradouroWithoutType, formatCEP } from '../../services/address/AddressService';
@@ -10,8 +9,8 @@ import { IAddressViaCEP } from '../../utils/interfaces/IAddressViaCEP';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Customer } from '../../utils/types/Customer';
-import { useApi } from '../../hooks/useApi';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../contexts/Auth/AuthContext';
 
 interface FormRegisterUserProps {
 
@@ -21,7 +20,7 @@ const FormRegisterUser: React.FC<FormRegisterUserProps> = () => {
    const [showPassword, setShowPassword] = useState(false);
    const [radioValue, setRadioValue] = useState('MASCULINO');
    const navigate = useNavigate();
-   const api = useApi();
+   const auth = useContext(AuthContext);
 
    const {
       register,
@@ -82,22 +81,22 @@ const FormRegisterUser: React.FC<FormRegisterUserProps> = () => {
          birthDate: getValues().birthDate as string | undefined || '',
          phone: getValues().phone as string | undefined || '',
          gender: radioValue,
-         address: [{
+         address: {
             title: getValues().addressTitle as string | undefined || '',
             cep: getValues().cep as string | undefined || '',
             residenceType: getValues().residenceType as string | undefined || '',
             addressType: getValues().addressType as string | undefined || '',
             streetName: getValues().streetName as string | undefined || '',
-            addressNumber: getValues().addressTitle as string | undefined || '',
+            addressNumber: getValues().addressNumber as string | undefined || '',
             neighborhoods: getValues().neighborhoods as string | undefined || '',
             city: getValues().city as string | undefined || '',
             state: getValues().state as string | undefined || '',
             country: getValues().country as string | undefined || '',
             observations: getValues().observations as string | undefined || ''
-         }]
+         }
       }
 
-      const response = await api.registerCustomer(newCustomer);
+      const response = await auth.registerCustomer(newCustomer);
 
       if (response.code === "201 CREATED") {
          toast.success("Cadastro concluído com sucesso");
@@ -105,6 +104,7 @@ const FormRegisterUser: React.FC<FormRegisterUserProps> = () => {
       } else {
          toast.error(response.message);
       }
+
    }
 
    return (

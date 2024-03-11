@@ -1,13 +1,4 @@
-export type ResponseCustomer = {
-   fullName: string,
-   cpf: string,
-   birthDate: string,
-   phone: string,
-   gender: {
-      id: string,
-      name: string
-   }
-   addresses: [{
+export type Address = {
       id: string,
       title: string,
       cep: string,
@@ -20,5 +11,4 @@ export type ResponseCustomer = {
       city: string,
       country: string,
       observations: string
-   }]
 }
