@@ -9,6 +9,7 @@ import OrderFinishiedPage from "../pages/OrderFinishedPage";
 import LoginPage from "../pages/LoginPage";
 import { RequireAuth } from "../contexts/Auth/RequireAuth";
 import MyProfilePage from "../pages/MyProfilePage";
+import MyOrdersPage from "../pages/MyOrdersPage";
 
 export const router = createBrowserRouter([
    {
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
          {
             path: '/my-profile',
             element: <RequireAuth><MyProfilePage /></RequireAuth>,
+         },
+         {
+            path: '/my-orders',
+            element: <RequireAuth><MyOrdersPage /></RequireAuth>,
          }
       ]
    }
