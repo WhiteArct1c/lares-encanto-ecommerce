@@ -143,7 +143,7 @@ const FormRegisterUser: React.FC<FormRegisterUserProps> = () => {
                      label='Nome completo'
                      required
                      {...register("fullName", { required: true })}
-                     error={errors?.fullName?.type === 'required' ? true : false}
+                     error={errors?.fullName?.type === 'required'}
                      helperText={errors?.fullName?.type === 'required' ? "O nome completo é obrigatório." : ""}
                   />
                </Grid2>
@@ -156,8 +156,8 @@ const FormRegisterUser: React.FC<FormRegisterUserProps> = () => {
                      {...register("cpf", { required: true, maxLength: 11, minLength: 11, pattern: patternCPF })}
                      error={
                         errors?.cpf?.type === 'required' ||
-                           errors?.cpf?.type === 'maxLength' ||
-                           errors?.cpf?.type === 'minLength' ? true : false
+                         errors?.cpf?.type === 'maxLength' ||
+                         errors?.cpf?.type === 'minLength'
                      }
                      helperText={
                         errors?.cpf?.type === 'required' ? "O CPF é obrigatório." :
@@ -176,7 +176,7 @@ const FormRegisterUser: React.FC<FormRegisterUserProps> = () => {
                      type='date'
                      required
                      {...register("birthDate", { required: true })}
-                     error={errors?.birthDate?.type === 'required' ? true : false}
+                     error={errors?.birthDate?.type === 'required'}
                      helperText={errors?.birthDate?.type === 'required' ? "A data de nascimento é obrigatória" : ""}
                   />
                </Grid2>
@@ -187,7 +187,7 @@ const FormRegisterUser: React.FC<FormRegisterUserProps> = () => {
                      label='Telefone Celular'
                      required
                      {...register("phone", { required: true })}
-                     error={errors?.phone?.type === 'required' ? true : false}
+                     error={errors?.phone?.type === 'required'}
                      helperText={errors?.phone?.type === 'required' ? "O número de telefone celular é obrigatório" : ""}
                   />
                </Grid2>
@@ -235,7 +235,7 @@ const FormRegisterUser: React.FC<FormRegisterUserProps> = () => {
                      type='email'
                      required
                      {...register("email", { required: true, pattern: patternEmail })}
-                     error={errors?.email?.type === 'required' || errors?.email?.type === 'pattern' ? true : false}
+                     error={errors?.email?.type === 'required' || errors?.email?.type === 'pattern'}
                      helperText={
                         errors?.email?.type === 'required' ? "O email é obrigatório" :
                            errors?.email?.type === 'pattern' ? "Insira um email válido" : ""
@@ -254,7 +254,7 @@ const FormRegisterUser: React.FC<FormRegisterUserProps> = () => {
                      {...register("password", { required: true, minLength: 8 })}
                      error={
                         errors?.password?.type === 'required' ||
-                           errors?.password?.type === 'minLength' ? true : false
+                         errors?.password?.type === 'minLength'
                      }
                      helperText={
                         errors?.cpf?.type === 'required' ? "A senha é obrigatória." :
@@ -293,7 +293,7 @@ const FormRegisterUser: React.FC<FormRegisterUserProps> = () => {
                         }
                      )}
                      error={
-                        errors?.confirmedPassword?.message === 'no-equal' ? true : false
+                        errors?.confirmedPassword?.message === 'no-equal'
                      }
                      helperText={errors?.confirmedPassword?.message === 'no-equal' ? "As senhas devem ser iguais!" : ""}
                      InputProps={{
@@ -320,7 +320,7 @@ const FormRegisterUser: React.FC<FormRegisterUserProps> = () => {
                      multiline
                      required
                      {...register("addressTitle", { required: true })}
-                     error={errors?.addressTitle?.type === 'required' ? true : false}
+                     error={errors?.addressTitle?.type === 'required'}
                      helperText={errors?.addressTitle?.type === 'required' ? "O título do endereço é obrigatório" : ""}
                   />
                </Grid2>
@@ -340,8 +340,7 @@ const FormRegisterUser: React.FC<FormRegisterUserProps> = () => {
                      {...cepField}
                      error={
                         errors?.cep?.type === 'required'
-                           || errors?.cep?.type === 'maxLength'
-                           ? true : false
+                         || errors?.cep?.type === 'maxLength'
                      }
                      helperText={
                         errors?.cep?.type === 'required' ? "O CEP é obrigatório" :
@@ -373,7 +372,7 @@ const FormRegisterUser: React.FC<FormRegisterUserProps> = () => {
                         shrink: true,
                      }}
                      {...register("addressType", { required: true })}
-                     error={errors?.addressType?.type === 'required' ? true : false}
+                     error={errors?.addressType?.type === 'required'}
                      helperText={errors?.addressTyp?.type === 'required' ? "O tipo de endereço é obrigatório" : ""}
                   />
                </Grid2>
@@ -387,7 +386,7 @@ const FormRegisterUser: React.FC<FormRegisterUserProps> = () => {
                      }}
                      required
                      {...register("streetName", { required: true })}
-                     error={errors?.streetName?.type === 'required' ? true : false}
+                     error={errors?.streetName?.type === 'required'}
                      helperText={errors?.streetName?.type === 'required' ? "O Logradouro é obrigatório" : ""}
                   />
                </Grid2>
@@ -398,7 +397,7 @@ const FormRegisterUser: React.FC<FormRegisterUserProps> = () => {
                      label='Número'
                      required
                      {...register("addressNumber", { required: true })}
-                     error={errors?.addressNumber?.type === 'required' ? true : false}
+                     error={errors?.addressNumber?.type === 'required'}
                      helperText={errors?.addressNumber?.type === 'required' ? "O Número  é obrigatório" : ""}
                   />
                </Grid2>
@@ -412,7 +411,7 @@ const FormRegisterUser: React.FC<FormRegisterUserProps> = () => {
                      }}
                      required
                      {...register("neighborhoods", { required: true })}
-                     error={errors?.neighborhoods?.type === 'required' ? true : false}
+                     error={errors?.neighborhoods?.type === 'required'}
                      helperText={errors?.neighborhoods?.type === 'required' ? "O Bairro é obrigatório" : ""}
                   />
                </Grid2>
@@ -426,7 +425,7 @@ const FormRegisterUser: React.FC<FormRegisterUserProps> = () => {
                      }}
                      required
                      {...register("city", { required: true })}
-                     error={errors?.city?.type === 'required' ? true : false}
+                     error={errors?.city?.type === 'required'}
                      helperText={errors?.city?.type === 'required' ? "A Cidade é obrigatória" : ""}
                   />
                </Grid2>
@@ -440,7 +439,7 @@ const FormRegisterUser: React.FC<FormRegisterUserProps> = () => {
                      }}
                      required
                      {...register("state", { required: true })}
-                     error={errors?.state?.type === 'required' ? true : false}
+                     error={errors?.state?.type === 'required'}
                      helperText={errors?.state?.type === 'required' ? "O Estado é obrigatório" : ""}
                   />
                </Grid2>
@@ -456,7 +455,7 @@ const FormRegisterUser: React.FC<FormRegisterUserProps> = () => {
                      InputLabelProps={{
                         shrink: true,
                      }}
-                     error={errors?.country?.type === 'required' ? true : false}
+                     error={errors?.country?.type === 'required'}
                      helperText={errors?.country?.type === 'required' ? "O País é obrigatório" : ""}
                   >
                      {countries.map((country, index) => (
