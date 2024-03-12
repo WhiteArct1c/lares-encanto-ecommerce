@@ -65,7 +65,7 @@ const NavBar: React.FC<NavBarProps> = ({ isAdmin }: NavBarProps) => {
                      alignItems: 'center',
                      justifyContent: 'center'
                   }}>
-                     <Typography color={'#000'} fontWeight={'700'} padding={2}>Matheus R. Bispo</Typography>
+                     <Typography color={'#000'} fontWeight={'700'} padding={2}>{auth.user?.fullName}</Typography>
                      <Divider orientation="vertical" variant='middle' flexItem />
                      <Button
                         variant='text'
