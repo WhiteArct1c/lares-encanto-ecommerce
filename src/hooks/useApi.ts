@@ -13,6 +13,14 @@ const api = axios.create({
    }
 });
 
+const api_json = axios.create({
+   baseURL: "http://localhost:3000",
+   headers:{
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+   }
+});
+
 export const useApi = () => ({
    validateToken: async (token: string) => {
       const response = await api.post('/auth/validate', token);
@@ -69,15 +77,15 @@ export const useApi = () => ({
       return response.data;
    },
    getProducts: async () => {
-      const response = await api.get('/products');
+      const response = await api_json.get('/products');
       return response.data;
    },
    getShippingTypes: async () => {
-      const response = await api.get('/shippings');
+      const response = await api_json.get('/shippings');
       return response.data;
    },
    getPaymentTypes: async () => {
-      const response = await api.get('/paymentMethods');
+      const response = await api_json.get('/paymentMethods');
       return response.data;
    }
 })
