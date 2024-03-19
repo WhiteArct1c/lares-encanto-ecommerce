@@ -1,12 +1,37 @@
 import React from "react";
-import {Accordion, AccordionActions, AccordionDetails, AccordionSummary, Button, Typography} from "@mui/material";
+import {Accordion, AccordionActions, AccordionDetails, AccordionSummary, Box, Button, Typography} from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import MyProfileSidenavComponent from "../../shared/MyProfileSidenavComponent";
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import {ExpandMore} from "@mui/icons-material";
 
 interface MyOrdersPageProps{
 
 }
+
+const columns: GridColDef[] = [
+    {
+        field: 'id',
+        headerName:'ID',
+        width:90
+    },
+    {
+        field: 'productName',
+        headerName:'Nome do Produto',
+        width:150
+    },
+    {
+        field: 'productQtd',
+        headerName:'Quantidade',
+        width:90
+    }
+];
+
+const rows = [
+    {id: 1, productName: 'Cadeira Flex', productQtd: 1},
+    {id: 2, productName: 'Sofá Urban Black', productQtd: 1},
+    {id: 3, productName: 'Mesa Ego White', productQtd: 1}
+];
 
 const MyOrdersPage: React.FC<MyOrdersPageProps> = () => {
     return(
@@ -29,23 +54,22 @@ const MyOrdersPage: React.FC<MyOrdersPageProps> = () => {
                         Pedido: #12978867846
                     </AccordionSummary>
                     <AccordionDetails>
-                        Item #1
-                    </AccordionDetails>
-                    <AccordionActions>
-                        <Button sx={{ color: 'black', m: 1 }}>Trocar</Button>
-                        <Button sx={{ color: 'black', m: 1 }}>Devolver itens</Button>
-                    </AccordionActions>
-                </Accordion>
-                <Accordion>
-                    <AccordionSummary
-                        expandIcon={<ExpandMore/>}
-                        aria-controls="panel1a-content"
-                        id="panel1a-header"
-                    >
-                        Pedido: #22398298743
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        Item #2
+                        <Box sx={{width: '100%'}}>
+                            <DataGrid
+                                rows={rows}
+                                columns={columns}
+                                initialState={{
+                                    pagination: {
+                                        paginationModel: {
+                                            pageSize: 5,
+                                        },
+                                    },
+                                }}
+                                pageSizeOptions={[5]}
+                                checkboxSelection
+                                disableRowSelectionOnClick
+                            />
+                        </Box>
                     </AccordionDetails>
                     <AccordionActions>
                         <Button sx={{ color: 'black', m: 1 }}>Trocar</Button>
