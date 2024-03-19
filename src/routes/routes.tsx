@@ -10,6 +10,7 @@ import LoginPage from "../pages/LoginPage";
 import { RequireAuth } from "../contexts/Auth/RequireAuth";
 import MyProfilePage from "../pages/MyProfilePage";
 import MyOrdersPage from "../pages/MyOrdersPage";
+import AdminDashboardPage from "../pages/AdminDashboardPage";
 
 export const router = createBrowserRouter([
    {
@@ -51,6 +52,10 @@ export const router = createBrowserRouter([
          {
             path: '/my-orders',
             element: <RequireAuth><MyOrdersPage /></RequireAuth>,
+         },
+         {
+            path:'/dashboard',
+            element:<RequireAuth><AdminDashboardPage/></RequireAuth>
          }
       ]
    }
