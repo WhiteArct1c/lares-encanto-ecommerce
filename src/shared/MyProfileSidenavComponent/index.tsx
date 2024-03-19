@@ -16,7 +16,7 @@ const MyProfileSidenavComponent: React.FC<MyProfileSidenavComponentProps> = () =
                 <Divider />
                 <Button
                     variant='text'
-                    sx={{ color: 'black', m: 1 }}
+                    sx={{ color: 'black', m: 1, display: "flex", justifyContent:"start" }}
                     component={Link}
                     to={'/my-profile'}
                 >
@@ -24,7 +24,7 @@ const MyProfileSidenavComponent: React.FC<MyProfileSidenavComponentProps> = () =
                 </Button>
                 <Button
                     variant='text'
-                    sx={{ color: 'black', m: 1 }}
+                    sx={{ color: 'black', m: 1, display: "flex", justifyContent:"start"  }}
                     component={Link}
                     to={'/my-orders'}
                 >
@@ -32,13 +32,13 @@ const MyProfileSidenavComponent: React.FC<MyProfileSidenavComponentProps> = () =
                 </Button>
                 <Button
                     variant='text'
-                    sx={{ color: 'black', m: 1 }}
+                    sx={{ color: 'black', m: 1, display: "flex", justifyContent:"start"  }}
                 >
                     Meus cupons
                 </Button>
                 <Button
                     variant='text'
-                    sx={{ color: 'black', m: 1 }}
+                    sx={{ color: 'black', m: 1, display: "flex", justifyContent:"start"  }}
                 >
                     Meus cartões
                 </Button>
