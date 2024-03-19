@@ -1,28 +1,41 @@
-import { SearchRounded, ShoppingBag } from '@mui/icons-material';
-import { AppBar, Badge, Box, Button, Divider, IconButton, TextField, Toolbar, Typography } from '@mui/material';
+import {SearchRounded, ShoppingBag} from '@mui/icons-material';
+import {AppBar, Badge, Box, Button, Divider, IconButton, TextField, Toolbar, Typography} from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import React, { useContext } from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import LogoLaresEncanto from '../../assets/Lares_Encanto-removebg-preview.png'
-import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCartContext } from '../../contexts/ShoppingCartContext';
-import { AuthContext } from '../../contexts/Auth/AuthContext';
+import {Link, useNavigate} from 'react-router-dom';
+import {ShoppingCartContext} from '../../contexts/ShoppingCartContext';
+import {AuthContext} from '../../contexts/Auth/AuthContext';
 
 interface NavBarProps {
-   isAdmin: boolean
 }
 
-const NavBar: React.FC<NavBarProps> = ({ isAdmin }: NavBarProps) => {
+const NavBar: React.FC<NavBarProps> = () => {
    const cart = useContext(ShoppingCartContext);
    const auth = useContext(AuthContext);
    const navigate = useNavigate();
 
    const handleLogout = async () => {
-      await auth.signout();
+      auth.signout();
       navigate('/login');
-
+      setIsAdmin(false);
       // eslint-disable-next-line no-self-assign
-      window.location.href = window.location.href;
+      // window.location.href = window.location.href;
    }
+
+   const [isAdmin, setIsAdmin] = useState(false);
+
+   useEffect(() => {
+      auth.verifyRole()
+          .then(response => {
+             if(response !== undefined){
+                setIsAdmin(response.data[0] === "ADMIN");
+             }
+          })
+          .catch(e => {
+             console.log(e);
+          })
+   }, [auth, auth.user]);
 
    return (
       <>
@@ -74,6 +87,7 @@ const NavBar: React.FC<NavBarProps> = ({ isAdmin }: NavBarProps) => {
                            fontWeight: '400',
                            padding: '1rem'
                         }}
+                        onClick={handleLogout}
                      >
                         Logout
                      </Button>

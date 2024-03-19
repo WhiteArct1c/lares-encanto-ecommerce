@@ -40,9 +40,14 @@ const LoginPage: React.FC<LoginPageProps> = () => {
    const onSubmit = async (user: FieldValues) => {
       if(user.email && user.password){
          const data = await auth.signin(user.email, user.password);
+         const role = await auth.verifyRole();
          if(data.code === '200 OK'){
-            navigate('/products');
-            toast.success(data.message);
+             if(role.data[0] === "USER"){
+                 navigate('/products');
+             }else{
+                 navigate('/dashboard');
+             }
+             toast.success(data.message);
          }else{
             toast.error(data.message);
          }  

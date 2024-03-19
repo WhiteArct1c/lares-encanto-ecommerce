@@ -10,6 +10,7 @@ export type AuthContextType = {
    user: ResponseCustomer | null;
    signin: (email: string, password: string) => Promise<undefined>;
    signout: () => void;
+   verifyRole: () => Promise<undefined>;
    registerCustomer: (user: Customer) => Promise<undefined>;
    deactivateAccount: (token: string) => Promise<undefined>;
    updatePassword: (passwordUpdateRequest: IUpdatePasswordRequest) => Promise<undefined>;

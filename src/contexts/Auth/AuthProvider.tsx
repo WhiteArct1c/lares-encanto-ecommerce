@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
-import { AuthContext } from "./AuthContext";
-import { useApi } from "../../hooks/useApi";
-import { ResponseCustomer } from "../../utils/types/ResponseCustomer";
-import { Customer } from "../../utils/types/Customer";
-import { Address } from "../../utils/types/Address";
-import { IUpdatePasswordRequest } from "../../utils/interfaces/request/IUpdatePasswordRequest";
-import { IAddCustomerAddressRequest } from "../../utils/interfaces/request/IAddCustomerAddressRequest";
-import { IUpdateCustomer } from "../../utils/interfaces/request/IUpdateCustomer";
+import {useEffect, useState} from "react";
+import {AuthContext} from "./AuthContext";
+import {useApi} from "../../hooks/useApi";
+import {ResponseCustomer} from "../../utils/types/ResponseCustomer";
+import {Customer} from "../../utils/types/Customer";
+import {Address} from "../../utils/types/Address";
+import {IUpdatePasswordRequest} from "../../utils/interfaces/request/IUpdatePasswordRequest";
+import {IAddCustomerAddressRequest} from "../../utils/interfaces/request/IAddCustomerAddressRequest";
+import {IUpdateCustomer} from "../../utils/interfaces/request/IUpdateCustomer";
 
 export const AuthProvider = ({ children }: { children: JSX.Element }) => {
 
@@ -36,6 +36,13 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
       }
 
       return data;
+   }
+
+   const verifyRole = async () => {
+      const token = localStorage.getItem('authToken');
+      if(token){
+         return await api.verifyRole(token);
+      }
    }
 
    const signout = async () => {
@@ -82,7 +89,8 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
       <AuthContext.Provider value={{ 
          user, 
          signin, 
-         signout, 
+         signout,
+         verifyRole,
          registerCustomer, 
          deactivateAccount, 
          deleteCustomerAddress, 

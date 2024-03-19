@@ -26,6 +26,10 @@ export const useApi = () => ({
       const response = await api.post('/auth/validate', token);
       return response.data;
    },
+   verifyRole: async (token: string) => {
+      const response = await api.post('/auth/verify-role', token);
+      return response.data;
+   },
    signin: async (email: string, password: string) => {
       let res;
 
