@@ -37,7 +37,7 @@ const ProductsPage: React.FC<ProductsPageProps> = () => {
          setProducts(data);
       }
       loadProducts();
-   }, [api])
+   }, [])
 
    return (
       <>

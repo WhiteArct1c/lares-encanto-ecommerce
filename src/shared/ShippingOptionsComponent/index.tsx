@@ -28,7 +28,7 @@ const ShippingOptionsComponent: React.FC<ShippingOptionsComponentProps> = () => 
 
       loadShippingTypes();
 
-   },[api])
+   },[])
 
    const handleShipmentPrice = (shipmentPrice: string) => {
       order!.setOrderShipmentPrice(parseFloat(shipmentPrice));
