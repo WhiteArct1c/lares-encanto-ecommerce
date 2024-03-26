@@ -22,9 +22,9 @@ import {CREATED} from "../../../utils/types/apiCodes.ts";
 
 const createCardSchema = z.object({
     cardNumber: z.coerce.number({
-        required_error: 'O número do cartão é obrigatório!',
         invalid_type_error: 'Este campo deve conter apenas números!'
-    }),
+    })
+        .min(1, 'O número do cartão deve conter 16 dígitos!'),
     cardName: z.string()
         .min(1, 'Este campo é obrigatório'),
     cardCode: z.coerce.number({
