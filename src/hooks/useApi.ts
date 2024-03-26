@@ -4,6 +4,8 @@ import { Address } from '../utils/types/Address';
 import { IUpdatePasswordRequest } from '../utils/interfaces/request/IUpdatePasswordRequest';
 import { IAddCustomerAddressRequest } from '../utils/interfaces/request/IAddCustomerAddressRequest';
 import { IUpdateCustomer } from '../utils/interfaces/request/IUpdateCustomer';
+import {IUpdateAddressRequest} from "../utils/interfaces/request/IUpdateAddressRequest.ts";
+import {CreateCardRequest} from "../utils/types/request/customer-credit-card/CreateCardRequest.ts";
 
 const api = axios.create({
    baseURL: import.meta.env.VITE_API_URL_DEV,
@@ -76,6 +78,10 @@ export const useApi = () => ({
       const response = await api.post('/address', address);
       return response.data;
    },
+   updateCustomerAddress: async(address: IUpdateAddressRequest) => {
+     const response = await api.put('/address', address);
+     return response.data;
+   },
    deleteCustomerAddress: async (address: Address) => {
       const response = await api.delete(`/address?id=${address.id}`);
       return response.data;
@@ -90,6 +96,18 @@ export const useApi = () => ({
    },
    getPaymentTypes: async () => {
       const response = await api_json.get('/paymentMethods');
+      return response.data;
+   },
+   createCreditCard: async (createCreditCardRequest: CreateCardRequest) => {
+      const response = await api.post(`/customers/create-credit-card`, createCreditCardRequest);
+      return response.data;
+   },
+   listCreditCards: async(token: string | null) => {
+      const response = await api.get(`/customers/list-credit-card`, {
+         headers:{
+            Authorization: `Bearer ${token}`
+         }
+      });
       return response.data;
    }
 })
