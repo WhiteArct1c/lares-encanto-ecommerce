@@ -1,5 +1,3 @@
-import * as url from "url";
-
 describe('Create, edit and remove customer credit cards', ()=>{
     beforeEach(() =>{
         cy.visit('/login');
