@@ -257,8 +257,8 @@ const FormRegisterUser: React.FC<FormRegisterUserProps> = () => {
                          errors?.password?.type === 'minLength'
                      }
                      helperText={
-                        errors?.cpf?.type === 'required' ? "A senha é obrigatória." :
-                           errors?.cpf?.type === 'minLength' ? "A senha deve ter no mínimo 8 dígitos." : ""
+                        errors?.password?.type === 'required' ? "A senha é obrigatória." :
+                           errors?.password?.type === 'minLength' ? "A senha deve ter no mínimo 8 dígitos." : ""
                      }
                      InputProps={{
                         endAdornment:
