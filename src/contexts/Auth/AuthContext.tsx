@@ -11,9 +11,9 @@ import {CreateCardRequest} from "../../utils/types/request/customer-credit-card/
 
 export type AuthContextType = {
    user: ResponseCustomer | null;
-   signin: (email: string, password: string) => Promise<undefined>;
+   signin: (email: string, password: string) => Promise<ResponseAPI>;
    signout: () => void;
-   verifyRole: () => Promise<undefined>;
+   verifyRole: () => Promise<ResponseAPI>;
    registerCustomer: (user: Customer) => Promise<undefined>;
    deactivateAccount: (token: string) => Promise<undefined>;
    updatePassword: (passwordUpdateRequest: IUpdatePasswordRequest) => Promise<undefined>;
