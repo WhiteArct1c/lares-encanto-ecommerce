@@ -138,13 +138,13 @@ const FormRegisterUser: React.FC<FormRegisterUserProps> = () => {
             >
                <Grid2 xs={6}>
                   <TextField
-                     fullWidth
-                     variant='outlined'
-                     label='Nome completo'
-                     required
-                     {...register("fullName", { required: true })}
-                     error={errors?.fullName?.type === 'required'}
-                     helperText={errors?.fullName?.type === 'required' ? "O nome completo é obrigatório." : ""}
+                      fullWidth
+                      variant='outlined'
+                      label='Nome completo'
+                      required
+                      {...register("fullName", { required: true })}
+                      error={errors?.fullName?.type === 'required'}
+                      helperText={errors?.fullName?.type === 'required' ? "O nome completo é obrigatório." : ""}
                   />
                </Grid2>
                <Grid2 xs={6}>
