@@ -1,7 +1,7 @@
 import {SearchRounded, ShoppingBag} from '@mui/icons-material';
 import {AppBar, Badge, Box, Button, Divider, IconButton, TextField, Toolbar, Typography} from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import LogoLaresEncanto from '../../assets/Lares_Encanto-removebg-preview.png'
 import {Link, useNavigate} from 'react-router-dom';
 import {ShoppingCartContext} from '../../contexts/ShoppingCartContext';
@@ -14,6 +14,7 @@ const NavBar: React.FC<NavBarProps> = () => {
    const cart = useContext(ShoppingCartContext);
    const auth = useContext(AuthContext);
    const navigate = useNavigate();
+   const [isAdmin, setIsAdmin] = useState(false);
 
    const handleLogout = async () => {
       auth.signout();
@@ -22,8 +23,6 @@ const NavBar: React.FC<NavBarProps> = () => {
       // eslint-disable-next-line no-self-assign
       // window.location.href = window.location.href;
    }
-
-   const [isAdmin, setIsAdmin] = useState(false);
 
    useEffect(() => {
       auth.verifyRole()
