@@ -7,6 +7,8 @@ import {Address} from "../../utils/types/Address";
 import {IUpdatePasswordRequest} from "../../utils/interfaces/request/IUpdatePasswordRequest";
 import {IAddCustomerAddressRequest} from "../../utils/interfaces/request/IAddCustomerAddressRequest";
 import {IUpdateCustomer} from "../../utils/interfaces/request/IUpdateCustomer";
+import {IUpdateAddressRequest} from "../../utils/interfaces/request/IUpdateAddressRequest.ts";
+import {CreateCardRequest} from "../../utils/types/request/customer-credit-card/CreateCardRequest.ts";
 
 export const AuthProvider = ({ children }: { children: JSX.Element }) => {
 
@@ -75,10 +77,23 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
       const response = await api.registerCustomerAddress(address);
       return response;
    }
+   const updateCustomerAddress = async(address: IUpdateAddressRequest) => {
+      return await api.updateCustomerAddress(address);
+   }
 
    const deleteCustomerAddress = async (address: Address) => {
       const response = await api.deleteCustomerAddress(address);
       return response;
+   }
+
+   const createCreditCard = async (createCreditCardRequest: CreateCardRequest) => {
+      const response = await api.createCreditCard(createCreditCardRequest);
+      return response;
+   }
+
+   const listCreditCards = async () =>{
+      const token: string | null = localStorage.getItem('authToken');
+      return await api.listCreditCards(token);
    }
 
    const setToken = (token: string) => {
@@ -95,8 +110,11 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
          deactivateAccount, 
          deleteCustomerAddress, 
          updatePassword, 
-         registerCustomerAddress, 
-         updateCustomer 
+         registerCustomerAddress,
+         updateCustomerAddress,
+         updateCustomer,
+         createCreditCard,
+         listCreditCards
       }}>
          {children}
       </AuthContext.Provider>
