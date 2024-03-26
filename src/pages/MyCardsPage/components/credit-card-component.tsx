@@ -14,8 +14,10 @@ interface CreditCardComponentProps{
 
 const CreditCardComponent: React.FC<CreditCardComponentProps> = ({creditCard}) => {
 
+    const mainCardBorderStyle = creditCard.mainCard ? '1px solid #2d2d2d' : ''
+
     return (
-        <Card variant="outlined" key={creditCard.id} sx={{width:320, borderRadius:3}}>
+        <Card variant="outlined" key={creditCard.id} sx={{width:320, borderRadius:3, border:`${mainCardBorderStyle}`}}>
             <CardHeader
                 title={creditCard.cardName}
                 subheader={creditCard.cardFlag}
