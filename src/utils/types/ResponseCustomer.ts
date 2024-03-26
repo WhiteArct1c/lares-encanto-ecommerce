@@ -1,4 +1,5 @@
 export type ResponseCustomer = {
+   id: number,
    fullName: string,
    cpf: string,
    birthDate: string,
