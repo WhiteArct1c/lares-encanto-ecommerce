@@ -26,6 +26,7 @@ import {IAddCustomerAddressRequest} from "../../utils/interfaces/request/IAddCus
 import {Add, Delete, Edit, Visibility, VisibilityOff} from "@mui/icons-material";
 import {countries, tiposDeResidencia} from "../../utils/addressTypes.ts";
 import MyProfileSidenavComponent from '../../shared/MyProfileSidenavComponent';
+import {IUpdateAddressRequest} from "../../utils/interfaces/request/IUpdateAddressRequest.ts";
 
 interface MyProfilePageProps {
 
@@ -36,6 +37,7 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
    const auth = useContext(AuthContext);
    const {
       register,
+      handleSubmit,
       getValues,
       setValue,
       setFocus,
@@ -91,18 +93,22 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
    };
 
    const handleClickOpenDialog = (value: string, address?: Address) => {
+      if(value !== 'Excluir endereço'){
+         reset();
+      }
       setTitleDialog(value)
       setOpen(true);
       setSelectedAddress(address);
+
    };
 
    const handleClose = () => {
       setOpen(false);
-      reset();
    };
 
    const handleUpdateCustomer = async () => {
       const updatedCustomer: IUpdateCustomer = {
+         token: localStorage.getItem('authToken')!,
          fullName: getValues().fullName as string | undefined || '',
          cpf: getValues().cpf as string | undefined || '',
          birthDate: getValues().birthDate as string | undefined || '',
@@ -114,7 +120,7 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
 
       if(response.code === '200 OK'){
          handleClose();
-         navigate(0);
+         window.location.reload();
          toast.success(response.message);
       }else{
          toast.error(response.message);
@@ -184,6 +190,36 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
 
    }
 
+   const handleUpdateAddress = async() => {
+      const addressUpdateRequest: IUpdateAddressRequest = {
+         token: localStorage.getItem('authToken')!,
+         address:{
+            id: selectedAddress?.id as string | undefined || '',
+            title: getValues().addressTitle as string | undefined || '',
+            cep: getValues().cep as string | undefined || '',
+            residenceType: getValues().residenceType as string | undefined || '',
+            addressType: getValues().addressType as string | undefined || '',
+            streetName: getValues().streetName as string | undefined || '',
+            addressNumber: getValues().addressNumber as string | undefined || '',
+            neighborhoods: getValues().neighborhoods as string | undefined || '',
+            city: getValues().city as string | undefined || '',
+            state: getValues().state as string | undefined || '',
+            country: getValues().country as string | undefined || '',
+            observations: getValues().observations as string | undefined || ''
+         }
+      }
+
+      const response = await auth.updateCustomerAddress(addressUpdateRequest);
+
+      if(response.code === '200 OK'){
+         navigate(0);
+         handleClose();
+         toast.success(response.message);
+      }else{
+         toast.error(response.message);
+      }
+   }
+
    const handleDeleteAddress = async () => {
       const response = await auth.deleteCustomerAddress(selectedAddress!);
       if(response.code === '200 OK'){
@@ -199,7 +235,7 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
        <Grid2 container xs={12}>
           <Grid2 xs={12} sx={{ pl: 2,  mt: 15}}>
              <Typography fontFamily={'Public Sans'} fontSize={40} sx={{mb: 10, ml: 3}}>
-                Minhas informações
+                Minhas Informações
              </Typography>
           </Grid2>
 
@@ -346,7 +382,7 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
              <DialogContent>
                 {
                    titleDialog === 'Editar dados pessoais' ?
-                       <Box component={'form'} sx={{display: 'flex', flexDirection:'column', gap:2, mt:1}}>
+                       <Grid2 component={'form'} sx={{display: 'flex', flexDirection:'column', gap:2, mt:1}}>
                           <Grid2 xs={6}>
                              <TextField
                                  fullWidth
@@ -451,9 +487,9 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
                                  )}
                              />
                           </Grid2>
-                       </Box>
+                       </Grid2>
                        : titleDialog === 'Alterar senha' ?
-                           <Box component={'form'} sx={{display: 'flex', flexDirection:'column', gap:2, mt:1}}>
+                           <Grid2 component={'form'} sx={{display: 'flex', flexDirection:'column', gap:2, mt:1}}>
                               <TextField
                                   fullWidth
                                   label='Senha'
@@ -519,7 +555,7 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
                                          </InputAdornment>
                                   }}
                               />
-                           </Box>
+                           </Grid2>
                            : titleDialog === 'Inativar conta' ?
                                <DialogContentText>
                                   Ao inativar sua conta, só será possível ativa-lá novamente por meio de solicitação ao administrador do sistema.
@@ -695,8 +731,182 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
                                        <DialogContentText>
                                           Deseja realmente excluir o endereço selecionado?
                                        </DialogContentText>
-                                       :
-                                       <></>
+                                   : titleDialog === 'Editar endereço' ?
+                                       <Grid2 container sx={{width: '100%', mt:1}} spacing={2} component={'form'}>
+                                          <Grid2 xs={12}>
+                                             <TextField
+                                                 fullWidth
+                                                 defaultValue={selectedAddress?.title}
+                                                 variant='outlined'
+                                                 label='Titulo do endereço'
+                                                 placeholder="Casa principal, Loja A, etc..."
+                                                 multiline
+                                                 required
+                                                 {...register("addressTitle", { required: true })}
+                                                 error={errors?.addressTitle?.type === 'required'}
+                                                 helperText={errors?.addressTitle?.type === 'required' ? "O título do endereço é obrigatório" : ""}
+                                             />
+                                          </Grid2>
+                                          <Grid2 xs={4}
+                                                 onBlur={(e) => {
+                                                    cepField.onBlur(e);
+                                                    if (e.target instanceof HTMLInputElement) {
+                                                       handleFillAddress(e as FocusEvent<HTMLInputElement>);
+                                                    }
+                                                 }}
+                                          >
+                                             <TextField
+                                                 fullWidth
+                                                 defaultValue={selectedAddress?.cep}
+                                                 variant='outlined'
+                                                 label='CEP'
+                                                 required
+                                                 {...cepField}
+                                                 error={
+                                                     errors?.cep?.type === 'required'
+                                                     || errors?.cep?.type === 'maxLength'
+                                                 }
+                                                 helperText={
+                                                    errors?.cep?.type === 'required' ? "O CEP é obrigatório" :
+                                                        errors?.cep?.type === 'maxLength' ? "O CEP deve conter 8 dígitos" : ""
+                                                 }
+                                             />
+                                          </Grid2>
+                                          <Grid2 xs={5}>
+                                             <TextField
+                                                 fullWidth
+                                                 defaultValue={selectedAddress?.residenceType}
+                                                 select
+                                                 label='Tipo de Residência'
+                                                 required
+                                                 {...register("residenceType", { required: true })}
+                                             >
+                                                {tiposDeResidencia.map((tipo, index) => (
+                                                    <MenuItem key={index} value={tipo}>{tipo}</MenuItem>
+                                                ))}
+                                             </TextField>
+                                             {errors?.residenceType?.type === 'required' && <FormHelperText>O tipo de residência é obrigatório</FormHelperText>}
+                                          </Grid2>
+                                          <Grid2 xs={3}>
+                                             <TextField
+                                                 fullWidth
+                                                 defaultValue={selectedAddress?.addressType}
+                                                 label='Tipo logradouro'
+                                                 required
+                                                 InputLabelProps={{
+                                                    shrink: true,
+                                                 }}
+                                                 {...register("addressType", { required: true })}
+                                                 error={errors?.addressType?.type === 'required'}
+                                                 helperText={errors?.addressTyp?.type === 'required' ? "O tipo de endereço é obrigatório" : ""}
+                                             />
+                                          </Grid2>
+                                          <Grid2 xs={9}>
+                                             <TextField
+                                                 fullWidth
+                                                 defaultValue={selectedAddress?.streetName}
+                                                 variant='outlined'
+                                                 label='Logradouro'
+                                                 InputLabelProps={{
+                                                    shrink: true,
+                                                 }}
+                                                 required
+                                                 {...register("streetName", { required: true })}
+                                                 error={errors?.streetName?.type === 'required'}
+                                                 helperText={errors?.streetName?.type === 'required' ? "O Logradouro é obrigatório" : ""}
+                                             />
+                                          </Grid2>
+                                          <Grid2 xs={3}>
+                                             <TextField
+                                                 fullWidth
+                                                 defaultValue={selectedAddress?.addressNumber}
+                                                 variant='outlined'
+                                                 label='Número'
+                                                 required
+                                                 {...register("addressNumber", { required: true })}
+                                                 error={errors?.addressNumber?.type === 'required'}
+                                                 helperText={errors?.addressNumber?.type === 'required' ? "O Número  é obrigatório" : ""}
+                                             />
+                                          </Grid2>
+                                          <Grid2 xs={4}>
+                                             <TextField
+                                                 fullWidth
+                                                 defaultValue={selectedAddress?.neighborhoods}
+                                                 variant='outlined'
+                                                 label='Bairro'
+                                                 InputLabelProps={{
+                                                    shrink: true,
+                                                 }}
+                                                 required
+                                                 {...register("neighborhoods", { required: true })}
+                                                 error={errors?.neighborhoods?.type === 'required'}
+                                                 helperText={errors?.neighborhoods?.type === 'required' ? "O Bairro é obrigatório" : ""}
+                                             />
+                                          </Grid2>
+                                          <Grid2 xs={3}>
+                                             <TextField
+                                                 fullWidth
+                                                 defaultValue={selectedAddress?.city}
+                                                 variant='outlined'
+                                                 label='Cidade'
+                                                 InputLabelProps={{
+                                                    shrink: true,
+                                                 }}
+                                                 required
+                                                 {...register("city", { required: true })}
+                                                 error={errors?.city?.type === 'required'}
+                                                 helperText={errors?.city?.type === 'required' ? "A Cidade é obrigatória" : ""}
+                                             />
+                                          </Grid2>
+                                          <Grid2 xs={3}>
+                                             <TextField
+                                                 fullWidth
+                                                 variant='outlined'
+                                                 defaultValue={selectedAddress?.state}
+                                                 label='Estado'
+                                                 InputLabelProps={{
+                                                    shrink: true,
+                                                 }}
+                                                 required
+                                                 {...register("state", { required: true })}
+                                                 error={errors?.state?.type === 'required'}
+                                                 helperText={errors?.state?.type === 'required' ? "O Estado é obrigatório" : ""}
+                                             />
+                                          </Grid2>
+                                          <Grid2 xs={2}>
+                                             <TextField
+                                                 fullWidth
+                                                 select
+                                                 variant='outlined'
+                                                 defaultValue={selectedAddress?.country}
+                                                 label='País'
+                                                 required
+                                                 {...register('country', { required: true })}
+                                                 InputLabelProps={{
+                                                    shrink: true,
+                                                 }}
+                                                 error={errors?.country?.type === 'required'}
+                                                 helperText={errors?.country?.type === 'required' ? "O País é obrigatório" : ""}
+                                             >
+                                                {countries.map((country, index) => (
+                                                    <MenuItem key={index} value={country}>{country}</MenuItem>
+                                                ))}
+                                             </TextField>
+                                          </Grid2>
+                                          <Grid2 xs={12}>
+                                             <TextField
+                                                 fullWidth
+                                                 defaultValue={selectedAddress?.observations}
+                                                 multiline
+                                                 rows={4}
+                                                 variant='outlined'
+                                                 label='Observações'
+                                                 required
+                                                 {...register("observations")}
+                                             />
+                                          </Grid2>
+                                       </Grid2>
+                                       : <></>
                 }
              </DialogContent>
              <DialogActions>
@@ -719,15 +929,19 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
                                : titleDialog === 'Adicionar endereço'?
                                    <>
                                       <Button onClick={handleClose}>Cancelar</Button>
-                                      <Button onClick={handleAddAddress}>Adicionar endereço</Button>
+                                      <Button onClick={() => handleSubmit(handleAddAddress)()}>Adicionar endereço</Button>
                                    </>
                                    :titleDialog === 'Excluir endereço'?
                                        <>
                                           <Button onClick={handleClose}>Cancelar</Button>
                                           <Button onClick={handleDeleteAddress}>Excluir</Button>
                                        </>
-                                       :
-                                       <></>
+                                       :titleDialog === 'Editar endereço'?
+                                           <>
+                                              <Button onClick={handleClose}>Cancelar</Button>
+                                              <Button onClick={() => handleSubmit(handleUpdateAddress)()}>Editar endereço</Button>
+                                           </>
+                                       :<></>
                 }
              </DialogActions>
           </Dialog>
