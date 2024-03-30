@@ -4,15 +4,15 @@ export const getCardFlag = (cardNumber: string): string => {
 
     // Verifica os primeiros dígitos para determinar a bandeira
     if (/^4/.test(cardNumber)) {
-        return 'Visa';
-    } else if (/^5/.test(cardNumber)) {
-        return 'Mastercard';
+        return 'VISA';
+    } else if (/^5[1-5]/.test(cardNumber)) {
+        return 'MASTERCARD';
     } else if (/^3[47]/.test(cardNumber)) {
-        return 'American Express';
-    } else if (/^6/.test(cardNumber)) {
-        return 'Discover';
+        return 'AMERICAN EXPRESS';
+    } else if (/^6(?:011|5)/.test(cardNumber)) {
+        return 'DISCOVER';
     } else if (/^3(?:0[0-5]|[68])/.test(cardNumber)) {
-        return 'Diners Club';
+        return 'DINERS CLUB';
     } else if (/^35(?:2[89]|[3-8][0-9])/.test(cardNumber)) {
         return 'JCB';
     } else {
