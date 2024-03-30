@@ -16,7 +16,7 @@ import {z} from "zod";
 import {getCardFlag} from "../../../utils/getCardFlag.ts";
 import {AuthContext} from "../../../contexts/Auth/AuthContext.tsx";
 import {toast} from "react-toastify";
-import {CreateCardRequest} from "../../../utils/types/request/customer-credit-card/CreateCardRequest.ts";
+import {CreditCardRequest} from "../../../utils/types/request/customer-credit-card/CreditCardRequest.ts";
 import {ResponseAPI} from "../../../utils/types/response/ResponseAPI.ts";
 import {CREATED} from "../../../utils/types/apiCodes.ts";
 
@@ -38,9 +38,10 @@ type CreateCardFormData = z.infer<typeof createCardSchema>;
 interface CreateCardFormProps{
     handleClose: () => void;
     handleCardAdded: () => void;
+    creditCards: CreditCardRequest[];
 }
 
-const CreateCardForm: React.FC<CreateCardFormProps> = ({ handleClose, handleCardAdded }) => {
+const CreateCardForm: React.FC<CreateCardFormProps> = ({ handleClose, handleCardAdded, creditCards }) => {
     const [flag, setFlag] = useState('');
     const [isDefault, setIsDefault] = useState(false);
     const auth = useContext(AuthContext);
@@ -123,12 +124,13 @@ const CreateCardForm: React.FC<CreateCardFormProps> = ({ handleClose, handleCard
         }
 
         if(auth.user){
-            const request: CreateCardRequest = {
+            const request: CreditCardRequest = {
                 token: localStorage.getItem('authToken'),
+                id: null,
                 cardNumber: data.cardNumber,
                 cardName: data.cardName,
                 cardCode: data.cardCode,
-                mainCard: isDefault,
+                mainCard: creditCards.length ? isDefault : true,
                 cardFlag: flag
             }
 
@@ -193,12 +195,17 @@ const CreateCardForm: React.FC<CreateCardFormProps> = ({ handleClose, handleCard
                 error={!!errors.cardCode}
                 helperText={errors?.cardCode?.message}
             />
-            <FormGroup sx={{display:'flex', flexDirection:'row', alignItems:'center', ml:1}}>
-                <FormControlLabel
-                    control={<IOSSwitch data-cy="switcher-main-card" checked={isDefault} onChange={handleSwitchChange} sx={{ m: 1 }}/>}
-                    label="Definir como principal"
-                />
-            </FormGroup>
+            {
+                creditCards.length ?
+                    <FormGroup sx={{display:'flex', flexDirection:'row', alignItems:'center', ml:1}}>
+                        <FormControlLabel
+                            control={<IOSSwitch data-cy="switcher-main-card" checked={isDefault} onChange={handleSwitchChange} sx={{ m: 1 }}/>}
+                            label="Definir como principal"
+                        />
+                    </FormGroup>
+                    :
+                    <></>
+            }
             <DialogActions>
                 <Button data-cy="btn-cancel-add-card" onClick={handleClose}>Cancelar</Button>
                 <Button data-cy="btn-confirm-add-card" type='submit'>Adicionar</Button>

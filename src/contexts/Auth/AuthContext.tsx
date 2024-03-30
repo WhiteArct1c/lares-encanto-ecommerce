@@ -7,7 +7,7 @@ import { IAddCustomerAddressRequest } from '../../utils/interfaces/request/IAddC
 import { IUpdateCustomer } from '../../utils/interfaces/request/IUpdateCustomer';
 import {IUpdateAddressRequest} from "../../utils/interfaces/request/IUpdateAddressRequest.ts";
 import {ResponseAPI} from "../../utils/types/response/ResponseAPI.ts";
-import {CreateCardRequest} from "../../utils/types/request/customer-credit-card/CreateCardRequest.ts";
+import {CreditCardRequest} from "../../utils/types/request/customer-credit-card/CreditCardRequest.ts";
 
 export type AuthContextType = {
    user: ResponseCustomer | null;
@@ -21,7 +21,7 @@ export type AuthContextType = {
    updateCustomer: (customer: IUpdateCustomer) => Promise<undefined>;
    deleteCustomerAddress: (address: Address) => Promise<undefined>;
    updateCustomerAddress: (address: IUpdateAddressRequest) => Promise<undefined>;
-   createCreditCard: (request: CreateCardRequest) => Promise<ResponseAPI>;
+   createCreditCard: (request: CreditCardRequest) => Promise<ResponseAPI>;
    listCreditCards:() => Promise<ResponseAPI>;
 }
 

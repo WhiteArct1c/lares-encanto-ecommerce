@@ -1,15 +1,9 @@
 import {Card, CardContent, CardHeader, Chip, Typography} from "@mui/material";
 import React from "react";
+import {CreditCardRequest} from "../../../utils/types/request/customer-credit-card/CreditCardRequest.ts";
 
 interface CreditCardComponentProps{
-    creditCard: {
-        id: number,
-        cardName: string,
-        cardNumber: string,
-        cardCode: string,
-        cardFlag: string,
-        mainCard: string
-    }
+    creditCard: CreditCardRequest,
 }
 
 const CreditCardComponent: React.FC<CreditCardComponentProps> = ({creditCard}) => {
@@ -17,7 +11,7 @@ const CreditCardComponent: React.FC<CreditCardComponentProps> = ({creditCard}) =
     const mainCardBorderStyle = creditCard.mainCard ? '1px solid #2d2d2d' : ''
 
     return (
-        <Card variant="outlined" key={creditCard.id} sx={{width:320, borderRadius:3, border:`${mainCardBorderStyle}`}}>
+        <Card variant="outlined" key={creditCard.id} sx={{width:320, borderRadius:2, border:`${mainCardBorderStyle}`}}>
             <CardHeader
                 title={creditCard.cardName}
                 subheader={creditCard.cardFlag}
