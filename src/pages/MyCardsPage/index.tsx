@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState} from "react";
 import {
     Button, Dialog, DialogContent, DialogTitle, Divider,
     Tooltip,
@@ -11,6 +11,7 @@ import CreateCardForm from "./components/create-card-form.tsx";
 import NoCardsMessage from "./components/no-cards-message.tsx";
 import { useApi } from "../../hooks/useApi.ts";
 import CreditCardComponent from "./components/credit-card-component.tsx";
+import {CreditCardRequest} from "../../utils/types/request/customer-credit-card/CreditCardRequest.ts";
 interface MyCardsPageProps{
 
 }
@@ -18,7 +19,7 @@ interface MyCardsPageProps{
 const MyCardsPage: React.FC<MyCardsPageProps> = () => {
     const [open, setOpen] = useState(false);
     const [titleDialog, setTitleDialog] = useState('');
-    const [creditCards, setCreditCards] = useState<[]>([]);
+    const [creditCards, setCreditCards] = useState<CreditCardRequest[]>([]);
     const api = useApi();
 
     const handleClickOpenDialog = (value: string) => {
@@ -100,7 +101,7 @@ const MyCardsPage: React.FC<MyCardsPageProps> = () => {
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>{titleDialog}</DialogTitle>
                 <DialogContent>
-                    <CreateCardForm handleClose={handleClose} handleCardAdded={handleCardAdded}/>
+                    <CreateCardForm handleClose={handleClose} handleCardAdded={handleCardAdded} creditCards={creditCards}/>
                 </DialogContent>
             </Dialog>
         </Grid2>
