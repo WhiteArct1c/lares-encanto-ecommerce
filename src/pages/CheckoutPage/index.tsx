@@ -7,6 +7,7 @@ import ShippingOptionsComponent from '../../shared/ShippingOptionsComponent';
 import PaymentMethodsOrderComponent from '../../shared/PaymentMethodsOrderComponent';
 import { Link } from 'react-router-dom';
 import { ShoppingCartContext } from '../../contexts/ShoppingCartContext';
+import CheckoutCustomerAddresses from "./components/checkout-customer-addresses.tsx";
 
 interface CheckoutPageProps {
 
@@ -116,6 +117,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = () => {
                      {
                         activeStep === 0 ?
                            <>
+                              <CheckoutCustomerAddresses/>
                               <AddressFormComponent />
                               <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                                  <Button
