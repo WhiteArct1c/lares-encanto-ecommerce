@@ -89,7 +89,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
                placeholder="Casa principal, Loja A, etc..."
                required
                {...register("addressTitle", { required: true })}
-               error={errors?.addressTitle?.type === 'required' ? true : false}
+               error={errors?.addressTitle?.type === 'required'}
                helperText={errors?.addressTitle?.type === 'required' ? "O título do endereço é obrigatório" : ""}
             />
          </Grid2>
@@ -109,9 +109,8 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
                {...cepField}
                error={
                   errors?.cep?.type === 'required'
-                     || errors?.cep?.type === 'maxLength'
-                     || errors?.cep?.type === 'minLength'
-                     ? true : false
+                   || errors?.cep?.type === 'maxLength'
+                   || errors?.cep?.type === 'minLength'
                }
                helperText={
                   errors?.cep?.type === 'required' ? "O CEP é obrigatório" :
@@ -144,7 +143,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
                   shrink: true,
                }}
                {...register("addressType", { required: true })}
-               error={errors?.addressType?.type === 'required' ? true : false}
+               error={errors?.addressType?.type === 'required'}
                helperText={errors?.addressTyp?.type === 'required' ? "O tipo de endereço é obrigatório" : ""}
             />
          </Grid2>
@@ -158,7 +157,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
                   shrink: true,
                }}
                {...register("address", { required: true })}
-               error={errors?.address?.type === 'required' ? true : false}
+               error={errors?.address?.type === 'required'}
                helperText={errors?.address?.type === 'required' ? "O Logradouro é obrigatório" : ""}
             />
          </Grid2>
@@ -170,7 +169,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
                label='Número'
                required
                {...register('addressNumber', { required: true })}
-               error={errors?.addressNumber?.type === 'required' ? true : false}
+               error={errors?.addressNumber?.type === 'required'}
                helperText={errors?.addressNumber?.type === 'required' ? "O Número residencial é obrigatório" : ""}
             />
          </Grid2>
@@ -184,7 +183,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
                   shrink: true,
                }}
                {...register("neighborhoods", { required: true })}
-               error={errors?.neighborhoods?.type === 'required' ? true : false}
+               error={errors?.neighborhoods?.type === 'required'}
                helperText={errors?.neighborhoods?.type === 'required' ? "O Bairro é obrigatório" : ""}
             />
          </Grid2>
@@ -198,7 +197,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
                   shrink: true,
                }}
                {...register("city", { required: true })}
-               error={errors?.city?.type === 'required' ? true : false}
+               error={errors?.city?.type === 'required'}
                helperText={errors?.city?.type === 'required' ? "A Cidade é obrigatória" : ""}
             />
          </Grid2>
@@ -212,7 +211,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
                   shrink: true,
                }}
                {...register("state", { required: true })}
-               error={errors?.state?.type === 'required' ? true : false}
+               error={errors?.state?.type === 'required'}
                helperText={errors?.state?.type === 'required' ? "O Estado é obrigatório" : ""}
             />
          </Grid2>
@@ -230,7 +229,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
                InputLabelProps={{
                   shrink: true,
                }}
-               error={errors?.country?.type === 'required' ? true : false}
+               error={errors?.country?.type === 'required'}
                helperText={errors?.country?.type === 'required' ? "O País é obrigatório" : ""}
             >
                {countries.map((country, index) => (
