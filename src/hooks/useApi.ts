@@ -5,7 +5,7 @@ import { IUpdatePasswordRequest } from '../utils/interfaces/request/IUpdatePassw
 import { IAddCustomerAddressRequest } from '../utils/interfaces/request/IAddCustomerAddressRequest';
 import { IUpdateCustomer } from '../utils/interfaces/request/IUpdateCustomer';
 import {IUpdateAddressRequest} from "../utils/interfaces/request/IUpdateAddressRequest.ts";
-import {CreateCardRequest} from "../utils/types/request/customer-credit-card/CreateCardRequest.ts";
+import {CreditCardRequest} from "../utils/types/request/customer-credit-card/CreditCardRequest.ts";
 
 const api = axios.create({
    baseURL: import.meta.env.VITE_API_URL_DEV,
@@ -98,7 +98,7 @@ export const useApi = () => ({
       const response = await api_json.get('/paymentMethods');
       return response.data;
    },
-   createCreditCard: async (createCreditCardRequest: CreateCardRequest) => {
+   createCreditCard: async (createCreditCardRequest: CreditCardRequest) => {
       const response = await api.post(`/customers/create-credit-card`, createCreditCardRequest);
       return response.data;
    },
