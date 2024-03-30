@@ -1,3 +1,5 @@
+import {CreditCardRequest} from "./request/customer-credit-card/CreditCardRequest.ts";
+
 export type ResponseCustomer = {
    id: number,
    fullName: string,
@@ -21,5 +23,6 @@ export type ResponseCustomer = {
       city: string,
       country: string,
       observations: string
-   }]
+   }],
+   creditCards:CreditCardRequest[]
 }
