@@ -82,12 +82,12 @@ describe('Register Customer', () => {
   })
 
   it('Register a customer with no errors and validate if was really created', () => {
-    cy.get('input[name="fullName"]').type('Matheus Rodrigues Bispo');
-    cy.get('input[name="cpf"]').type('67787126000');
+    cy.get('input[name="fullName"]').type('Matheus');
+    cy.get('input[name="cpf"]').type('47191502843');
     cy.get('input[name="birthDate"]').click();
     cy.get('input[name="birthDate"]').type('1999-06-25');
     cy.get('input[name="phone"]').type('11950691542');
-    cy.get('input[name="gender"][value="MASCULINO"]').click();
+    cy.get('input[name="gender"][value="OUTROS"]').click();
     cy.get('input[name="email"]').type(`matheusbispo@gmail.com`);
     cy.get('input[name="password"]').type('Mat15766@');
     cy.get('input[name="confirmedPassword"]').type('Mat15766@');
