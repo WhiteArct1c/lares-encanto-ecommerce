@@ -48,7 +48,7 @@ const ShippingOptionsComponent: React.FC<ShippingOptionsComponentProps> = () => 
                shippingTypes.map((shipment, index) => 
                <Box component='button' key={index} onClick={() => handleShipmentPrice(shipment.price)} sx={{display:'flex', mt:5, border:'1px solid black', borderRadius:1, p:1, width:400}}>
                   <Grid2 xs={2}>
-                     <Checkbox onChange={() => handleShipmentPrice(shipment.price)}/>
+                     <Checkbox data-cy={`shipping-card-${shipment.id}`} onChange={() => handleShipmentPrice(shipment.price)}/>
                   </Grid2>
                   <Grid2 xs={10}>
                      <Typography fontFamily={'Public Sans'} fontSize={'1.2rem'} textAlign={'start'}>

@@ -157,6 +157,7 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = () => {
                   }}
                >
                   <Button
+                      data-cy="btn-add-to-cart"
                      variant='contained'
                      sx={{
                         bgcolor: '#000',

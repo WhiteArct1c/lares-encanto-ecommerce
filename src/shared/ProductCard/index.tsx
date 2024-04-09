@@ -13,8 +13,8 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({id, name, price, photoUrl}: ProductCardProps) => {
    return (
       <>
-         <Link to={`/products/${id}`}>
-            <Card sx={{ maxWidth: 345 }}>
+         <Link data-cy={`product-card-${id}`} to={`/products/${id}`}>
+            <Card  sx={{ maxWidth: 345 }}>
                <CardActionArea>
                   <CardMedia
                      component="img"

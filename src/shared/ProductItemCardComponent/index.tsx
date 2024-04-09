@@ -33,6 +33,7 @@ const ProductItemCardComponent: React.FC<ProductItemCardComponentProps> = ({ pro
             display: 'flex',
             alignItems: 'center'
          }}
+         data-cy={`product-card-checkout-${productItem.id}`}
       >
          {
             context === 'cart' ?
@@ -73,11 +74,11 @@ const ProductItemCardComponent: React.FC<ProductItemCardComponentProps> = ({ pro
                         <Box
                            sx={{ border: '1px solid #000', width: 120, height: 40, borderRadius: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
                         >
-                           <IconButton aria-label='addItem' onClick={handleRemoveItem}>
+                           <IconButton data-cy="btn-remove-product-qtd" aria-label='addItem' onClick={handleRemoveItem}>
                               <Remove />
                            </IconButton>
                            <Typography fontWeight={600} fontSize={20}>{productItem.quantity}</Typography>
-                           <IconButton aria-label='addItem' onClick={handleAddMoreItem}>
+                           <IconButton data-cy="btn-add-product-qtd" aria-label='addItem' onClick={handleAddMoreItem}>
                               <Add />
                            </IconButton>
                         </Box>
@@ -89,6 +90,7 @@ const ProductItemCardComponent: React.FC<ProductItemCardComponentProps> = ({ pro
                      }}>
                         <Typography fontWeight={600} fontSize={20}>R$ {productItem.product.price}</Typography>
                         <Button
+                            data-cy="btn-remove-product"
                            variant='text'
                            sx={{
                               color: '#999',

@@ -83,6 +83,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
       >
          <Grid2 xs={12}>
             <TextField
+                data-cy='input-address-title'
                fullWidth
                variant='outlined'
                label='Titulo do endereço'
@@ -103,6 +104,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
             }}
          >
             <TextField
+                data-cy='input-address-cep'
                fullWidth
                label='CEP'
                required
@@ -121,6 +123,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
          </Grid2>
          <Grid2 xs={3}>
             <TextField
+                data-cy='input-residence-type'
                fullWidth
                select
                label='Tipo de Residência'
@@ -136,6 +139,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
          </Grid2>
          <Grid2 xs={3}>
             <TextField
+                data-cy='input-address-type'
                fullWidth
                label='Tipo logradouro'
                required
@@ -149,6 +153,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
          </Grid2>
          <Grid2 xs={12}>
             <TextField
+                data-cy='input-street-name'
                fullWidth
                variant='outlined'
                label='Logradouro'
@@ -164,6 +169,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
          <Grid2 xs={2}
          >
             <TextField
+                data-cy='input-address-number'
                fullWidth
                variant='outlined'
                label='Número'
@@ -175,6 +181,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
          </Grid2>
          <Grid2 xs={3}>
             <TextField
+                data-cy='input-neighborhoods'
                fullWidth
                variant='outlined'
                label='Bairro'
@@ -189,6 +196,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
          </Grid2>
          <Grid2 xs={3}>
             <TextField
+                data-cy='input-city'
                fullWidth
                variant='outlined'
                label='Cidade'
@@ -203,6 +211,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
          </Grid2>
          <Grid2 xs={2}>
             <TextField
+                data-cy='input-state'
                fullWidth
                variant='outlined'
                label='Estado'
@@ -219,6 +228,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
             xs={2}
          >
             <TextField
+                data-cy='input-country'
                fullWidth
                select
                variant='outlined'

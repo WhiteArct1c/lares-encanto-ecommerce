@@ -204,7 +204,7 @@ const NavBar: React.FC<NavBarProps> = () => {
                      }}
                   >
                      <Link to='/cart'>
-                        <IconButton sx={{ mr: 2 }} >
+                        <IconButton data-cy="btn-cart" sx={{ mr: 2 }} >
                            <Badge badgeContent={cart?.cartProducts.length} color='primary'>
                               <ShoppingBag />
                            </Badge>
