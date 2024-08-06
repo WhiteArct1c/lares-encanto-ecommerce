@@ -20,8 +20,6 @@ const NavBar: React.FC<NavBarProps> = () => {
       auth.signout();
       navigate('/login');
       setIsAdmin(false);
-      // eslint-disable-next-line no-self-assign
-      // window.location.href = window.location.href;
    }
 
    useEffect(() => {
