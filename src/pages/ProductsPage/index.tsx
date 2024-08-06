@@ -15,7 +15,7 @@ const ProductsPage: React.FC<ProductsPageProps> = () => {
    const [filters, setFilters] = useState<string[]>([]);
 
    const api = useApi();
-   const ref = useRef(api.getProducts());
+   const ref = useRef(api);
 
    const ordenation = [
       "Mais relevantes",
@@ -29,14 +29,20 @@ const ProductsPage: React.FC<ProductsPageProps> = () => {
       if (event.target.checked) {
          setFilters((prevFilter) => [...prevFilter, value]);
       } else {
-         setFilters((prevFilter) => prevFilter.filter(item => item !== value));
+         setFilters((prevFilter) => prevFilter.filter((filter) => filter !== value));
       }
    };
 
    useEffect(() => {
-      ref.current.then((response: any) => {
-         setProducts(response);
-      });
+      if(filters.length === 0){
+         ref.current.getProducts().then((response) => {
+            setProducts(response);
+         });
+      }else{
+         ref.current.getProducts(filters).then((response) => {
+            setProducts(response);
+         });
+      }
    }, [filters]);
 
    return (

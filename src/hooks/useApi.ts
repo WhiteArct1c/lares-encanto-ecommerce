@@ -86,8 +86,8 @@ export const useApi = () => ({
       const response = await api.delete(`/address?id=${address.id}`);
       return response.data;
    },
-   getProducts: async () => {
-      const response = await api_json.get('/products');
+   getProducts: async (categories?: string[]) => {
+      const response = await api_json.get(categories?.length ? `/products?q=${categories.join(',')}` : '/products');
       return response.data;
    },
    getShippingTypes: async () => {
