@@ -1,9 +1,9 @@
 import { Box, Button, Checkbox, FormControlLabel, FormGroup, MenuItem, TextField, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import ProductCard from '../../shared/ProductCard';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IProduct } from '../../utils/interfaces/IProduct';
-// import { useApi } from '../../hooks/useApi';
+import { useApi } from '../../hooks/useApi';
 
 
 interface ProductsPageProps {
@@ -14,7 +14,8 @@ const ProductsPage: React.FC<ProductsPageProps> = () => {
    const [products, setProducts] = useState<IProduct[]>([]);
    const [filters, setFilters] = useState<string[]>([]);
 
-   //const api = useApi();
+   const api = useApi();
+   const ref = useRef(api.getProducts());
 
    const ordenation = [
       "Mais relevantes",
@@ -33,9 +34,9 @@ const ProductsPage: React.FC<ProductsPageProps> = () => {
    };
 
    useEffect(() => {
-      fetch(import.meta.env.VITE_API_URL_DEV + '/products')
-         .then(res => res.json())
-         .then((data) => setProducts([...data]))
+      ref.current.then((response: any) => {
+         setProducts(response);
+      });
    }, [filters]);
 
    return (
