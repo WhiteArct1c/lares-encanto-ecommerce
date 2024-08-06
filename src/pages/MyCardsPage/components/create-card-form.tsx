@@ -21,9 +21,7 @@ import {ResponseAPI} from "../../../utils/types/response/ResponseAPI.ts";
 import {CREATED} from "../../../utils/types/apiCodes.ts";
 
 const createCardSchema = z.object({
-    cardNumber: z.coerce.number({
-        invalid_type_error: 'Este campo deve conter apenas números!'
-    })
+    cardNumber: z.string()
         .min(1, 'O número do cartão deve conter 16 dígitos!'),
     cardName: z.string()
         .min(1, 'Este campo é obrigatório'),
@@ -127,7 +125,7 @@ const CreateCardForm: React.FC<CreateCardFormProps> = ({ handleClose, handleCard
             const request: CreditCardRequest = {
                 token: localStorage.getItem('authToken'),
                 id: null,
-                cardNumber: data.cardNumber,
+                cardNumber: Number(data.cardNumber.replace(/\D/gi, '')),
                 cardName: data.cardName,
                 cardCode: data.cardCode,
                 mainCard: creditCards.length ? isDefault : true,
