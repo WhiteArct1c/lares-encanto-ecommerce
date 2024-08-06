@@ -1,7 +1,7 @@
 export type User = {
    id: number;
-   name: string;
-   email: string;
+   confirmedPassword?: string;
+   email: string; 
    password?: string;
    token?: string;
 }

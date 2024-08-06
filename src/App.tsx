@@ -6,8 +6,11 @@ import { ShoppingCartProvider }from "./contexts/ShoppingCartContext"
 import { OrderProvider } from "./contexts/OrderContext"
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'
+import {AuthContext} from "./contexts/Auth/AuthContext.tsx";
+import {useContext} from "react";
 
 function App() {
+    const auth = useContext(AuthContext);
   return (
     <>
       <Grid2 container>
@@ -20,7 +23,7 @@ function App() {
         <ShoppingCartProvider>
           <OrderProvider>
             <Grid2 xs={12}>
-              <NavBar isAdmin={false}/>
+              <NavBar/>
             </Grid2>
             <Grid2 xs={12}
               sx={{

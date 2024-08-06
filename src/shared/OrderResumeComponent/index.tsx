@@ -134,6 +134,7 @@ const OrderResumeComponent: React.FC<OrderResumeComponentProps> = ({redirectUrl,
             {redirectUrl === '/checkout' && cart!.cartProducts.length > 0 ?
                <Link to={redirectUrl}>
                   <Button
+                      data-cy="btn-checkout"
                      sx={{
                         width:'100%',
                         height:50,

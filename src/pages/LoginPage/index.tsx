@@ -39,12 +39,18 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 
    const onSubmit = async (user: FieldValues) => {
       if(user.email && user.password){
-         const isLogged = await auth.signin(user.email, user.password);
-         if(isLogged){
-            navigate('/products');
+         const data = await auth.signin(user.email, user.password);
+         if(data.code === '200 OK'){
+             const role = await auth.verifyRole();
+             if(role.data[0] === "USER"){
+                 navigate('/products');
+             }else{
+                 navigate('/dashboard');
+             }
+             toast.success(data.message);
          }else{
-            toast.error("E-mail e senha estão incorretos!");
-         }
+            toast.error(data.message);
+         }  
       }
    }
 
@@ -75,7 +81,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
                      shrink: true,
                   }}
                   {...register("email", {required: true, pattern: patternEmail})}
-                  error={errors?.email?.type === 'required' || errors?.email?.type === 'pattern' ? true : false}
+                  error={errors?.email?.type === 'required' || errors?.email?.type === 'pattern'}
                   helperText={
                      errors?.email?.type === 'required' ? "O email é obrigatório" :
                      errors?.email?.type === 'pattern' ? "Insira um email válido" : ""
@@ -90,7 +96,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
                   }}
                   required
                   {...register("password", {required: true})}
-                  error={errors?.password?.type === 'required' ? true : false}
+                  error={errors?.password?.type === 'required'}
                   helperText={errors?.password?.type === 'required' ? "A senha é obrigatória" : ""}
                   InputProps={{
                      endAdornment:

@@ -7,6 +7,7 @@ import ShippingOptionsComponent from '../../shared/ShippingOptionsComponent';
 import PaymentMethodsOrderComponent from '../../shared/PaymentMethodsOrderComponent';
 import { Link } from 'react-router-dom';
 import { ShoppingCartContext } from '../../contexts/ShoppingCartContext';
+import CheckoutCustomerAddresses from "./components/checkout-customer-addresses.tsx";
 
 interface CheckoutPageProps {
 
@@ -116,6 +117,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = () => {
                      {
                         activeStep === 0 ?
                            <>
+                              <CheckoutCustomerAddresses/>
                               <AddressFormComponent />
                               <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                                  <Button
@@ -141,6 +143,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = () => {
                                  </Button>
                                  <Box sx={{ flex: '1 1 auto' }} />
                                  <Button
+                                     data-cy="btn-next-step-shipping"
                                     color="inherit"
                                     onClick={handleAddressShipment}
                                     sx={{
@@ -188,6 +191,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = () => {
                                     </Button>
                                     <Box sx={{ flex: '1 1 auto' }} />
                                     <Button
+                                        data-cy="btn-next-step-payment"
                                        color="inherit"
                                        onClick={handleAddressShipment}
                                        sx={{
@@ -214,44 +218,45 @@ const CheckoutPage: React.FC<CheckoutPageProps> = () => {
                                     <PaymentMethodsOrderComponent />
                                     <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                                        <Button
-                                          color="inherit"
-                                          onClick={handleBack}
-                                          sx={{
-                                             width: 220,
-                                             color: '#fff',
-                                             fontWeight: 600,
-                                             bgcolor: '#000',
-                                             '&:hover': {
-                                                bgcolor: '#fff',
-                                                color: '#000'
-                                             },
-                                             '&:disabled': {
-                                                color: '#000',
-                                                bgcolor: '#999',
-                                             }
-                                          }}
+                                           color="inherit"
+                                           onClick={handleBack}
+                                           sx={{
+                                              width: 220,
+                                              color: '#fff',
+                                              fontWeight: 600,
+                                              bgcolor: '#000',
+                                              '&:hover': {
+                                                 bgcolor: '#fff',
+                                                 color: '#000'
+                                              },
+                                              '&:disabled': {
+                                                 color: '#000',
+                                                 bgcolor: '#999',
+                                              }
+                                           }}
                                        >
                                           Voltar
                                        </Button>
                                        <Box sx={{ flex: '1 1 auto' }} />
                                        <Link to={'/order-finished'}>
                                           <Button
-                                             color="inherit"
-                                             onClick={handleCompleteOrder}
-                                             sx={{
-                                                width: 220,
-                                                color: '#fff',
-                                                fontWeight: 600,
-                                                bgcolor: '#000',
-                                                '&:hover': {
-                                                   bgcolor: '#fff',
-                                                   color: '#000'
-                                                },
-                                                '&:disabled': {
-                                                   color: '#000',
-                                                   bgcolor: '#999',
-                                                }
-                                             }}
+                                              data-cy="btn-finish-order"
+                                              color="inherit"
+                                              onClick={handleCompleteOrder}
+                                              sx={{
+                                                 width: 220,
+                                                 color: '#fff',
+                                                 fontWeight: 600,
+                                                 bgcolor: '#000',
+                                                 '&:hover': {
+                                                    bgcolor: '#fff',
+                                                    color: '#000'
+                                                 },
+                                                 '&:disabled': {
+                                                    color: '#000',
+                                                    bgcolor: '#999',
+                                                 }
+                                              }}
                                           >
                                              Finalizar compra
                                           </Button>

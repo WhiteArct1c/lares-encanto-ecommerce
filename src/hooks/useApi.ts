@@ -1,53 +1,113 @@
 import axios from 'axios';
+import { Customer } from '../utils/types/Customer';
+import { Address } from '../utils/types/Address';
+import { IUpdatePasswordRequest } from '../utils/interfaces/request/IUpdatePasswordRequest';
+import { IAddCustomerAddressRequest } from '../utils/interfaces/request/IAddCustomerAddressRequest';
+import { IUpdateCustomer } from '../utils/interfaces/request/IUpdateCustomer';
+import {IUpdateAddressRequest} from "../utils/interfaces/request/IUpdateAddressRequest.ts";
+import {CreditCardRequest} from "../utils/types/request/customer-credit-card/CreditCardRequest.ts";
 
-//TODO: desmockar para consumir API real
 const api = axios.create({
-   baseURL: import.meta.env.VITE_API_URL_DEV
+   baseURL: import.meta.env.VITE_API_URL_DEV,
+   headers:{
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+   }
+});
+
+const api_json = axios.create({
+   baseURL: "http://localhost:3000",
+   headers:{
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+   }
 });
 
 export const useApi = () => ({
-   validateToken: async (token: string) =>{
-      // const response = await api.post('/validate', { token });
-      // return response.data;
-      const response = await api.get('/users');
-      const user = response.data.filter(data => data.token === token);
-
-      if(user.length === 1){
-         return user[0];
-      }
-
-      return {
-         user: null,
-         token:''
-      };
+   validateToken: async (token: string) => {
+      const response = await api.post('/auth/validate', token);
+      return response.data;
    },
-   signin: async(email: string, password: string) => {
-      const response = await api.get('/users');
-      const user = response.data.filter(data => data.user.email === email && data.user.password === password);
-
-      if(user.length === 1){
-         return user[0];
-      }
-
-      return {
-         user:{},
-         token:''
-      };
+   verifyRole: async (token: string) => {
+      const response = await api.post('/auth/verify-role', token);
+      return response.data;
    },
-   logout: async() => {
+   signin: async (email: string, password: string) => {
+      let res;
+
+      await api.post('/auth/login', { email, password })
+         .then(response => {
+            res = response.data
+         })
+         .catch(e => {
+            res = e.response.data
+         });
+
+      return res;
+   },
+   logout: async () => {
       // const response = await api.post('/logout');
       // return response.data;
    },
-   getProducts: async() => {
-      const response = await api.get('/products');
+   deactivateAccount: async (token: string) =>{
+      const response = await api.post('/auth/deactivate-account', token);
       return response.data;
    },
-   getShippingTypes: async() => {
-      const response = await api.get('/shippings');
+   updatePassword: async (updatePasswordRequest: IUpdatePasswordRequest) => {
+      const response = await api.post('/user/update-password', updatePasswordRequest);
       return response.data;
    },
-   getPaymentTypes: async() => {
-      const response = await api.get('/paymentMethods');
+   registerCustomer: async (customer: Customer) => {
+      let res;
+
+      await api.post('/auth/register', customer)
+      .then((response)=>{
+         res = response.data
+      })
+      .catch(e => {
+         res = e.response.data
+      });
+
+      return res;
+   },
+   updateCustomer: async (customer: IUpdateCustomer) => {
+      const response = await api.put('/customers', customer)
+      return response.data;
+   },
+   registerCustomerAddress: async (address: IAddCustomerAddressRequest) => {
+      const response = await api.post('/address', address);
+      return response.data;
+   },
+   updateCustomerAddress: async(address: IUpdateAddressRequest) => {
+     const response = await api.put('/address', address);
+     return response.data;
+   },
+   deleteCustomerAddress: async (address: Address) => {
+      const response = await api.delete(`/address?id=${address.id}`);
+      return response.data;
+   },
+   getProducts: async () => {
+      const response = await api_json.get('/products');
+      return response.data;
+   },
+   getShippingTypes: async () => {
+      const response = await api_json.get('/shippings');
+      return response.data;
+   },
+   getPaymentTypes: async () => {
+      const response = await api_json.get('/paymentMethods');
+      return response.data;
+   },
+   createCreditCard: async (createCreditCardRequest: CreditCardRequest) => {
+      const response = await api.post(`/customers/create-credit-card`, createCreditCardRequest);
+      return response.data;
+   },
+   listCreditCards: async(token: string | null) => {
+      const response = await api.get(`/customers/list-credit-card`, {
+         headers:{
+            Authorization: `Bearer ${token}`
+         }
+      });
       return response.data;
    }
 })

@@ -1,21 +1,38 @@
-import { FormControlLabel, FormGroup, FormHelperText, MenuItem, Switch, SwitchProps, TextField, Tooltip, Typography, styled } from '@mui/material';
+import { FormControlLabel, FormGroup, Switch, SwitchProps, TextField, Tooltip, Typography, styled } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { months } from '../../utils/months';
-import { next20Years } from '../../utils/next20years';
 import { Info } from '@mui/icons-material';
+import {z} from "zod";
+import {zodResolver} from "@hookform/resolvers/zod";
 
 interface CreditCardFormComponentProps {
    
 }
+
+const creditCardFormSchema = z.object({
+   cardNumber: z.coerce.number({
+      invalid_type_error: 'Este campo deve conter apenas números!'
+   })
+       .min(1, 'O número do cartão deve conter 16 dígitos!'),
+   cardName: z.string()
+       .min(1, 'Este campo é obrigatório'),
+   cardCode: z.coerce.number({
+      invalid_type_error: 'Este campo deve conter apenas números!'
+   })
+       .min(1, 'O código de segurança do cartão é obrigatório!')
+});
+
+type creditCardFormData = z.infer<typeof creditCardFormSchema>;
 
 const CreditCardFormComponent: React.FC<CreditCardFormComponentProps> = () => {
 
    const {
       register,
       formState: { errors }
-   } = useForm();
+   } = useForm<creditCardFormData>({
+      resolver: zodResolver(creditCardFormSchema)
+   });
 
    const IOSSwitch = styled((props: SwitchProps) => (
       <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -71,16 +88,17 @@ const CreditCardFormComponent: React.FC<CreditCardFormComponentProps> = () => {
    return (
       <>
          <Typography fontFamily={'Public Sans'} fontSize={20} sx={{mb:2}}>Detalhes do pagamento</Typography>
-         <Grid2 container spacing={2}>
+         <Grid2 container component={'form'} spacing={2}>
             <Grid2 xs={12}>
                <TextField
                   fullWidth
                   variant='outlined'
                   label='Nome impresso no cartão'
+                  data-cy="txt-card-name"
                   required
-                  {...register("creditCardName", {required: true})}
-                  error={errors?.creditCardName?.type === 'required' ? true : false}
-                  helperText={errors?.creditCardName?.type === 'required' ? "O nome impresso no cartão é obrigatório" : ""}
+                  {...register('cardName')}
+                  error={!!errors.cardName}
+                  helperText={errors?.cardName?.message}
                />
             </Grid2>
             <Grid2 xs={12}>
@@ -88,51 +106,22 @@ const CreditCardFormComponent: React.FC<CreditCardFormComponentProps> = () => {
                   fullWidth
                   variant='outlined'
                   label='Número do cartão de crédito'
+                  data-cy="txt-card-number"
                   required
-                  {...register("creditCardNumber", {required: true})}
-                  error={errors?.creditCardNumber?.type === 'required' ? true : false}
-                  helperText={errors?.creditCardNumber?.type === 'required' ? "O número do cartão é obrigatório" : ""}
+                  {...register('cardNumber')}
+                  error={!!errors.cardNumber}
+                  helperText={errors?.cardNumber?.message}
                />
             </Grid2>
-            <Grid2 xs={4}>
-               <TextField
-                  fullWidth
-                  select
-                  label='Mês'
-                  defaultValue={months[0]}
-                  required
-                  {...register("creditCardMonthExpiration", {required: true})}
-               >
-                  {months.map((tipo, index) => (
-                     <MenuItem key={index} value={tipo}>{tipo}</MenuItem>
-                  ))}
-               </TextField>
-               {errors?.creditCardMonthExpiration?.type === 'required' && <FormHelperText>O mês de vencimento do cartão é obrigatório.</FormHelperText>}
-            </Grid2>
-            <Grid2 xs={4}>
-               <TextField
-                  fullWidth
-                  select
-                  label='Ano'
-                  defaultValue={next20Years[0]}
-                  required
-                  {...register("creditCardYearExpiration", {required: true})}
-               >
-                  {next20Years.map((tipo, index) => (
-                     <MenuItem key={index} value={tipo}>{tipo}</MenuItem>
-                  ))}
-               </TextField>
-               {errors?.creditCardYearExpiration?.type === 'required' && <FormHelperText>O ano de vencimento do cartão é obrigatório.</FormHelperText>}
-            </Grid2>
-            <Grid2 xs={4}>
+            <Grid2 xs={12}>
                <TextField
                   fullWidth
                   variant='outlined'
                   label='CVC'
                   required
-                  {...register("creditCardCode", {required: true})}
-                  error={errors?.creditCardCode?.type === 'required' ? true : false}
-                  helperText={errors?.creditCardCode?.type === 'required' ? "O código do cartão é obrigatório" : ""}
+                  {...register('cardCode')}
+                  error={!!errors.cardCode}
+                  helperText={errors?.cardCode?.message}
                />
             </Grid2>
             <Grid2 xs={12}>
@@ -155,6 +144,7 @@ const CreditCardFormComponent: React.FC<CreditCardFormComponentProps> = () => {
                </FormGroup>
             </Grid2>
          </Grid2>
+
       </>
    );
 };

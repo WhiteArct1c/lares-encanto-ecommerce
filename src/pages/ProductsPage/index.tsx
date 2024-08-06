@@ -36,7 +36,7 @@ const ProductsPage: React.FC<ProductsPageProps> = () => {
       fetch(import.meta.env.VITE_API_URL_DEV + '/products')
          .then(res => res.json())
          .then((data) => setProducts([...data]))
-   }, [filters])
+   }, [filters]);
 
    return (
       <>

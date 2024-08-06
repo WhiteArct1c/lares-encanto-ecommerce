@@ -1,28 +1,40 @@
-import { SearchRounded, ShoppingBag } from '@mui/icons-material';
-import { AppBar, Badge, Box, Button, Divider, IconButton, TextField, Toolbar, Typography } from '@mui/material';
+import {SearchRounded, ShoppingBag} from '@mui/icons-material';
+import {AppBar, Badge, Box, Button, Divider, IconButton, TextField, Toolbar, Typography} from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import React, { useContext }  from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import LogoLaresEncanto from '../../assets/Lares_Encanto-removebg-preview.png'
-import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCartContext } from '../../contexts/ShoppingCartContext';
-import { AuthContext } from '../../contexts/Auth/AuthContext';
+import {Link, useNavigate} from 'react-router-dom';
+import {ShoppingCartContext} from '../../contexts/ShoppingCartContext';
+import {AuthContext} from '../../contexts/Auth/AuthContext';
 
 interface NavBarProps {
-   isAdmin: boolean
 }
 
-const NavBar: React.FC<NavBarProps> = ({ isAdmin }: NavBarProps) => {
+const NavBar: React.FC<NavBarProps> = () => {
    const cart = useContext(ShoppingCartContext);
    const auth = useContext(AuthContext);
    const navigate = useNavigate();
+   const [isAdmin, setIsAdmin] = useState(false);
 
    const handleLogout = async () => {
-      await auth.signout();
+      auth.signout();
       navigate('/login');
-
+      setIsAdmin(false);
       // eslint-disable-next-line no-self-assign
-      window.location.href = window.location.href;
+      // window.location.href = window.location.href;
    }
+
+   useEffect(() => {
+      auth.verifyRole()
+          .then(response => {
+             if(response !== undefined){
+                setIsAdmin(response.data[0] === "ADMIN");
+             }
+          })
+          .catch(e => {
+             console.log(e);
+          })
+   }, [auth, auth.user]);
 
    return (
       <>
@@ -33,7 +45,7 @@ const NavBar: React.FC<NavBarProps> = ({ isAdmin }: NavBarProps) => {
                   height: '72px',
                   display: 'flex',
                   justifyContent: 'center',
-                  alignItens:'center'
+                  alignItens: 'center'
                }}
             >
                <Grid2 container>
@@ -65,7 +77,7 @@ const NavBar: React.FC<NavBarProps> = ({ isAdmin }: NavBarProps) => {
                      alignItems: 'center',
                      justifyContent: 'center'
                   }}>
-                     <Typography color={'#000'} fontWeight={'700'} padding={2}>Matheus R. Bispo</Typography>
+                     <Typography color={'#000'} fontWeight={'700'} padding={2}>{auth.user?.fullName}</Typography>
                      <Divider orientation="vertical" variant='middle' flexItem />
                      <Button
                         variant='text'
@@ -74,20 +86,21 @@ const NavBar: React.FC<NavBarProps> = ({ isAdmin }: NavBarProps) => {
                            fontWeight: '400',
                            padding: '1rem'
                         }}
+                        onClick={handleLogout}
                      >
                         Logout
                      </Button>
                   </Grid2>
                </Grid2>
             </AppBar>
-         :
+            :
             <AppBar position='fixed'
                sx={{
                   bgcolor: '#FFF',
                   height: '72px',
                   display: 'flex',
                   justifyContent: 'center',
-                  alignItens:'center'
+                  alignItens: 'center'
                }}
             >
                <Grid2 container>
@@ -168,18 +181,18 @@ const NavBar: React.FC<NavBarProps> = ({ isAdmin }: NavBarProps) => {
                      xs
                      sx={{
                         display: 'flex',
-                        justifyContent:'center',
+                        justifyContent: 'center',
                         alignItems: 'center',
                         gap: '0.5rem'
-                     }}    
+                     }}
                   >
-                     <TextField 
+                     <TextField
                         fullWidth
-                        label='Pesquisar produto...' 
+                        label='Pesquisar produto...'
                         variant='outlined'
                      />
                      <IconButton>
-                        <SearchRounded/>
+                        <SearchRounded />
                      </IconButton>
                   </Grid2>
                   <Grid2
@@ -191,7 +204,7 @@ const NavBar: React.FC<NavBarProps> = ({ isAdmin }: NavBarProps) => {
                      }}
                   >
                      <Link to='/cart'>
-                        <IconButton sx={{mr:2}} >
+                        <IconButton data-cy="btn-cart" sx={{ mr: 2 }} >
                            <Badge badgeContent={cart?.cartProducts.length} color='primary'>
                               <ShoppingBag />
                            </Badge>
@@ -209,24 +222,24 @@ const NavBar: React.FC<NavBarProps> = ({ isAdmin }: NavBarProps) => {
                                        padding: '1rem'
                                     }}
                                  >
-                                    {auth.user.name}
+                                    {auth.user.fullName}
                                  </Button>
                               </Link>
                               <Divider orientation="vertical" variant='middle' flexItem />
-                                 <Button
-                                    variant='text'
-                                    sx={{
-                                       color: '#000',
-                                       fontWeight: '400',
-                                       padding: '1rem'
-                                    }}
-                                    onClick={handleLogout}
-                                 >
-                                    Logout
-                                 </Button>
+                              <Button
+                                 variant='text'
+                                 sx={{
+                                    color: '#000',
+                                    fontWeight: '400',
+                                    padding: '1rem'
+                                 }}
+                                 onClick={handleLogout}
+                              >
+                                 Logout
+                              </Button>
 
                            </>
-                        :
+                           :
                            <Link to='/login'>
                               <Button
                                  variant='text'
