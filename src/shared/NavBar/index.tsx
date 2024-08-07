@@ -147,7 +147,7 @@ const NavBar: React.FC<NavBarProps> = () => {
                            size='small'
                            label='Pesquisar produto...'
                            variant='outlined'
-                           data-cy="input-search"
+                           data-cy="navbar-input-search"
                         />
                         <Button
                            variant='text'
@@ -157,7 +157,7 @@ const NavBar: React.FC<NavBarProps> = () => {
                               width: '200px',
                            }}
                            endIcon={<AutoAwesome color='primary'/>}
-                           data-cy="btn-recommend"
+                           data-cy="navbar-btn-recommend"
                         >
                            me recomende!
                         </Button>
@@ -233,7 +233,7 @@ const NavBar: React.FC<NavBarProps> = () => {
                      }}
                   >
                      <Link to='/cart'>
-                        <IconButton data-cy="btn-cart" sx={{ mr: 2 }} >
+                        <IconButton data-cy="navbar-btn-cart" sx={{ mr: 2 }} >
                            <Badge badgeContent={cart?.cartProducts.length} color='primary'>
                               <ShoppingBag />
                            </Badge>
