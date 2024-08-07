@@ -147,6 +147,7 @@ const NavBar: React.FC<NavBarProps> = () => {
                            size='small'
                            label='Pesquisar produto...'
                            variant='outlined'
+                           data-cy="input-search"
                         />
                         <Button
                            variant='text'
@@ -156,6 +157,7 @@ const NavBar: React.FC<NavBarProps> = () => {
                               width: '200px',
                            }}
                            endIcon={<AutoAwesome color='primary'/>}
+                           data-cy="btn-recommend"
                         >
                            me recomende!
                         </Button>
