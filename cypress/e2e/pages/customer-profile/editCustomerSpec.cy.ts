@@ -25,7 +25,6 @@ describe('Edit Customer Info', () => {
 
     it('Edit a customer password without errors', () => {
         cy.contains('button', 'Alterar senha').click();
-        cy.get(':nth-child(1) > .MuiInputBase-root > .MuiInputAdornment-root > .MuiButtonBase-root').click();
         cy.get('input[name="password"]').clear().type('Mat15777@');
         cy.get('input[name="confirmedPassword"]').clear().type('Mat15777@');
         newData.password = 'Mat15777@';
