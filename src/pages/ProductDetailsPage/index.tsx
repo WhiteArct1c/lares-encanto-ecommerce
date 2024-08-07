@@ -31,7 +31,7 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = () => {
          <Grid2
             container
             sx={{
-               mt: 15,
+               mt: 20,
                width: '100%',
                mb: 15
             }}

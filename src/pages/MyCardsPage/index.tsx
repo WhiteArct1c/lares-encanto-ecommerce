@@ -46,7 +46,7 @@ const MyCardsPage: React.FC<MyCardsPageProps> = () => {
 
     return(
         <Grid2 container xs={12} sx={{mb: 15,}}>
-            <Grid2 xs={12} sx={{ pl: 2,  mt: 15}}>
+            <Grid2 xs={12} sx={{ pl: 2,  mt: 17}}>
                 <Typography fontFamily={'Public Sans'} fontSize={40} sx={{mb: 10, ml: 3}}>
                     Meus Cartões
                 </Typography>

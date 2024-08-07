@@ -21,7 +21,7 @@ const ShoppingCartPage: React.FC<ShoppingCartPageProps> = () => {
          container
          sx={{
             width: '100%',
-            mt:15,
+            mt:17,
             pl: 10,
             mb: 20,
             display:'flex'
