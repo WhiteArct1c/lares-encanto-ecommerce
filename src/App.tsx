@@ -12,9 +12,9 @@ function App() {
     <>
       <Grid2 container>
         <ToastContainer
-          position="top-right"
+          position="bottom-right"
           hideProgressBar={true}
-          autoClose={3000}
+          autoClose={2000}
           theme="dark"
         />
         <ShoppingCartProvider>
