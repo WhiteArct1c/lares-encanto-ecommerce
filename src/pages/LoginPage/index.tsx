@@ -55,7 +55,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
    }
 
    return (
-      <Grid2 container spacing={2} sx={{mt:13, mb:10}} xs={12}>
+      <Grid2 container spacing={2} sx={{mt:17, mb:10}} xs={12}>
          <Grid2 xs={10} sx={{display:'flex', justifyContent:'center', mb:3, ml:6}}>
             <Typography fontSize={'3.5rem'} fontFamily={'Public Sans'} fontWeight={600}>
                Login

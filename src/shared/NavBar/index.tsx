@@ -1,5 +1,5 @@
-import {SearchRounded, ShoppingBag} from '@mui/icons-material';
-import {AppBar, Badge, Box, Button, Divider, IconButton, TextField, Toolbar, Typography} from '@mui/material';
+import {AutoAwesome, SearchRounded, ShoppingBag} from '@mui/icons-material';
+import {AppBar, Badge, Box, Button, Divider, IconButton, InputAdornment, TextField, Toolbar, Typography} from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import React, {useContext, useEffect, useState} from 'react';
 import LogoLaresEncanto from '../../assets/Lares_Encanto-removebg-preview.png'
@@ -40,7 +40,7 @@ const NavBar: React.FC<NavBarProps> = () => {
             <AppBar position='sticky'
                sx={{
                   bgcolor: '#FFF',
-                  height: '72px',
+                  height: '50px',
                   display: 'flex',
                   justifyContent: 'center',
                   alignItens: 'center'
@@ -60,7 +60,7 @@ const NavBar: React.FC<NavBarProps> = () => {
                            component='img'
                            src={LogoLaresEncanto}
                            sx={{
-                              width: '240px'
+                              width: '200px'
                            }}
                         />
                      </Toolbar>
@@ -95,109 +95,140 @@ const NavBar: React.FC<NavBarProps> = () => {
             <AppBar position='fixed'
                sx={{
                   bgcolor: '#FFF',
-                  height: '72px',
+                  height: '110px',
                   display: 'flex',
                   justifyContent: 'center',
-                  alignItens: 'center'
+                  alignItens: 'center',
+                  width: '100%'
                }}
             >
-               <Grid2 container>
+               <Grid2 sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItens: 'center',
+                  width: '100%'
+               }}>
                   <Grid2
-                     xs={2}
+                     xs={8}
                      sx={{
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center'
                      }}
                   >
-                     <Toolbar>
-                        <Box
-                           component='img'
-                           src={LogoLaresEncanto}
-                           sx={{
-                              width: '240px'
-                           }}
-                        />
-                     </Toolbar>
-                  </Grid2>
-                  <Grid2 xs={5}>
-                     <Toolbar
+                     <Box
+                        component='img'
+                        src={LogoLaresEncanto}
                         sx={{
-                           justifyContent: 'space-around'
+                           width: '190px',
+                           mr: 2
+                        }}
+                     />
+                     <Grid2
+                        xs
+                        sx={{
+                           display: 'flex',
+                           justifyContent: 'center',
+                           alignItems: 'center',
+                           gap: '1rem'
                         }}
                      >
-                        <Button
-                           variant='text'
-                           sx={{
-                              color: '#000',
-                              fontWeight: '400'
-                           }}
-                        >
-                           Sala de Estar
-                        </Button>
-                        <Button
-                           variant='text'
-                           sx={{
-                              color: '#000',
-                              fontWeight: '400'
-                           }}
-                        >
-                           Cozinha
-                        </Button>
-                        <Button
-                           variant='text'
-                           sx={{
-                              color: '#000',
-                              fontWeight: '400'
-                           }}
-                        >
-                           Quarto
-                        </Button>
-                        <Button
-                           variant='text'
-                           sx={{
-                              color: '#000',
-                              fontWeight: '400'
-                           }}
-                        >
-                           Escritório
-                        </Button>
-                        <Link to='/products'>
-                           <Button
-                              variant='text'
-                              sx={{
-                                 color: '#000',
-                                 fontWeight: '400'
+                        <TextField
+                           InputProps={{
+                              endAdornment: (
+                                 <InputAdornment position="end">
+                                    <IconButton>
+                                       <SearchRounded />
+                                    </IconButton>
+                                 </InputAdornment>
+                              ),
                               }}
-                           >
-                              Ver todos
-                           </Button>
-                        </Link>
-                     </Toolbar>
+                           fullWidth
+                           size='small'
+                           label='Pesquisar produto...'
+                           variant='outlined'
+                           data-cy="input-search"
+                        />
+                        <Button
+                           variant='text'
+                           sx={{
+                              color: '#000',
+                              fontWeight: '400',
+                              width: '200px',
+                           }}
+                           endIcon={<AutoAwesome color='primary'/>}
+                           data-cy="btn-recommend"
+                        >
+                           me recomende!
+                        </Button>
+                     </Grid2>
                   </Grid2>
-                  <Grid2
-                     xs
-                     sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        gap: '0.5rem'
-                     }}
-                  >
-                     <TextField
-                        fullWidth
-                        label='Pesquisar produto...'
-                        variant='outlined'
-                     />
-                     <IconButton>
-                        <SearchRounded />
-                     </IconButton>
+               </Grid2>
+               <Grid2 container sx={{
+                  display: 'flex',
+                  justifyContent: 'space-around',
+                  alignItems: 'center'
+               }}>
+                  <Grid2 xs={8} sx={{
+                     height: '50px',
+                     display: 'flex',
+                     justifyContent: 'space-around',
+                     alignItems: 'end',
+                  }}>
+                     
+                     <Button
+                        variant='text'
+                        sx={{
+                           color: '#000',
+                           fontWeight: '400'
+                        }}
+                     >
+                        Sala de Estar
+                     </Button>
+                     <Button
+                        variant='text'
+                        sx={{
+                           color: '#000',
+                           fontWeight: '400'
+                        }}
+                     >
+                        Cozinha
+                     </Button>
+                     <Button
+                        variant='text'
+                        sx={{
+                           color: '#000',
+                           fontWeight: '400'
+                        }}
+                     >
+                        Quarto
+                     </Button>
+                     <Button
+                        variant='text'
+                        sx={{
+                           color: '#000',
+                           fontWeight: '400'
+                        }}
+                     >
+                        Escritório
+                     </Button>
+                     <Link to='/products'>
+                        <Button
+                           variant='text'
+                           sx={{
+                              color: '#000',
+                              fontWeight: '400'
+                           }}
+                        >
+                           Ver todos
+                        </Button>
+                     </Link>
                   </Grid2>
                   <Grid2
                      xs={3}
                      sx={{
                         display: 'flex',
-                        alignItems: 'center',
+                        alignItems: 'end',
                         justifyContent: 'center'
                      }}
                   >
@@ -217,7 +248,7 @@ const NavBar: React.FC<NavBarProps> = () => {
                                     sx={{
                                        color: '#000',
                                        fontWeight: '400',
-                                       padding: '1rem'
+                                       padding: '0.5rem'
                                     }}
                                  >
                                     {auth.user.fullName}
@@ -229,27 +260,41 @@ const NavBar: React.FC<NavBarProps> = () => {
                                  sx={{
                                     color: '#000',
                                     fontWeight: '400',
-                                    padding: '1rem'
+                                    padding: '0.5rem'
                                  }}
                                  onClick={handleLogout}
                               >
                                  Logout
                               </Button>
-
                            </>
                            :
-                           <Link to='/login'>
-                              <Button
-                                 variant='text'
-                                 sx={{
-                                    color: '#000',
-                                    fontWeight: '400',
-                                    padding: '1rem'
-                                 }}
-                              >
-                                 Login
-                              </Button>
-                           </Link>
+                           <>
+                              <Link to='/login'>
+                                 <Button
+                                    variant='text'
+                                    sx={{
+                                       color: '#000',
+                                       fontWeight: '400',
+                                       padding: '0.5rem'
+                                    }}
+                                    >
+                                    ENTRAR
+                                 </Button>
+                              </Link>
+                              <Divider orientation="vertical" variant='middle' flexItem />
+                              <Link to='/register-user'>
+                                 <Button
+                                    variant='text'
+                                    sx={{
+                                       color: '#000',
+                                       fontWeight: '400',
+                                       padding: '0.5rem'
+                                    }}
+                                    >
+                                    Criar sua conta
+                                 </Button>
+                              </Link>
+                           </>
                      }
                   </Grid2>
                </Grid2>

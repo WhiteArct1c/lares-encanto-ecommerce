@@ -47,7 +47,7 @@ const ProductsPage: React.FC<ProductsPageProps> = () => {
 
    return (
       <>
-         <Box sx={{ flexGrow: 1, width: '100%', mt: 15 }}>
+         <Box sx={{ flexGrow: 1, width: '100%', mt: 20 }}>
             <Grid2
                container
                spacing={2}

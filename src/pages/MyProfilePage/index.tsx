@@ -233,7 +233,7 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
 
    return (
        <Grid2 container xs={12}>
-          <Grid2 xs={12} sx={{ pl: 2,  mt: 15}}>
+          <Grid2 xs={12} sx={{ pl: 2,  mt: 17}}>
              <Typography fontFamily={'Public Sans'} fontSize={40} sx={{mb: 10, ml: 3}}>
                 Minhas Informações
              </Typography>

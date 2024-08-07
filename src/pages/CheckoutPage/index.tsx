@@ -79,7 +79,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = () => {
       <Grid2
          container
          xs={12}
-         sx={{ mt: 15, mb: 17, width: '100%'}}
+         sx={{ mt: 17, mb: 17, width: '100%'}}
       >
          <Grid2 xs={12}>
             <Typography
