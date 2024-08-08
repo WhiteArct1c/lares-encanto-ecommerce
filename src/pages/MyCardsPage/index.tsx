@@ -7,7 +7,7 @@ import {
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import MyProfileSidenavComponent from "../../shared/MyProfileSidenavComponent";
 import { Add } from "@mui/icons-material";
-import CreateCardForm from "./components/create-card-form.tsx";
+import CardForm from "./components/card-form.tsx";
 import NoCardsMessage from "./components/no-cards-message.tsx";
 import { useApi } from "../../hooks/useApi.ts";
 import CreditCardComponent from "./components/credit-card-component.tsx";
@@ -20,11 +20,20 @@ const MyCardsPage: React.FC<MyCardsPageProps> = () => {
     const [open, setOpen] = useState(false);
     const [titleDialog, setTitleDialog] = useState('');
     const [creditCards, setCreditCards] = useState<CreditCardRequest[]>([]);
+    const [selectedCard, setSelectedCard] = useState<CreditCardRequest | null>(null);
     const api = useApi();
 
-    const handleClickOpenDialog = (value: string) => {
-        setTitleDialog(value)
-        setOpen(true);
+    const handleClickOpenDialog = (title: string | null, card: CreditCardRequest | null) => {
+        if(title !== null){
+            setTitleDialog(title)
+            setOpen(true);
+        }
+
+        if(card !== null){
+            setSelectedCard(card);
+        }else{
+            setSelectedCard(null);
+        }
     };
 
     const handleClose = () => {
@@ -36,7 +45,7 @@ const MyCardsPage: React.FC<MyCardsPageProps> = () => {
     }
 
     const loadCreditCards = async () => {
-        const data = await api.listCreditCards(localStorage.getItem('authToken'));
+        const data = await api.listCreditCards();
         setCreditCards(data.data);
     }
 
@@ -72,7 +81,7 @@ const MyCardsPage: React.FC<MyCardsPageProps> = () => {
                             },
                             mb: 2
                         }}
-                        onClick={() => handleClickOpenDialog('Adicionar cartão')}
+                        onClick={() => handleClickOpenDialog('Adicionar cartão de crédito', null)}
                         endIcon={<Add/>}
                     >
                         Adicionar cartão
@@ -87,6 +96,7 @@ const MyCardsPage: React.FC<MyCardsPageProps> = () => {
                                     <>
                                         <CreditCardComponent
                                             creditCard={card}
+                                            openDialogBySubmenuFunction={handleClickOpenDialog}
                                         />
                                     </>
                                 );
@@ -101,7 +111,12 @@ const MyCardsPage: React.FC<MyCardsPageProps> = () => {
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>{titleDialog}</DialogTitle>
                 <DialogContent>
-                    <CreateCardForm handleClose={handleClose} handleCardAdded={handleCardAdded} creditCards={creditCards}/>
+                    <CardForm 
+                        handleClose={handleClose} 
+                        handleCardAdded={handleCardAdded} 
+                        creditCards={creditCards}
+                        creditCardSelected={selectedCard}
+                    />
                 </DialogContent>
             </Dialog>
         </Grid2>

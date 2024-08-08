@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useContext, useState} from 'react';
+import React, {ChangeEvent, useContext, useEffect, useState} from 'react';
 import {
     Button,
     DialogActions,
@@ -31,15 +31,16 @@ const createCardSchema = z.object({
         .min(1, 'O código de segurança do cartão é obrigatório!')
 });
 
-type CreateCardFormData = z.infer<typeof createCardSchema>;
+type CardFormData = z.infer<typeof createCardSchema>;
 
-interface CreateCardFormProps{
+interface CardFormProps{
     handleClose: () => void;
     handleCardAdded: () => void;
     creditCards: CreditCardRequest[];
+    creditCardSelected: CreditCardRequest | null;
 }
 
-const CreateCardForm: React.FC<CreateCardFormProps> = ({ handleClose, handleCardAdded, creditCards }) => {
+const CardForm: React.FC<CardFormProps> = ({ handleClose, handleCardAdded, creditCards, creditCardSelected }) => {
     const [flag, setFlag] = useState('');
     const [isDefault, setIsDefault] = useState(false);
     const auth = useContext(AuthContext);
@@ -49,8 +50,9 @@ const CreateCardForm: React.FC<CreateCardFormProps> = ({ handleClose, handleCard
         handleSubmit,
         formState: {
             errors
-        }
-    } = useForm<CreateCardFormData>({
+        },
+        setValue
+    } = useForm<CardFormData>({
         resolver: zodResolver(createCardSchema),
     });
 
@@ -115,7 +117,7 @@ const CreateCardForm: React.FC<CreateCardFormProps> = ({ handleClose, handleCard
         },
     }));
 
-    const createCard = (data: CreateCardFormData) => {
+    const createCard = (data: CardFormData) => {
         if(flag === 'Bandeira inválida'){
             toast.error('A bandeira do cartão é inválida!');
             return;
@@ -143,6 +145,19 @@ const CreateCardForm: React.FC<CreateCardFormProps> = ({ handleClose, handleCard
             })
         }
     };
+
+    useEffect(() => {
+        if(creditCardSelected){
+            const { cardNumber, cardName, cardFlag, cardCode, mainCard } = creditCardSelected;
+            const number = cardNumber.toString();
+            const formattedNumber = number.replace(/(\d{4})/g, '$1 ').replace(/(^\s+|\s+$)/,'');
+            setFlag(cardFlag);
+            setIsDefault(mainCard);
+            setValue('cardNumber', formattedNumber);
+            setValue('cardName', cardName);
+            setValue('cardCode', cardCode);
+        }
+    }, [creditCardSelected, setValue]);
 
     return (
         <Grid2 xs
@@ -206,10 +221,10 @@ const CreateCardForm: React.FC<CreateCardFormProps> = ({ handleClose, handleCard
             }
             <DialogActions>
                 <Button data-cy="btn-cancel-add-card" onClick={handleClose}>Cancelar</Button>
-                <Button data-cy="btn-confirm-add-card" type='submit'>Adicionar</Button>
+                <Button data-cy="btn-confirm-add-card" type='submit'>Salvar</Button>
             </DialogActions>
         </Grid2>
     );
 }
 
-export default CreateCardForm;
+export default CardForm;
