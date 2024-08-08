@@ -184,7 +184,7 @@ const CreateCardForm: React.FC<CreateCardFormProps> = ({ handleClose, handleCard
                 fullWidth
                 variant='outlined'
                 data-cy="txt-card-code"
-                label='CVC'
+                label='CVV'
                 required
                 {...register('cardCode')}
                 InputLabelProps={{
