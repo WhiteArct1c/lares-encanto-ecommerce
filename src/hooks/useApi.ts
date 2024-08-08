@@ -98,14 +98,34 @@ export const useApi = () => ({
       const response = await api_json.get('/paymentMethods');
       return response.data;
    },
-   createCreditCard: async (createCreditCardRequest: CreditCardRequest) => {
-      const response = await api.post(`/customers/create-credit-card`, createCreditCardRequest);
+   getCreditCardById: async (id: number) => {
+      const response = await api.get(`/credit-cards/${id}`, {
+         headers:{
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`
+         }
+      });
       return response.data;
    },
-   listCreditCards: async(token: string | null) => {
-      const response = await api.get(`/customers/list-credit-card`, {
+   createCreditCard: async (createCreditCardRequest: CreditCardRequest) => {
+      const response = await api.post(`/credit-cards`, createCreditCardRequest, {
          headers:{
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`
+         }
+      });
+      return response.data;
+   },
+   updateCreditCard: async (updateCreditCardRequest: CreditCardRequest) => {
+      const response = await api.put(`/credit-cards/${updateCreditCardRequest.id}`, updateCreditCardRequest, {
+         headers:{
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`
+         }
+      });
+      return response.data;
+   },
+   listCreditCards: async() => {
+      const response = await api.get(`/credit-cards`, {
+         headers:{
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`
          }
       });
       return response.data;
