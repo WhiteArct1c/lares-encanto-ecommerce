@@ -125,10 +125,10 @@ const CardForm: React.FC<CardFormProps> = ({ handleClose, handleCardAdded, credi
             return;
         }
 
-        if(auth.user){
+        if(auth.user && creditCardSelected){
             const request: CreditCardRequest = {
                 token: localStorage.getItem('authToken'),
-                id: creditCardSelected?.id,
+                id: creditCardSelected!.id,
                 cardNumber: Number(data.cardNumber.replace(/\D/gi, '')),
                 cardName: data.cardName,
                 cardCode: data.cardCode,
@@ -188,7 +188,6 @@ const CardForm: React.FC<CardFormProps> = ({ handleClose, handleCardAdded, credi
             setValue('cardName', cardName);
             setValue('cardCode', cardCode);
         }
-        console.log(creditCardSelected);
     }, [creditCardSelected, setValue]);
 
     return (
@@ -241,7 +240,7 @@ const CardForm: React.FC<CardFormProps> = ({ handleClose, handleCardAdded, credi
                 helperText={errors?.cardCode?.message}
             />
             {
-                creditCards.length ?
+                creditCards.length >= 1 ?
                     <FormGroup sx={{display:'flex', flexDirection:'row', alignItems:'center', ml:1}}>
                         <FormControlLabel
                             control={<IOSSwitch data-cy="switcher-main-card" checked={isDefault} onChange={handleSwitchChange} sx={{ m: 1 }}/>}
