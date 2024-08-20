@@ -91,16 +91,15 @@ const MyCardsPage: React.FC<MyCardsPageProps> = () => {
                 {creditCards.length ?
                     <Grid2 container xs sx={{display:'flex', gap:3}}>
                         {
-                            creditCards.map((card) =>{
-                                return(
-                                    <>
-                                        <CreditCardComponent
-                                            creditCard={card}
-                                            openDialogBySubmenuFunction={handleClickOpenDialog}
-                                        />
-                                    </>
-                                );
-                            })
+                            creditCards
+                                .sort((cardA) => cardA.mainCard ? -1 : 1)
+                                .map((creditCard) => (
+                                    <CreditCardComponent
+                                        key={creditCard.id}
+                                        creditCard={creditCard}
+                                        openDialogBySubmenuFunction={handleClickOpenDialog}
+                                    />
+                                ))
                         }
                     </Grid2>
                     :
