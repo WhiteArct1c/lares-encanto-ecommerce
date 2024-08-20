@@ -18,7 +18,8 @@ import {AuthContext} from "../../../contexts/Auth/AuthContext.tsx";
 import {toast} from "react-toastify";
 import {CreditCardRequest} from "../../../utils/types/request/customer-credit-card/CreditCardRequest.ts";
 import {ResponseAPI} from "../../../utils/types/response/ResponseAPI.ts";
-import {CREATED} from "../../../utils/types/apiCodes.ts";
+import {CREATED, OK} from "../../../utils/types/apiCodes.ts";
+import {useApi} from "../../../hooks/useApi.ts";
 
 const createCardSchema = z.object({
     cardNumber: z.string()
@@ -44,6 +45,7 @@ const CardForm: React.FC<CardFormProps> = ({ handleClose, handleCardAdded, credi
     const [flag, setFlag] = useState('');
     const [isDefault, setIsDefault] = useState(false);
     const auth = useContext(AuthContext);
+    const api = useApi();
 
     const {
         register,
@@ -117,6 +119,35 @@ const CardForm: React.FC<CardFormProps> = ({ handleClose, handleCardAdded, credi
         },
     }));
 
+    const updateCard = (data: CardFormData) => {
+        if(flag === 'Bandeira inválida'){
+            toast.error('A bandeira do cartão é inválida!');
+            return;
+        }
+
+        if(auth.user){
+            const request: CreditCardRequest = {
+                token: localStorage.getItem('authToken'),
+                id: creditCardSelected?.id,
+                cardNumber: Number(data.cardNumber.replace(/\D/gi, '')),
+                cardName: data.cardName,
+                cardCode: data.cardCode,
+                mainCard: isDefault,
+                cardFlag: flag
+            }
+
+            api.updateCreditCard(request).then((response: ResponseAPI) => {
+                if(response.code === OK){
+                    toast.success(response.message);
+                    handleClose();
+                    handleCardAdded();
+                }else{
+                    toast.error(response.message);
+                }
+            })
+        }
+    }
+
     const createCard = (data: CardFormData) => {
         if(flag === 'Bandeira inválida'){
             toast.error('A bandeira do cartão é inválida!');
@@ -157,13 +188,14 @@ const CardForm: React.FC<CardFormProps> = ({ handleClose, handleCardAdded, credi
             setValue('cardName', cardName);
             setValue('cardCode', cardCode);
         }
+        console.log(creditCardSelected);
     }, [creditCardSelected, setValue]);
 
     return (
         <Grid2 xs
                component={'form'}
                sx={{display: 'flex', flexDirection:'column', gap:2, mt:1, width:'500px'}}
-               onSubmit={handleSubmit(createCard)}
+               onSubmit={creditCardSelected === null ? handleSubmit(createCard) : handleSubmit(updateCard)}
         >
             <TextField
                 fullWidth
