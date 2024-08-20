@@ -38,7 +38,12 @@ const CreditCardComponent: React.FC<CreditCardComponentProps> = ({creditCard, op
                     }
             />
                 <CardContent>
-                    <Typography variant="body2" color="text.secondary" sx={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                    <Typography
+                        component="span"
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{display:'flex', justifyContent:'space-between', alignItems:'center'}}
+                    >
                         {creditCard.cardNumber}
                         {creditCard.mainCard &&
                             <Chip
