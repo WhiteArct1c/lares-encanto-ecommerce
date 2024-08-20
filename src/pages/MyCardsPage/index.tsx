@@ -1,6 +1,6 @@
 import React, { useEffect, useState} from "react";
 import {
-    Button, Dialog, DialogContent, DialogTitle, Divider,
+    Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider,
     Tooltip,
     Typography
 } from "@mui/material";
@@ -12,6 +12,8 @@ import NoCardsMessage from "./components/no-cards-message.tsx";
 import { useApi } from "../../hooks/useApi.ts";
 import CreditCardComponent from "./components/credit-card-component.tsx";
 import {CreditCardRequest} from "../../utils/types/request/customer-credit-card/CreditCardRequest.ts";
+import {OK} from "../../utils/types/apiCodes.ts";
+import {toast} from "react-toastify";
 interface MyCardsPageProps{
 
 }
@@ -42,6 +44,19 @@ const MyCardsPage: React.FC<MyCardsPageProps> = () => {
 
     const handleCardAdded = () => {
         loadCreditCards();
+    }
+
+    const deleteCreditCard = async () => {
+        if(selectedCard !== null) {
+            const response = await api.deleteCreditCard(selectedCard.id!);
+            if (response.code === OK) {
+                toast.success(response.message);
+            }else{
+                toast.error(response.message);
+            }
+        }
+        handleClose();
+        await loadCreditCards();
     }
 
     const loadCreditCards = async () => {
@@ -110,13 +125,39 @@ const MyCardsPage: React.FC<MyCardsPageProps> = () => {
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>{titleDialog}</DialogTitle>
                 <DialogContent>
-                    <CardForm 
-                        handleClose={handleClose} 
-                        handleCardAdded={handleCardAdded} 
-                        creditCards={creditCards}
-                        creditCardSelected={selectedCard}
-                    />
+                    {
+                        selectedCard !== null && titleDialog === 'Excluir cartão de crédito' ?
+                            <Typography>
+                                Deseja realmente excluir o cartão de crédito com final {selectedCard.cardNumber.toString().slice(12)}?
+                            </Typography>
+                            :
+                            <CardForm
+                                handleClose={handleClose}
+                                handleCardAdded={handleCardAdded}
+                                creditCards={creditCards}
+                                creditCardSelected={selectedCard}
+                            />
+                    }
                 </DialogContent>
+                {
+                    titleDialog === 'Excluir cartão de crédito' ?
+                        <DialogActions>
+                            <Button
+                                data-cy="btn-cancel-delete-card"
+                                onClick={handleClose}
+                            >
+                                Cancelar
+                            </Button>
+                            <Button
+                                data-cy="btn-confirm-delete-card"
+                                onClick={deleteCreditCard}
+                            >
+                                Confirmar
+                            </Button>
+                        </DialogActions>
+                        :
+                        <></>
+                }
             </Dialog>
         </Grid2>
     );
