@@ -23,7 +23,9 @@ import {useApi} from "../../../hooks/useApi.ts";
 
 const createCardSchema = z.object({
     cardNumber: z.string()
-        .min(1, 'O número do cartão deve conter 16 dígitos!'),
+    .trim()
+        .max(16, 'O número do cartão deve conter no máximo 16 dígitos!')
+        .min(13, 'O número do cartão deve conter no mínimo 13 dígitos!'),
     cardName: z.string()
         .min(1, 'Este campo é obrigatório'),
     cardCode: z.coerce.number({
@@ -201,10 +203,10 @@ const CardForm: React.FC<CardFormProps> = ({ handleClose, handleCardAdded, credi
                 variant='outlined'
                 label='Número do cartão'
                 data-cy="txt-card-number"
-                required
+                required          
                 {...register('cardNumber')}
                 InputProps={{
-                    endAdornment: <InputAdornment position='end'>{flag}</InputAdornment>
+                    endAdornment: <InputAdornment data-cy="card-flag" position='end'>{flag}</InputAdornment>
                 }}
                 InputLabelProps={{
                     shrink: true
