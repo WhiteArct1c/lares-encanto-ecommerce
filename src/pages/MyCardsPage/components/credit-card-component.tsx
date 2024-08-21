@@ -24,8 +24,14 @@ const CreditCardComponent: React.FC<CreditCardComponentProps> = ({creditCard, op
 
     return (
         <>
-            <Card variant="outlined" key={creditCard.id} sx={{width:320, borderRadius:2, border:`${mainCardBorderStyle}`}}>
+            <Card
+                data-cy="credit-card"
+                variant="outlined" 
+                key={creditCard.id} 
+                sx={{width:320, borderRadius:2, border:`${mainCardBorderStyle}`}}
+            >
                 <CardHeader
+                    data-cy="credit-card-header"
                     title={creditCard.cardName}
                     subheader={creditCard.cardFlag}
                     action={
@@ -39,6 +45,7 @@ const CreditCardComponent: React.FC<CreditCardComponentProps> = ({creditCard, op
             />
                 <CardContent>
                     <Typography
+                        data-cy="credit-card-number"
                         component="span"
                         variant="body2"
                         color="text.secondary"
@@ -47,6 +54,7 @@ const CreditCardComponent: React.FC<CreditCardComponentProps> = ({creditCard, op
                         {creditCard.cardNumber}
                         {creditCard.mainCard &&
                             <Chip
+                                data-cy="chip-main-card"
                                 label="Principal"
                                 sx={{bgcolor:'#484646', color:'#fff'}}
                             />
