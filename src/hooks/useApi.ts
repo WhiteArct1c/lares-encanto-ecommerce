@@ -4,22 +4,24 @@ import { Address } from '../utils/types/Address';
 import { IUpdatePasswordRequest } from '../utils/interfaces/request/IUpdatePasswordRequest';
 import { IAddCustomerAddressRequest } from '../utils/interfaces/request/IAddCustomerAddressRequest';
 import { IUpdateCustomer } from '../utils/interfaces/request/IUpdateCustomer';
-import {IUpdateAddressRequest} from "../utils/interfaces/request/IUpdateAddressRequest.ts";
-import {CreditCardRequest} from "../utils/types/request/customer-credit-card/CreditCardRequest.ts";
+import { IUpdateAddressRequest } from "../utils/interfaces/request/IUpdateAddressRequest.ts";
+import { CreditCardRequest } from "../utils/types/request/customer-credit-card/CreditCardRequest.ts";
 
 const api = axios.create({
    baseURL: import.meta.env.VITE_API_URL_DEV,
    headers:{
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      "Content-Type": "application/json"
    }
 });
 
 const api_json = axios.create({
    baseURL: "http://localhost:3000",
-   headers:{
+   headers: {
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      "Content-Type": "application/json"
    }
 });
 
@@ -71,7 +73,11 @@ export const useApi = () => ({
       return res;
    },
    updateCustomer: async (customer: IUpdateCustomer) => {
-      const response = await api.put('/customers', customer)
+      const response = await api.put('/customers', customer, {
+         headers:{
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`
+         }
+      })
       return response.data;
    },
    registerCustomerAddress: async (address: IAddCustomerAddressRequest) => {
@@ -98,14 +104,42 @@ export const useApi = () => ({
       const response = await api_json.get('/paymentMethods');
       return response.data;
    },
-   createCreditCard: async (createCreditCardRequest: CreditCardRequest) => {
-      const response = await api.post(`/customers/create-credit-card`, createCreditCardRequest);
+   getCreditCardById: async (id: number) => {
+      const response = await api.get(`/credit-cards/${id}`, {
+         headers:{
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`
+         }
+      });
       return response.data;
    },
-   listCreditCards: async(token: string | null) => {
-      const response = await api.get(`/customers/list-credit-card`, {
+   createCreditCard: async (createCreditCardRequest: CreditCardRequest) => {
+      const response = await api.post(`/credit-cards`, createCreditCardRequest, {
          headers:{
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`
+         }
+      });
+      return response.data;
+   },
+   updateCreditCard: async (updateCreditCardRequest: CreditCardRequest) => {
+      const response = await api.put(`/credit-cards/${updateCreditCardRequest.id}`, updateCreditCardRequest, {
+         headers:{
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`
+         }
+      });
+      return response.data;
+   },
+   deleteCreditCard: async (id: number) => {
+      const response = await api.delete(`/credit-cards/${id}`, {
+         headers:{
+             Authorization: `Bearer ${localStorage.getItem('authToken')}`
+         }
+      });
+      return response.data;
+      },
+   listCreditCards: async() => {
+      const response = await api.get(`/credit-cards`, {
+         headers:{
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`
          }
       });
       return response.data;

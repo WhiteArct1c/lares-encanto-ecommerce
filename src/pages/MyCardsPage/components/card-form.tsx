@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useContext, useState} from 'react';
+import React, {ChangeEvent, useContext, useEffect, useState} from 'react';
 import {
     Button,
     DialogActions,
@@ -18,11 +18,14 @@ import {AuthContext} from "../../../contexts/Auth/AuthContext.tsx";
 import {toast} from "react-toastify";
 import {CreditCardRequest} from "../../../utils/types/request/customer-credit-card/CreditCardRequest.ts";
 import {ResponseAPI} from "../../../utils/types/response/ResponseAPI.ts";
-import {CREATED} from "../../../utils/types/apiCodes.ts";
+import {CREATED, OK} from "../../../utils/types/apiCodes.ts";
+import {useApi} from "../../../hooks/useApi.ts";
 
 const createCardSchema = z.object({
     cardNumber: z.string()
-        .min(1, 'O número do cartão deve conter 16 dígitos!'),
+    .trim()
+        .max(16, 'O número do cartão deve conter no máximo 16 dígitos!')
+        .min(13, 'O número do cartão deve conter no mínimo 13 dígitos!'),
     cardName: z.string()
         .min(1, 'Este campo é obrigatório'),
     cardCode: z.coerce.number({
@@ -31,26 +34,29 @@ const createCardSchema = z.object({
         .min(1, 'O código de segurança do cartão é obrigatório!')
 });
 
-type CreateCardFormData = z.infer<typeof createCardSchema>;
+type CardFormData = z.infer<typeof createCardSchema>;
 
-interface CreateCardFormProps{
+interface CardFormProps{
     handleClose: () => void;
     handleCardAdded: () => void;
     creditCards: CreditCardRequest[];
+    creditCardSelected: CreditCardRequest | null;
 }
 
-const CreateCardForm: React.FC<CreateCardFormProps> = ({ handleClose, handleCardAdded, creditCards }) => {
+const CardForm: React.FC<CardFormProps> = ({ handleClose, handleCardAdded, creditCards, creditCardSelected }) => {
     const [flag, setFlag] = useState('');
     const [isDefault, setIsDefault] = useState(false);
     const auth = useContext(AuthContext);
+    const api = useApi();
 
     const {
         register,
         handleSubmit,
         formState: {
             errors
-        }
-    } = useForm<CreateCardFormData>({
+        },
+        setValue
+    } = useForm<CardFormData>({
         resolver: zodResolver(createCardSchema),
     });
 
@@ -115,7 +121,36 @@ const CreateCardForm: React.FC<CreateCardFormProps> = ({ handleClose, handleCard
         },
     }));
 
-    const createCard = (data: CreateCardFormData) => {
+    const updateCard = (data: CardFormData) => {
+        if(flag === 'Bandeira inválida'){
+            toast.error('A bandeira do cartão é inválida!');
+            return;
+        }
+
+        if(auth.user && creditCardSelected){
+            const request: CreditCardRequest = {
+                token: localStorage.getItem('authToken'),
+                id: creditCardSelected!.id,
+                cardNumber: Number(data.cardNumber.replace(/\D/gi, '')),
+                cardName: data.cardName,
+                cardCode: data.cardCode,
+                mainCard: isDefault,
+                cardFlag: flag
+            }
+
+            api.updateCreditCard(request).then((response: ResponseAPI) => {
+                if(response.code === OK){
+                    toast.success(response.message);
+                    handleClose();
+                    handleCardAdded();
+                }else{
+                    toast.error(response.message);
+                }
+            })
+        }
+    }
+
+    const createCard = (data: CardFormData) => {
         if(flag === 'Bandeira inválida'){
             toast.error('A bandeira do cartão é inválida!');
             return;
@@ -144,21 +179,34 @@ const CreateCardForm: React.FC<CreateCardFormProps> = ({ handleClose, handleCard
         }
     };
 
+    useEffect(() => {
+        if(creditCardSelected){
+            const { cardNumber, cardName, cardFlag, cardCode, mainCard } = creditCardSelected;
+            const number = cardNumber.toString();
+            const formattedNumber = number.replace(/(\d{4})/g, '$1 ').replace(/(^\s+|\s+$)/,'');
+            setFlag(cardFlag);
+            setIsDefault(mainCard);
+            setValue('cardNumber', formattedNumber);
+            setValue('cardName', cardName);
+            setValue('cardCode', cardCode);
+        }
+    }, [creditCardSelected, setValue]);
+
     return (
         <Grid2 xs
                component={'form'}
                sx={{display: 'flex', flexDirection:'column', gap:2, mt:1, width:'500px'}}
-               onSubmit={handleSubmit(createCard)}
+               onSubmit={creditCardSelected === null ? handleSubmit(createCard) : handleSubmit(updateCard)}
         >
             <TextField
                 fullWidth
                 variant='outlined'
                 label='Número do cartão'
                 data-cy="txt-card-number"
-                required
+                required          
                 {...register('cardNumber')}
                 InputProps={{
-                    endAdornment: <InputAdornment position='end'>{flag}</InputAdornment>
+                    endAdornment: <InputAdornment data-cy="card-flag" position='end'>{flag}</InputAdornment>
                 }}
                 InputLabelProps={{
                     shrink: true
@@ -194,7 +242,7 @@ const CreateCardForm: React.FC<CreateCardFormProps> = ({ handleClose, handleCard
                 helperText={errors?.cardCode?.message}
             />
             {
-                creditCards.length ?
+                creditCards.length >= 1 ?
                     <FormGroup sx={{display:'flex', flexDirection:'row', alignItems:'center', ml:1}}>
                         <FormControlLabel
                             control={<IOSSwitch data-cy="switcher-main-card" checked={isDefault} onChange={handleSwitchChange} sx={{ m: 1 }}/>}
@@ -206,10 +254,10 @@ const CreateCardForm: React.FC<CreateCardFormProps> = ({ handleClose, handleCard
             }
             <DialogActions>
                 <Button data-cy="btn-cancel-add-card" onClick={handleClose}>Cancelar</Button>
-                <Button data-cy="btn-confirm-add-card" type='submit'>Adicionar</Button>
+                <Button data-cy="btn-confirm-add-card" type='submit'>Salvar</Button>
             </DialogActions>
         </Grid2>
     );
 }
 
-export default CreateCardForm;
+export default CardForm;
