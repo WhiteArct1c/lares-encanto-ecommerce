@@ -13,6 +13,7 @@ import MyOrdersPage from "../pages/MyOrdersPage";
 import AdminDashboardPage from "../pages/AdminDashboardPage";
 import MyCardsPage from "../pages/MyCardsPage";
 import AdminOrdersPage from "../pages/AdminOrdersPage";
+import AdminCustomersManagement from "../pages/AdminCustomersManagement";
 
 export const router = createBrowserRouter([
    {
@@ -66,6 +67,10 @@ export const router = createBrowserRouter([
          {
             path:'/orders',
             element:<RequireAuth><AdminOrdersPage/></RequireAuth>
+         },
+         {
+            path: '/users',
+            element: <RequireAuth><AdminCustomersManagement /></RequireAuth>
          }
       ]
    }
