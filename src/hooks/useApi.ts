@@ -80,6 +80,14 @@ export const useApi = () => ({
       })
       return response.data;
    },
+   listAllCustomers: async (page: number = 0, size: number = 10) => {
+      const response = await api.get(`/customers?page=${page}&size=${size}`, {
+         headers:{
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`
+         }
+      });
+      return response.data;
+   },
    registerCustomerAddress: async (address: IAddCustomerAddressRequest) => {
       const response = await api.post('/address', address);
       return response.data;
