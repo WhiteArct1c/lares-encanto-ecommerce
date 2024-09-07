@@ -1,11 +1,15 @@
 import {
    Box,
    Button,
+   Chip,
    Dialog, DialogActions,
    DialogContent, DialogContentText,
    DialogTitle,
-   Divider, FormControlLabel, FormHelperText, FormLabel,
+   Divider, FormControlLabel, FormGroup, FormHelperText, FormLabel,
    IconButton, InputAdornment, MenuItem, Radio, RadioGroup,
+   styled,
+   Switch,
+   SwitchProps,
    TextField,
    Tooltip,
    Typography
@@ -27,6 +31,8 @@ import {Add, Delete, Edit, Visibility, VisibilityOff} from "@mui/icons-material"
 import {countries, tiposDeResidencia} from "../../utils/addressTypes.ts";
 import MyProfileSidenavComponent from '../../shared/MyProfileSidenavComponent';
 import {IUpdateAddressRequest} from "../../utils/interfaces/request/IUpdateAddressRequest.ts";
+import { addressCategoryTranslate } from '../../utils/addressCategoryTranslate.ts';
+import { CREATED, OK } from '../../utils/types/apiCodes.ts';
 
 interface MyProfilePageProps {
 
@@ -57,8 +63,75 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
    const [selectedAddress, setSelectedAddress] = useState<Address>();
    const [radioValue, setRadioValue] = useState(auth.user!.gender.name);
 
+   const [isDelivery, setIsDelivery] = useState(false);
+   const [isBilling, setIsBilling] = useState(false);
+
    const cepField = register('cep', { required: true, maxLength: 8, minLength: 8 });
    const patternCPF = /^([0-9]{2}[.]?[0-9]{3}[.]?[0-9]{3}[/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[.]?[0-9]{3}[.]?[0-9]{3}[-]?[0-9]{2})/;
+
+   const IOSSwitch = styled((props: SwitchProps) => (
+      <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
+   ))(({ theme }) => ({
+      width: 42,
+      height: 26,
+      padding: 0,
+      '& .MuiSwitch-switchBase': {
+          padding: 0,
+          margin: 2,
+          transitionDuration: '300ms',
+          '&.Mui-checked': {
+              transform: 'translateX(16px)',
+              color: '#fff',
+              '& + .MuiSwitch-track': {
+                  backgroundColor: theme.palette.mode === 'dark' ? '#000' : '#000',
+                  opacity: 1,
+                  border: 0,
+              },
+              '&.Mui-disabled + .MuiSwitch-track': {
+                  opacity: 0.5,
+              },
+          },
+          '&.Mui-focusVisible .MuiSwitch-thumb': {
+              color: '#000   ',
+              border: '6px solid #fff',
+          },
+          '&.Mui-disabled .MuiSwitch-thumb': {
+              color:
+                  theme.palette.mode === 'light'
+                      ? theme.palette.grey[600]
+                      : theme.palette.grey[600],
+          },
+          '&.Mui-disabled + .MuiSwitch-track': {
+              opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
+          },
+      },
+      '& .MuiSwitch-thumb': {
+          boxSizing: 'border-box',
+          width: 22,
+          height: 22,
+      },
+      '& .MuiSwitch-track': {
+          borderRadius: 26 / 2,
+          backgroundColor: theme.palette.mode === 'light' ? '#C2C2C2' : '#C2C2C2',
+          opacity: 1,
+          transition: theme.transitions.create(['background-color'], {
+              duration: 500,
+          }),
+      },
+  }));
+
+   const handleSwitchChange = (event: ChangeEvent<HTMLInputElement>, addressType: string) => {
+      switch (addressType) {
+         case 'DELIVERY':
+            setIsDelivery(event.target.checked);
+            break;
+         case 'BILLING':
+            setIsBilling(event.target.checked);
+            break;
+         default:
+            break;
+      }
+   };
 
    const handleFillAddress = async (event: FocusEvent<HTMLInputElement>) => {
       if (event.target.value !== '') {
@@ -161,6 +234,13 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
    }
 
    const handleAddAddress = async () => {
+      const categories: string[] = [];
+
+      if(isDelivery)
+         categories.push('ENTREGA');
+      if(isBilling)
+         categories.push('COBRANÇA');
+
       const addressSaveRequest: IAddCustomerAddressRequest = {
          token: localStorage.getItem('authToken')!,
          address:{
@@ -168,6 +248,7 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
             cep: getValues().cep as string | undefined || '',
             residenceType: getValues().residenceType as string | undefined || '',
             addressType: getValues().addressType as string | undefined || '',
+            addressCategories: categories,
             streetName: getValues().streetName as string | undefined || '',
             addressNumber: getValues().addressNumber as string | undefined || '',
             neighborhoods: getValues().neighborhoods as string | undefined || '',
@@ -177,10 +258,10 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
             observations: getValues().observations as string | undefined || ''
          }
       }
-
+      
       const response = await auth.registerCustomerAddress(addressSaveRequest);
 
-      if(response.code === '200 OK'){
+      if(response.code === OK){
          handleClose();
          navigate(0);
          toast.success(response.message);
@@ -191,6 +272,13 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
    }
 
    const handleUpdateAddress = async() => {
+      const categories: string[] = [];
+
+      if(isDelivery)
+         categories.push('ENTREGA');
+      if(isBilling)
+         categories.push('COBRANÇA');
+
       const addressUpdateRequest: IUpdateAddressRequest = {
          token: localStorage.getItem('authToken')!,
          address:{
@@ -199,6 +287,7 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
             cep: getValues().cep as string | undefined || '',
             residenceType: getValues().residenceType as string | undefined || '',
             addressType: getValues().addressType as string | undefined || '',
+            addressCategories: categories,
             streetName: getValues().streetName as string | undefined || '',
             addressNumber: getValues().addressNumber as string | undefined || '',
             neighborhoods: getValues().neighborhoods as string | undefined || '',
@@ -209,6 +298,7 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
          }
       }
 
+      console.log(addressUpdateRequest);
       const response = await auth.updateCustomerAddress(addressUpdateRequest);
 
       if(response.code === '200 OK'){
@@ -338,7 +428,21 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
                    return(
                        <Grid2 sx={{border:'1px solid #111', borderRadius:1, p:2, mb:2}} key={index}>
                           <Grid2 sx={{display:'flex', justifyContent:'space-between'}}>
-                             <Typography fontFamily={'Public Sans'} fontSize={25}>{address.title}</Typography>
+                             <Typography fontFamily={'Public Sans'} fontSize={25} sx={{display:'flex', alignItems:'center'}}>
+                                 {address.title}
+                                 &nbsp;
+                                 -
+                                 {
+                                       address.categories.map((category, index) => (
+                                          <Chip
+                                             key={index}
+                                             data-cy="chip-address-category"
+                                             label={addressCategoryTranslate(category).toLocaleLowerCase()}
+                                             sx={{bgcolor:'#484646', color:'#fff', width: 80, ml: 1}}
+                                          />
+                                       ))
+                                    }
+                              </Typography>
                              <Box>
                                 <Tooltip title='Excluir endereço'>
                                    <IconButton onClick={() => handleClickOpenDialog('Excluir endereço', address)}>
@@ -360,7 +464,7 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
                                 <Typography fontFamily={'Public Sans'} fontWeight={600}>CEP:</Typography>
                                 <Typography fontFamily={'Public Sans'} fontWeight={400}>{address.cep}</Typography>
                                 <Typography fontFamily={'Public Sans'} fontWeight={600}>Logradouro:</Typography>
-                                <Typography fontFamily={'Public Sans'} fontWeight={400}>{address.streetName}</Typography>
+                                <Typography fontFamily={'Public Sans'} fontWeight={400}>{address.streetName}</Typography>                             
                              </Grid2>
                              <Grid2 xs>
                                 <Typography fontFamily={'Public Sans'} fontWeight={600}>Tipo de residência:</Typography>
@@ -726,6 +830,23 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
                                              {...register("observations")}
                                          />
                                       </Grid2>
+                                       <Grid2 container xs={12}>
+                                          <FormGroup sx={{display:'flex', flexDirection:'row', alignItems:'center', ml:1}}>
+                                             <FormControlLabel
+                                                   control={<IOSSwitch data-cy="switcher-delivery-address" checked={isDelivery} onChange={(event) => handleSwitchChange(event, "DELIVERY")} sx={{ m: 1 }}/>}
+                                                   label="Definir como endereço de entrega"
+                                             />
+                                          </FormGroup>
+                                          {
+                                             !auth.user?.addresses.some(address => address.categories.includes('BILLING')) &&
+                                             <FormGroup sx={{display:'flex', flexDirection:'row', alignItems:'center', ml:1}}>
+                                                <FormControlLabel
+                                                      control={<IOSSwitch data-cy="switcher-billing-address" checked={isBilling} onChange={(event) => handleSwitchChange(event, "BILLING")} sx={{ m: 1 }}/>}
+                                                      label="Definir como endereço de cobrança"
+                                                />
+                                             </FormGroup>
+                                          }
+                                       </Grid2>
                                    </Grid2>
                                    : titleDialog === 'Excluir endereço' ?
                                        <DialogContentText>
@@ -904,6 +1025,26 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
                                                  required
                                                  {...register("observations")}
                                              />
+                                          </Grid2>
+                                          <Grid2 container xs={12}>
+                                             {  
+                                                selectedAddress?.categories.includes('DELIVERY') &&
+                                                <FormGroup sx={{display:'flex', flexDirection:'row', alignItems:'center', ml:1}}>
+                                                   <FormControlLabel
+                                                      control={<IOSSwitch data-cy="switcher-delivery-address" checked={isDelivery} onChange={(event) => handleSwitchChange(event, "DELIVERY")} sx={{ m: 1 }}/>}
+                                                      label="Definir como endereço de entrega"
+                                                   />
+                                                </FormGroup>
+                                             }
+                                             {
+                                                selectedAddress?.categories.includes('BILLING') &&
+                                                <FormGroup sx={{display:'flex', flexDirection:'row', alignItems:'center', ml:1}}>
+                                                   <FormControlLabel
+                                                      control={<IOSSwitch data-cy="switcher-billing-address" checked={isBilling} onChange={(event) => handleSwitchChange(event, "BILLING")} sx={{ m: 1 }}/>}
+                                                      label="Definir como endereço de cobrança"
+                                                   />
+                                                </FormGroup>
+                                             }
                                           </Grid2>
                                        </Grid2>
                                        : <></>
