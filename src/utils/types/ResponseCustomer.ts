@@ -9,7 +9,9 @@ export type ResponseCustomer = {
    gender: {
       id: string,
       name: string
-   }
+   },
+   ranking: string,
+   userRole: string,
    addresses: [{
       id: string,
       title: string,
