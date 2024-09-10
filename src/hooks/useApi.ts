@@ -97,7 +97,11 @@ export const useApi = () => ({
      return response.data;
    },
    deleteCustomerAddress: async (address: Address) => {
-      const response = await api.delete(`/address?id=${address.id}`);
+      const response = await api.delete(`/address?id=${address.id}`, {
+         headers:{
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`
+         }
+      });
       return response.data;
    },
    getProducts: async (categories?: string[]) => {
