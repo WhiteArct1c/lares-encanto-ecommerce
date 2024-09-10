@@ -436,6 +436,7 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
                                           <Chip
                                              key={index}
                                              data-cy="chip-address-category"
+                                             component={'span'}
                                              label={addressCategoryTranslate(category).toLocaleLowerCase()}
                                              sx={{bgcolor:'#484646', color:'#fff', width: 80, ml: 1}}
                                           />
