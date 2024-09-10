@@ -2,16 +2,10 @@ import { Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import React, { useEffect } from 'react';
 import AdminSidenavComponent from '../../shared/AdminSidenavComponent';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 import { useApi } from '../../hooks/useApi';
 import { ResponseCustomer } from '../../utils/types/ResponseCustomer';
 import { Pageable } from '../../utils/types/Pageable';
-
-interface AdminCustomersManagementGridColDef{
-   field: string;
-   headerName: string;
-   width: number;
-}
 
 interface AdminCustomersManagementRows{
    id: number;
@@ -33,7 +27,7 @@ const AdminCustomersManagement: React.FC = () => {
 
    const api = useApi();
 
-   const usersTableColumns: GridColDef<AdminCustomersManagementGridColDef>[] = [
+   const usersTableColumns: GridColDef[] = [
       { field: 'id', headerName: 'ID', width: 90 },
       { field: 'fullName', headerName: 'Nome completo', width: 200 },
       { field: 'cpf', headerName: 'CPF', width: 200 },
@@ -98,12 +92,11 @@ const AdminCustomersManagement: React.FC = () => {
             }}>
                <DataGrid
                   autoHeight
-                  rows={customersRows}
+                  rows={customersRows as GridRowsProp}
                   columns={usersTableColumns}
                   paginationModel={paginationModel}
                   onPaginationModelChange={handlePageChange}
                   pageSizeOptions={[5, 10, 20]}
-                  checkboxSelection
                   disableRowSelectionOnClick
                   loading={isLoading}
                />
