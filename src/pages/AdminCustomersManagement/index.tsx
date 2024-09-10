@@ -7,8 +7,23 @@ import { useApi } from '../../hooks/useApi';
 import { ResponseCustomer } from '../../utils/types/ResponseCustomer';
 import { Pageable } from '../../utils/types/Pageable';
 
+interface AdminCustomersManagementGridColDef{
+   field: string;
+   headerName: string;
+   width: number;
+}
+
+interface AdminCustomersManagementRows{
+   id: number;
+   fullName: string;
+   cpf: string;
+   birthDate: string;
+   ranking: string;
+   role: string;
+}
+
 const AdminCustomersManagement: React.FC = () => {
-   const [customersRows, setCustomersRows] = React.useState<any[]>([]);
+   const [customersRows, setCustomersRows] = React.useState<AdminCustomersManagementRows[]>([]);
    const [paginationModel, setPaginationModel] = React.useState({
       pageSize: 10,
       page: 0,
@@ -18,7 +33,7 @@ const AdminCustomersManagement: React.FC = () => {
 
    const api = useApi();
 
-   const usersTableColumns: GridColDef<any>[] = [
+   const usersTableColumns: GridColDef<AdminCustomersManagementGridColDef>[] = [
       { field: 'id', headerName: 'ID', width: 90 },
       { field: 'fullName', headerName: 'Nome completo', width: 200 },
       { field: 'cpf', headerName: 'CPF', width: 200 },
@@ -26,7 +41,17 @@ const AdminCustomersManagement: React.FC = () => {
         field: 'birthDate',
         headerName: 'Data de nascimento',
         width: 200,
-      }
+      },
+      {
+        field: 'ranking',
+        headerName: 'Ranking',
+        width: 200,
+      },
+      {
+        field: 'role',
+        headerName: 'Tipo de usuário',
+        width: 200,
+      },
    ];
 
    const handlePageChange = (newPaginationModel: any) => {
@@ -36,13 +61,17 @@ const AdminCustomersManagement: React.FC = () => {
 
    const getCustomersInfo = async (page: number, pageSize: number) => {
       setIsLoading(true);
+
       const response = await api.listAllCustomers(page, pageSize);
+
       setCustomersRows(response.content.map((customer: ResponseCustomer) => {
          return {
             id: customer.id,
             fullName: customer.fullName,
             cpf: customer.cpf,
             birthDate: customer.birthDate,
+            ranking: customer.ranking,
+            role: customer.userRole
          }
       }));
       setPageableObj(response.pageable);
