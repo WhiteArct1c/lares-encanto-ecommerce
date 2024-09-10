@@ -63,8 +63,8 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
    const [selectedAddress, setSelectedAddress] = useState<Address>();
    const [radioValue, setRadioValue] = useState(auth.user!.gender.name);
 
-   const [isDelivery, setIsDelivery] = useState(false);
-   const [isBilling, setIsBilling] = useState(false);
+   const [isDelivery, setIsDelivery] = useState(true);
+   const [isBilling, setIsBilling] = useState(true);
 
    const cepField = register('cep', { required: true, maxLength: 8, minLength: 8 });
    const patternCPF = /^([0-9]{2}[.]?[0-9]{3}[.]?[0-9]{3}[/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[.]?[0-9]{3}[.]?[0-9]{3}[-]?[0-9]{2})/;
@@ -298,7 +298,6 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
          }
       }
 
-      console.log(addressUpdateRequest);
       const response = await auth.updateCustomerAddress(addressUpdateRequest);
 
       if(response.code === '200 OK'){
@@ -837,15 +836,12 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
                                                    label="Definir como endereço de entrega"
                                              />
                                           </FormGroup>
-                                          {
-                                             !auth.user?.addresses.some(address => address.categories.includes('BILLING')) &&
-                                             <FormGroup sx={{display:'flex', flexDirection:'row', alignItems:'center', ml:1}}>
-                                                <FormControlLabel
-                                                      control={<IOSSwitch data-cy="switcher-billing-address" checked={isBilling} onChange={(event) => handleSwitchChange(event, "BILLING")} sx={{ m: 1 }}/>}
-                                                      label="Definir como endereço de cobrança"
-                                                />
-                                             </FormGroup>
-                                          }
+                                          <FormGroup sx={{display:'flex', flexDirection:'row', alignItems:'center', ml:1}}>
+                                             <FormControlLabel
+                                                   control={<IOSSwitch data-cy="switcher-billing-address" checked={isBilling} onChange={(event) => handleSwitchChange(event, "BILLING")} sx={{ m: 1 }}/>}
+                                                   label="Definir como endereço de cobrança"
+                                             />
+                                          </FormGroup>
                                        </Grid2>
                                    </Grid2>
                                    : titleDialog === 'Excluir endereço' ?
@@ -1027,24 +1023,18 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
                                              />
                                           </Grid2>
                                           <Grid2 container xs={12}>
-                                             {  
-                                                selectedAddress?.categories.includes('DELIVERY') &&
-                                                <FormGroup sx={{display:'flex', flexDirection:'row', alignItems:'center', ml:1}}>
-                                                   <FormControlLabel
-                                                      control={<IOSSwitch data-cy="switcher-delivery-address" checked={isDelivery} onChange={(event) => handleSwitchChange(event, "DELIVERY")} sx={{ m: 1 }}/>}
-                                                      label="Definir como endereço de entrega"
-                                                   />
-                                                </FormGroup>
-                                             }
-                                             {
-                                                selectedAddress?.categories.includes('BILLING') &&
-                                                <FormGroup sx={{display:'flex', flexDirection:'row', alignItems:'center', ml:1}}>
-                                                   <FormControlLabel
-                                                      control={<IOSSwitch data-cy="switcher-billing-address" checked={isBilling} onChange={(event) => handleSwitchChange(event, "BILLING")} sx={{ m: 1 }}/>}
-                                                      label="Definir como endereço de cobrança"
-                                                   />
-                                                </FormGroup>
-                                             }
+                                             <FormGroup sx={{display:'flex', flexDirection:'row', alignItems:'center', ml:1}}>
+                                                <FormControlLabel
+                                                   control={<IOSSwitch data-cy="switcher-delivery-address" checked={isDelivery} onChange={(event) => handleSwitchChange(event, "DELIVERY")} sx={{ m: 1 }}/>}
+                                                   label="Definir como endereço de entrega"
+                                                />
+                                             </FormGroup>
+                                             <FormGroup sx={{display:'flex', flexDirection:'row', alignItems:'center', ml:1}}>
+                                                <FormControlLabel
+                                                   control={<IOSSwitch data-cy="switcher-billing-address" checked={isBilling} onChange={(event) => handleSwitchChange(event, "BILLING")} sx={{ m: 1 }}/>}
+                                                   label="Definir como endereço de cobrança"
+                                                />
+                                             </FormGroup>
                                           </Grid2>
                                        </Grid2>
                                        : <></>
