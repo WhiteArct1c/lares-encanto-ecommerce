@@ -55,6 +55,22 @@ export const useApi = () => ({
       const response = await api.post('/auth/deactivate-account', token);
       return response.data;
    },
+   deactivateUserById: async (id: number) => {
+      const response = await api.put(`/user/deactivate/${id}`, {
+         headers:{
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`
+         }
+      });
+      return response.data;
+   },
+   activateUserById: async (id: number) => {
+      const response = await api.put(`/user/activate/${id}`, {
+         headers:{
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`
+         }
+      });
+      return response.data;
+   },
    updatePassword: async (updatePasswordRequest: IUpdatePasswordRequest) => {
       const response = await api.post('/user/update-password', updatePasswordRequest);
       return response.data;

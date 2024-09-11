@@ -223,7 +223,7 @@ const MyProfilePage: React.FC<MyProfilePageProps> = () => {
       const response = await auth.deactivateAccount(localStorage.getItem('authToken')!);
       if(response.code === '200 OK'){
          handleClose();
-         await auth.signout();
+         auth.signout();
          // eslint-disable-next-line no-self-assign
          window.location.href = window.location.href;
          navigate('/login');

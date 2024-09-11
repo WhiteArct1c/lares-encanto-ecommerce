@@ -1,11 +1,12 @@
-import { Typography } from '@mui/material';
+import { Menu, MenuItem, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import React, { useEffect } from 'react';
 import AdminSidenavComponent from '../../shared/AdminSidenavComponent';
-import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
+import { DataGrid, GridActionsCellItem, GridColDef, GridPaginationModel, GridRowId, GridRowsProp } from '@mui/x-data-grid';
 import { useApi } from '../../hooks/useApi';
 import { ResponseCustomer } from '../../utils/types/ResponseCustomer';
-import { Pageable } from '../../utils/types/Pageable';
+import { MoreVert } from '@mui/icons-material';
+import { OK } from '../../utils/types/apiCodes';
 
 interface AdminCustomersManagementRows{
    id: number;
@@ -14,16 +15,20 @@ interface AdminCustomersManagementRows{
    birthDate: string;
    ranking: string;
    role: string;
+   isActive: string;
 }
 
 const AdminCustomersManagement: React.FC = () => {
    const [customersRows, setCustomersRows] = React.useState<AdminCustomersManagementRows[]>([]);
-   const [paginationModel, setPaginationModel] = React.useState({
-      pageSize: 10,
+   const paginationModelRef = React.useRef<{ page: number, pageSize: number }>({
       page: 0,
+      pageSize: 10,
    });
-   const [pageableObj, setPageableObj] = React.useState({} as Pageable);
    const [isLoading, setIsLoading] = React.useState(false);
+
+   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+   const subMenuUserIsOpen = Boolean(anchorEl);
+   const [selectedUser, setSelectedUser] = React.useState<AdminCustomersManagementRows | undefined>();
 
    const api = useApi();
 
@@ -32,48 +37,100 @@ const AdminCustomersManagement: React.FC = () => {
       { field: 'fullName', headerName: 'Nome completo', width: 200 },
       { field: 'cpf', headerName: 'CPF', width: 200 },
       {
-        field: 'birthDate',
-        headerName: 'Data de nascimento',
-        width: 200,
+         field: 'birthDate',
+         headerName: 'Data de nascimento',
+         width: 200,
       },
       {
-        field: 'ranking',
-        headerName: 'Ranking',
-        width: 200,
+         field: 'ranking',
+         headerName: 'Ranking',
+         width: 200,
       },
       {
-        field: 'role',
-        headerName: 'Tipo de usuário',
-        width: 200,
+         field: 'role',
+         headerName: 'Tipo de usuário',
+         width: 200,
       },
+      {
+         field: 'isActive',
+         headerName: 'Ativo',
+         width: 100,
+      },
+      {
+         field: 'actions',
+         type: 'actions',
+         headerName: 'Ações',
+         width: 100,
+         cellClassName: 'actions',
+         sortable: false,
+         getActions: ({ id }) => {
+            return [
+               <GridActionsCellItem
+                  icon={<MoreVert/>}
+                  label="userSubMenu"
+                  onClick={(event) => handleUserSubMenuClick(event, id)}
+                  color='inherit'
+               />
+            ]
+         }
+      }  
    ];
 
-   const handlePageChange = (newPaginationModel: any) => {
-      setPaginationModel(newPaginationModel);
-      getCustomersInfo(newPaginationModel.page, newPaginationModel.pageSize);
-   }
+   const handleUserSubMenuClick = (event: React.MouseEvent<HTMLButtonElement>, userId: GridRowId) => {
+      setAnchorEl(event.currentTarget);
+      setSelectedUser(customersRows.find((user) => user.id === userId));
+   }; 
 
-   const getCustomersInfo = async (page: number, pageSize: number) => {
+   const handleUserSubMenuClose = () => {
+      setAnchorEl(null);
+   };
+
+   const handlePageChange = (newPaginationModel: GridPaginationModel) => {
+      paginationModelRef.current = {
+         page: newPaginationModel.page,
+         pageSize: newPaginationModel.pageSize,
+      };
+      
+      getCustomersInfo();
+   };
+
+   const getCustomersInfo = async () => {
       setIsLoading(true);
 
-      const response = await api.listAllCustomers(page, pageSize);
-
-      setCustomersRows(response.content.map((customer: ResponseCustomer) => {
-         return {
+      try {
+         const response = await api.listAllCustomers(paginationModelRef.current.page, paginationModelRef.current.pageSize);
+   
+         const rows = response.content.map((customer: ResponseCustomer) => ({
             id: customer.id,
             fullName: customer.fullName,
             cpf: customer.cpf,
             birthDate: customer.birthDate,
             ranking: customer.ranking,
-            role: customer.userRole
+            role: customer.userRole,
+            isActive: customer.isActive === "1" ? 'Sim' : 'Não',
+         }));
+   
+         setCustomersRows(rows);
+      } catch (error) {
+         console.error('Error fetching customers:', error);
+      } finally {
+         setIsLoading(false);
+      }
+   };
+
+   const handleInnactivateUser = async () => {
+      if (selectedUser) {
+         const apiCall = selectedUser.isActive === 'Sim' ? api.deactivateUserById : api.activateUserById;
+         const response = await apiCall(selectedUser.id);
+         if (response.code === OK) {
+            getCustomersInfo();
          }
-      }));
-      setPageableObj(response.pageable);
-      setIsLoading(false);
+      }
+      handleUserSubMenuClose();
    };
 
    useEffect(() => {
-      getCustomersInfo(paginationModel.page, paginationModel.pageSize);
+      getCustomersInfo();
    }, []);
 
    return(
@@ -94,7 +151,7 @@ const AdminCustomersManagement: React.FC = () => {
                   autoHeight
                   rows={customersRows as GridRowsProp}
                   columns={usersTableColumns}
-                  paginationModel={paginationModel}
+                  paginationModel={paginationModelRef.current}
                   onPaginationModelChange={handlePageChange}
                   pageSizeOptions={[5, 10, 20]}
                   disableRowSelectionOnClick
@@ -102,6 +159,23 @@ const AdminCustomersManagement: React.FC = () => {
                />
             </Grid2>
          </Grid2>
+
+         <Menu
+            id="user-submenu-menu"
+            anchorEl={anchorEl}
+            open={subMenuUserIsOpen}
+            onClose={handleUserSubMenuClose}
+            data-cy="user-submenu"
+         >
+            <MenuItem 
+               data-cy="user-submenu-innactivate" 
+               onClick={handleInnactivateUser}
+            >
+               {
+                  selectedUser?.isActive === 'Sim' ? 'Inativar' : 'Ativar'
+               }
+            </MenuItem>
+         </Menu>
       </>
    )
 };

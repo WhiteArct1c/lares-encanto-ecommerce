@@ -12,6 +12,7 @@ export type ResponseCustomer = {
    },
    ranking: string,
    userRole: string,
+   isActive: string,
    addresses: [{
       id: string,
       title: string,
