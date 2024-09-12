@@ -12,7 +12,7 @@ describe('Customer orders and order checkout', () => {
     cy.get('[data-cy="btn-cart"]').click();
   })
 
-  it('should add a product in the cart', () => {
+  it('Should add a product in the cart', () => {
     expect(
         cy.get('[data-cy="product-card-checkout-1"]')
             .should('exist')
@@ -20,7 +20,7 @@ describe('Customer orders and order checkout', () => {
     );
   });
 
-  it('should remove a product from the cart', () => {
+  it('Should remove a product from the cart', () => {
     cy.get('[data-cy="btn-remove-product"]').click();
 
     expect(
@@ -29,7 +29,7 @@ describe('Customer orders and order checkout', () => {
     );
   });
 
-  it('should go to checkout and finish the order', () => {
+  it('Should go to checkout and finish the order', () => {
     cy.get('[data-cy="btn-checkout"]').click();
 
     cy.get('[data-cy="input-address-title"]').type('Casa secundária');

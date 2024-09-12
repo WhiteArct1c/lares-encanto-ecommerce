@@ -10,7 +10,7 @@ describe('Edit Customer Info', () => {
         cy.visit('/my-profile');
     });
 
-    it('Edit a customer info without errors', () => {
+    it('Should edit a customer info without errors', () => {
         cy.contains('button', 'Editar dados pessoais').click();
         cy.get('input[name="fullName"]').clear().type(newData.fullName);
         cy.get('input[name="cpf"]').clear().type(newData.CPF);
@@ -23,7 +23,7 @@ describe('Edit Customer Info', () => {
         expect(cy.get('.css-1szadqj-MuiGrid2-root > :nth-child(2) > :nth-child(4)').contains(newData.gender))
     });
 
-    it('Edit a customer password without errors', () => {
+    it('Should edit a customer password without errors', () => {
         cy.contains('button', 'Alterar senha').click();
         cy.get('input[name="password"]').clear().type('Mat15777@');
         cy.get('input[name="confirmedPassword"]').clear().type('Mat15777@');
@@ -33,7 +33,7 @@ describe('Edit Customer Info', () => {
         expect(cy.get('.Toastify__toast-body > :nth-child(2)').contains("Senha atualizada com sucesso!"))
     });
 
-    it('Add a new delivery address to the customer without errors', () => {
+    it('Should add a new delivery address to the customer without errors', () => {
         cy.get('.css-j3sevo-MuiGrid2-root > .MuiButtonBase-root').click();
         cy.get('textarea[name="addressTitle"]').type('Endereço Secundário');
         cy.get('input[name="cep"]').type('08552330').blur();
@@ -51,7 +51,7 @@ describe('Edit Customer Info', () => {
         )
     });
 
-    it('Edit a customer delivery address without errors', () => {
+    it('Should edit a customer delivery address without errors', () => {
         cy.get(':nth-child(2) > .css-92b3f1-MuiGrid2-root > .MuiBox-root > [aria-label="Editar endereço"]').click();
         cy.get('textarea[name="addressTitle"]').clear().type('Endereço Secundário Editado');
         cy.get('input[name="cep"]').clear().type('08554035').blur();
@@ -71,7 +71,7 @@ describe('Edit Customer Info', () => {
         )
     });
 
-    it('Add a new billing/delivery address to the customer without errors and verify there is no other billing address', () => {
+    it('Should add a new billing/delivery address to the customer without errors and verify there is no other billing address', () => {
         cy.get(':nth-child(2) > .css-92b3f1-MuiGrid2-root > .MuiBox-root > [aria-label="Editar endereço"]').click();
         cy.get('textarea[name="addressTitle"]').clear().type('End. cobrança');
         cy.get('input[name="cep"]').clear().type('08560010').blur();
@@ -107,7 +107,7 @@ describe('Edit Customer Info', () => {
 
     });
 
-    it('Delete a customer address without errors', () => {
+    it('Should delete a customer address without errors', () => {
         cy.get(':nth-child(1) > .css-92b3f1-MuiGrid2-root > .MuiBox-root > [aria-label="Excluir endereço"]').click();
         cy.get('.MuiDialogActions-root > :nth-child(2)').click();
 
@@ -117,7 +117,7 @@ describe('Edit Customer Info', () => {
         )
     });
 
-    it('Inactivate a customer account', () => {
+    it('Should inactivate a customer account', () => {
         cy.get('.MuiGrid2-grid-xs-12 > .MuiButton-text').click();
         cy.get('.MuiDialogActions-root > :nth-child(2)').click();
 
