@@ -68,6 +68,7 @@ const AdminCustomersManagement: React.FC = () => {
                <GridActionsCellItem
                   icon={<MoreVert/>}
                   label="userSubMenu"
+                  data-cy={`user-submenu-button-${customersRows.find((user) => user.id === id)?.fullName}`}
                   onClick={(event) => handleUserSubMenuClick(event, id)}
                   color='inherit'
                />
@@ -168,7 +169,7 @@ const AdminCustomersManagement: React.FC = () => {
             data-cy="user-submenu"
          >
             <MenuItem 
-               data-cy="user-submenu-innactivate" 
+               data-cy="user-submenu-inactivate" 
                onClick={handleInnactivateUser}
             >
                {
