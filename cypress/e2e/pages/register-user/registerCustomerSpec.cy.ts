@@ -1,9 +1,10 @@
+/// <reference types="cypress" />
 describe('Register Customer', () => {
   beforeEach(() => {
     cy.visit('/register-user');
   });
 
-  it('Submit the register form without fill the inputs and verify the error messages to the required fields', () => {
+  it('Should submit the register form without fill the inputs and verify the error messages to the required fields', () => {
     cy.contains('button', 'Cadastrar').click();
 
     expect(cy.contains('p', 'O nome completo é obrigatório.'));
@@ -21,7 +22,7 @@ describe('Register Customer', () => {
     expect(cy.contains('p', 'O Estado é obrigatório'));
   });
 
-  it('Submit the register form with a non-equal password', () => {
+  it('Should submit the register form with a non-equal password', () => {
 
     cy.get('input[name="password"]').type('Mat15766@');
     cy.get('input[name="confirmedPassword"]').type('Mat15766');
@@ -31,7 +32,7 @@ describe('Register Customer', () => {
 
   });
 
-  it('Submit the register form with a password without uppercase, special character and numbers', () => {
+  it('Should submit the register form with a password without uppercase, special character and numbers', () => {
     cy.get('input[name="fullName"]').type('Jaime Almeida');
     cy.get('input[name="cpf"]').type('47191502843');
     cy.get('input[name="birthDate"]').click();
@@ -55,7 +56,7 @@ describe('Register Customer', () => {
     )
   })
 
-  it('Submit the register form with a password without 8 characters at least', () => {
+  it('Should submit the register form with a password without 8 characters at least', () => {
     cy.get('input[name="fullName"]').type('Jaime Almeida');
     cy.get('input[name="cpf"]').type('47191502843');
     cy.get('input[name="birthDate"]').click();
@@ -81,7 +82,7 @@ describe('Register Customer', () => {
     )
   })
 
-  it('Register a customer with no errors and validate if was really created', () => {
+  it('Should register a customer with no errors and validate if was really created', () => {
     cy.get('input[name="fullName"]').type('Matheus');
     cy.get('input[name="cpf"]').type('47191502843');
     cy.get('input[name="birthDate"]').click();

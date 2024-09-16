@@ -65,6 +65,10 @@ const CheckoutPage: React.FC<CheckoutPageProps> = () => {
       handleNext();
    };
 
+   const handlePaymentOptions = () => {
+      handleComplete();
+   };
+
    const handleAddressShipment = () => {
       handleComplete();
    }
@@ -193,7 +197,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = () => {
                                     <Button
                                         data-cy="btn-next-step-payment"
                                        color="inherit"
-                                       onClick={handleAddressShipment}
+                                       onClick={handlePaymentOptions}
                                        sx={{
                                           width: 220,
                                           color: '#fff',

@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import { Customer } from '../../utils/types/Customer';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/Auth/AuthContext';
+import { AddressCategoryEnum } from '../../utils/enum/AddressCategoryEnum';
 
 interface FormRegisterUserProps {
 
@@ -86,6 +87,7 @@ const FormRegisterUser: React.FC<FormRegisterUserProps> = () => {
             cep: getValues().cep as string | undefined || '',
             residenceType: getValues().residenceType as string | undefined || '',
             addressType: getValues().addressType as string | undefined || '',
+            addressCategories: [AddressCategoryEnum.ENTREGA, AddressCategoryEnum.COBRANCA],
             streetName: getValues().streetName as string | undefined || '',
             addressNumber: getValues().addressNumber as string | undefined || '',
             neighborhoods: getValues().neighborhoods as string | undefined || '',
@@ -476,6 +478,7 @@ const FormRegisterUser: React.FC<FormRegisterUserProps> = () => {
                </Grid2>
                <Grid2 xs={12}>
                   <Typography fontFamily={'Public Sans, serif-sans'} fontWeight={100} color={'#78797B'}> Campos obrigatórios ( * )</Typography>
+                  <Typography fontFamily={'Public Sans, serif-sans'} fontWeight={100} color={'#78797B'}> O Endereço cadastro será considerado de cobrança e entrega ( ** )</Typography>
                </Grid2>
                <Grid2
                   xs={12}

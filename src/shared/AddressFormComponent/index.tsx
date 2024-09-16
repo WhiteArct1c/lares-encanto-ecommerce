@@ -79,7 +79,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
          container
          xs={12}
          spacing={2}
-         sx={{ p: 5 }}
+         sx={{ pl: 5 }}
       >
          <Grid2 xs={12}>
             <TextField

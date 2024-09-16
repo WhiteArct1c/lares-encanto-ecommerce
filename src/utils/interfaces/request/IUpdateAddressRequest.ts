@@ -6,6 +6,7 @@ export interface IUpdateAddressRequest{
         cep: string
         residenceType: string
         addressType: string
+        addressCategories: string[]
         streetName: string
         addressNumber: string
         neighborhoods: string

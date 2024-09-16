@@ -182,11 +182,9 @@ const CardForm: React.FC<CardFormProps> = ({ handleClose, handleCardAdded, credi
     useEffect(() => {
         if(creditCardSelected){
             const { cardNumber, cardName, cardFlag, cardCode, mainCard } = creditCardSelected;
-            const number = cardNumber.toString();
-            const formattedNumber = number.replace(/(\d{4})/g, '$1 ').replace(/(^\s+|\s+$)/,'');
             setFlag(cardFlag);
             setIsDefault(mainCard);
-            setValue('cardNumber', formattedNumber);
+            setValue('cardNumber', cardNumber.toString());
             setValue('cardName', cardName);
             setValue('cardCode', cardCode);
         }

@@ -10,16 +10,17 @@ export type Customer ={
   phone: string,
   gender: string,
   address:{
-      title: string,
-      cep: string,
-      residenceType: string,
-      addressType: string,
-      streetName: string,
-      addressNumber: string,
-      neighborhoods: string,
-      state: string,
-      city: string,
-      country: string,
-      observations: string
+    title: string,
+    cep: string,
+    residenceType: string,
+    addressType: string,
+    addressCategories: string[],
+    streetName: string,
+    addressNumber: string,
+    neighborhoods: string,
+    state: string,
+    city: string,
+    country: string,
+    observations: string
   }
 }
