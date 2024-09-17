@@ -73,20 +73,12 @@ const CheckoutPage: React.FC<CheckoutPageProps> = () => {
 
    const handleAddressShipment = () => {
       handleComplete();
-      console.log(order?.shipmentAddress);
    }
 
    const handleCompleteOrder = () => {
       //TODO: MANDAR ORDEM PARA O BACKEND COM POST E RESETAR CARRINHO
       cart?.resetCart();
    }
-
-   useEffect(() => {
-      return () => {
-         order?.resetOrder();
-      };
-   // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, []);
 
    return (
       <Grid2
