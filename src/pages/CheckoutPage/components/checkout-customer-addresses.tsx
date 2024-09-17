@@ -3,26 +3,11 @@ import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { AuthContext } from '../../../contexts/Auth/AuthContext';
 import { Typography } from '@mui/material';
 import CheckoutAddressCard from './checkout-address-card';
-
-interface Address {
-    id: string;
-    title: string;
-    cep: string;
-    residenceType: string;
-    addressType: string;
-    categories: string[];
-    streetName: string;
-    addressNumber: string;
-    neighborhoods: string;
-    state: string;
-    city: string;
-    country: string;
-    observations: string;
-}
+import { IAddress } from '../../../utils/interfaces/IAddress';
 
 const CheckoutCustomerAddresses: React.FC = () => {
     
-    const [customerDeliveryAddresses, setCustomerDeliveryAddresses] = useState<Address[]>([]);
+    const [customerDeliveryAddresses, setCustomerDeliveryAddresses] = useState<IAddress[]>([]);
     
     const userContext = useContext(AuthContext);
 

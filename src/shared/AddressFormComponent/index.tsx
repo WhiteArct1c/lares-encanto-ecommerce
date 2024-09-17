@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel, FormGroup, FormHelperText, MenuItem, TextField } from '@mui/material';
+import { Checkbox, FormControlLabel, FormGroup, FormHelperText, MenuItem,TextField } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import React, { FocusEvent, useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -16,6 +16,7 @@ interface AddressFormComponentProps {
 
 const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
 
+   const [saveShipmentAddress, setSaveShipmentAddress] = React.useState(false);
    const order = useContext(OrderContext);
 
    const {
@@ -28,12 +29,9 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
 
    const cepField = register('cep', { required: true, maxLength: 8, minLength: 8 });
 
-   useEffect(() => {
-      return () => {
-         handleSetOrderShipmentAddress()
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [])
+   const handleSaveShipmentAddress = () => {
+      setSaveShipmentAddress(!saveShipmentAddress);
+   }
 
    const handleFillAddress = async (event: FocusEvent<HTMLInputElement>) => {
       if (event.target.value !== '') {
@@ -60,20 +58,47 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
 
    const handleSetOrderShipmentAddress = () => {
       const address: IAddress = {
-         addressTitle: getValues().addressTitle as string | undefined || '',
-         postalcode: getValues().cep as string | undefined || '',
+         title: getValues().addressTitle as string | undefined || '',
+         cep: getValues().cep as string | undefined || '',
          addressType: getValues().addressType as string | undefined || '',
          addressNumber: getValues().addressNumber as string | undefined || '',
          city: getValues().city as string | undefined || '',
          country: getValues().country as string | undefined || '',
          state: getValues().state as string | undefined || '',
          neighborhoods: getValues().neighborhoods as string | undefined || '',
-         street: getValues().address as string | undefined || '',
-         residenceType: getValues().residenceType as string | undefined || ''
+         streetName: getValues().address as string | undefined || '',
+         residenceType: getValues().residenceType as string | undefined || '',
+         id: '',
+         categories: [],
+         observations: ''
       }
       order?.setOrderShipmentAddress(address);
+      order?.saveShippingAddress(saveShipmentAddress);
    }
 
+   useEffect(() => {
+      if (order?.shipmentAddress) {
+         setValue('addressTitle', order.shipmentAddress.title);
+         setValue('cep', order.shipmentAddress.cep);
+         setValue('addressType', order.shipmentAddress.addressType);
+         setValue('addressNumber', order.shipmentAddress.addressNumber);
+         setValue('city', order.shipmentAddress.city);
+         setValue('country', order.shipmentAddress.country);
+         setValue('state', order.shipmentAddress.state);
+         setValue('neighborhoods', order.shipmentAddress.neighborhoods);
+         setValue('address', order.shipmentAddress.streetName);
+         setValue('residenceType', order.shipmentAddress.residenceType);
+      }
+   }, [order?.shipmentAddress, setValue]);
+
+   useEffect(() => {
+      return () => {
+         handleSetOrderShipmentAddress()
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [])
+
+   
    return (
       <Grid2
          container
@@ -83,12 +108,16 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
       >
          <Grid2 xs={12}>
             <TextField
-                data-cy='input-address-title'
+               data-cy='input-address-title'
                fullWidth
+               defaultValue={order?.shipmentAddress?.title}
                variant='outlined'
                label='Titulo do endereço'
                placeholder="Casa principal, Loja A, etc..."
                required
+               InputLabelProps={{
+                  shrink: true,
+               }}
                {...register("addressTitle", { required: true })}
                error={errors?.addressTitle?.type === 'required'}
                helperText={errors?.addressTitle?.type === 'required' ? "O título do endereço é obrigatório" : ""}
@@ -104,11 +133,14 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
             }}
          >
             <TextField
-                data-cy='input-address-cep'
+               data-cy='input-address-cep'
                fullWidth
                label='CEP'
                required
                {...cepField}
+               InputLabelProps={{
+                  shrink: true,
+               }}
                error={
                   errors?.cep?.type === 'required'
                    || errors?.cep?.type === 'maxLength'
@@ -123,12 +155,15 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
          </Grid2>
          <Grid2 xs={3}>
             <TextField
-                data-cy='input-residence-type'
+               data-cy='input-residence-type'
                fullWidth
                select
                label='Tipo de Residência'
                defaultValue={"Casa"}
                required
+               InputLabelProps={{
+                  shrink: true,
+               }}
                {...register("residenceType", { required: true })}
             >
                {tiposDeResidencia.map((tipo, index) => (
@@ -139,7 +174,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
          </Grid2>
          <Grid2 xs={3}>
             <TextField
-                data-cy='input-address-type'
+               data-cy='input-address-type'
                fullWidth
                label='Tipo logradouro'
                required
@@ -153,7 +188,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
          </Grid2>
          <Grid2 xs={12}>
             <TextField
-                data-cy='input-street-name'
+               data-cy='input-street-name'
                fullWidth
                variant='outlined'
                label='Logradouro'
@@ -169,11 +204,14 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
          <Grid2 xs={2}
          >
             <TextField
-                data-cy='input-address-number'
+               data-cy='input-address-number'
                fullWidth
                variant='outlined'
                label='Número'
                required
+               InputLabelProps={{
+                  shrink: true,
+               }}
                {...register('addressNumber', { required: true })}
                error={errors?.addressNumber?.type === 'required'}
                helperText={errors?.addressNumber?.type === 'required' ? "O Número residencial é obrigatório" : ""}
@@ -181,7 +219,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
          </Grid2>
          <Grid2 xs={3}>
             <TextField
-                data-cy='input-neighborhoods'
+               data-cy='input-neighborhoods'
                fullWidth
                variant='outlined'
                label='Bairro'
@@ -196,7 +234,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
          </Grid2>
          <Grid2 xs={3}>
             <TextField
-                data-cy='input-city'
+               data-cy='input-city'
                fullWidth
                variant='outlined'
                label='Cidade'
@@ -211,7 +249,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
          </Grid2>
          <Grid2 xs={2}>
             <TextField
-                data-cy='input-state'
+               data-cy='input-state'
                fullWidth
                variant='outlined'
                label='Estado'
@@ -228,7 +266,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
             xs={2}
          >
             <TextField
-                data-cy='input-country'
+               data-cy='input-country'
                fullWidth
                select
                variant='outlined'
@@ -249,7 +287,7 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
          </Grid2>
          <Grid2 xs={12}>
             <FormGroup>
-               <FormControlLabel control={<Checkbox />} label="Salvar informações de entrega" />
+               <FormControlLabel control={<Checkbox onChange={handleSaveShipmentAddress}/>} label="Salvar como endereço de entrega" />
             </FormGroup>
          </Grid2>
       </Grid2>

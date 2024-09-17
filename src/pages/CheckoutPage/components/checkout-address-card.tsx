@@ -1,36 +1,34 @@
 import { Card, CardContent, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
-
-interface Address {
-   id: string;
-   title: string;
-   cep: string;
-   residenceType: string;
-   addressType: string;
-   categories: string[];
-   streetName: string;
-   addressNumber: string;
-   neighborhoods: string;
-   state: string;
-   city: string;
-   country: string;
-   observations: string;
-}
+import { OrderContext } from "../../../contexts/OrderContext";
+import { useContext } from "react";
+import { IAddress } from "../../../utils/interfaces/IAddress";
 
 interface CheckoutCustomerAddressesProps {
    index: number;
-   address: Address;
+   address: IAddress;
 }
 
 const CheckoutAddressCard: React.FC<CheckoutCustomerAddressesProps> = ({ index, address }) => {
+
+   const orderContext = useContext(OrderContext);
+
+   const handleAddressSelection = (address: IAddress) => {
+      orderContext?.setOrderShipmentAddress(address);
+   }
+
    return (
       <Grid2 xs={4} key={index}>
-         <Card key={address.id} sx={{
-            cursor: 'pointer',
-            '&:hover': {
-            boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)'
-            }
-         }}>
+         <Card
+            key={index + 1}
+            sx={{
+               cursor: 'pointer',
+               '&:hover': {
+                  boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)'
+               }
+            }}
+            onClick={() => handleAddressSelection(address)}
+         >
             <CardContent>
                <Typography fontFamily={'Public Sans'} fontWeight={700} variant='h6'>
                   {address.title}

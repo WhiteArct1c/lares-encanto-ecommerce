@@ -1,12 +1,15 @@
 export interface IAddress{
-   addressTitle: string,
-   postalcode: string;
-   addressType: string;
+   id: string;
+   title: string;
+   cep: string;
    residenceType: string;
-   street: string;
-   neighborhoods: string;
+   addressType: string;
+   categories: string[];
+   streetName: string;
    addressNumber: string;
-   city: string;
+   neighborhoods: string;
    state: string;
+   city: string;
    country: string;
+   observations: string;
 }

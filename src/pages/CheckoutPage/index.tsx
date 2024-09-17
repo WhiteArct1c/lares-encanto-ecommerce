@@ -1,6 +1,6 @@
 import { Box, Button, Step, StepButton, Stepper, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import OrderResumeComponent from '../../shared/OrderResumeComponent';
 import AddressFormComponent from '../../shared/AddressFormComponent';
 import ShippingOptionsComponent from '../../shared/ShippingOptionsComponent';
@@ -8,6 +8,7 @@ import PaymentMethodsOrderComponent from '../../shared/PaymentMethodsOrderCompon
 import { Link } from 'react-router-dom';
 import { ShoppingCartContext } from '../../contexts/ShoppingCartContext';
 import CheckoutCustomerAddresses from "./components/checkout-customer-addresses.tsx";
+import { OrderContext } from '../../contexts/OrderContext.tsx';
 
 interface CheckoutPageProps {
 
@@ -23,6 +24,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = () => {
    }>({});
 
    const cart = useContext(ShoppingCartContext);
+   const order = useContext(OrderContext);
 
    const totalSteps = () => {
       return steps.length;
@@ -71,13 +73,20 @@ const CheckoutPage: React.FC<CheckoutPageProps> = () => {
 
    const handleAddressShipment = () => {
       handleComplete();
+      console.log(order?.shipmentAddress);
    }
 
    const handleCompleteOrder = () => {
       //TODO: MANDAR ORDEM PARA O BACKEND COM POST E RESETAR CARRINHO
       cart?.resetCart();
-
    }
+
+   useEffect(() => {
+      return () => {
+         order?.resetOrder();
+      };
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, []);
 
    return (
       <Grid2
@@ -121,7 +130,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = () => {
                      {
                         activeStep === 0 ?
                            <>
-                              <CheckoutCustomerAddresses/>
+                              <CheckoutCustomerAddresses />
                               <AddressFormComponent />
                               <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                                  <Button
@@ -195,7 +204,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = () => {
                                     </Button>
                                     <Box sx={{ flex: '1 1 auto' }} />
                                     <Button
-                                        data-cy="btn-next-step-payment"
+                                       data-cy="btn-next-step-payment"
                                        color="inherit"
                                        onClick={handlePaymentOptions}
                                        sx={{
@@ -222,45 +231,45 @@ const CheckoutPage: React.FC<CheckoutPageProps> = () => {
                                     <PaymentMethodsOrderComponent />
                                     <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                                        <Button
-                                           color="inherit"
-                                           onClick={handleBack}
-                                           sx={{
-                                              width: 220,
-                                              color: '#fff',
-                                              fontWeight: 600,
-                                              bgcolor: '#000',
-                                              '&:hover': {
-                                                 bgcolor: '#fff',
-                                                 color: '#000'
-                                              },
-                                              '&:disabled': {
-                                                 color: '#000',
-                                                 bgcolor: '#999',
-                                              }
-                                           }}
+                                          color="inherit"
+                                          onClick={handleBack}
+                                          sx={{
+                                             width: 220,
+                                             color: '#fff',
+                                             fontWeight: 600,
+                                             bgcolor: '#000',
+                                             '&:hover': {
+                                                bgcolor: '#fff',
+                                                color: '#000'
+                                             },
+                                             '&:disabled': {
+                                                color: '#000',
+                                                bgcolor: '#999',
+                                             }
+                                          }}
                                        >
                                           Voltar
                                        </Button>
                                        <Box sx={{ flex: '1 1 auto' }} />
                                        <Link to={'/order-finished'}>
                                           <Button
-                                              data-cy="btn-finish-order"
-                                              color="inherit"
-                                              onClick={handleCompleteOrder}
-                                              sx={{
-                                                 width: 220,
-                                                 color: '#fff',
-                                                 fontWeight: 600,
-                                                 bgcolor: '#000',
-                                                 '&:hover': {
-                                                    bgcolor: '#fff',
-                                                    color: '#000'
-                                                 },
-                                                 '&:disabled': {
-                                                    color: '#000',
-                                                    bgcolor: '#999',
-                                                 }
-                                              }}
+                                             data-cy="btn-finish-order"
+                                             color="inherit"
+                                             onClick={handleCompleteOrder}
+                                             sx={{
+                                                width: 220,
+                                                color: '#fff',
+                                                fontWeight: 600,
+                                                bgcolor: '#000',
+                                                '&:hover': {
+                                                   bgcolor: '#fff',
+                                                   color: '#000'
+                                                },
+                                                '&:disabled': {
+                                                   color: '#000',
+                                                   bgcolor: '#999',
+                                                }
+                                             }}
                                           >
                                              Finalizar compra
                                           </Button>
