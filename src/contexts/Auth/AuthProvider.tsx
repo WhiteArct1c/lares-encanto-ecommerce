@@ -91,8 +91,11 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
    }
 
    const listCreditCards = async () =>{
-      const token: string | null = localStorage.getItem('authToken');
-      return await api.listCreditCards(token)
+      const response = await api.listCreditCards();
+      if (user && response.data.length > 0) {
+         user.creditCards = response.data;
+      }
+      return response;
    }
 
    const setToken = (token: string) => {

@@ -1,9 +1,10 @@
-import { Button, Divider, Typography } from '@mui/material';
+import { Button, Card, CardContent, Chip, Divider, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { IPaymentMethods } from '../../utils/interfaces/IPaymentMethods';
 import CreditCardFormComponent from '../CreditCardFormComponent';
 import { useApi } from '../../hooks/useApi';
+import { AuthContext } from '../../contexts/Auth/AuthContext';
 
 interface PaymentMethodsOrderComponentProps {
 
@@ -15,13 +16,14 @@ const PaymentMethodsOrderComponent: React.FC<PaymentMethodsOrderComponentProps> 
    const [actualMethod, setActualMethod] = useState('Cartão de Crédito');
    const api = useApi();
 
+   const userContext = useContext(AuthContext);
+
    useEffect(() => {
       async function loadPaymentMethods() {
          const data = await api.getPaymentTypes();
          setPaymentMethods([...data]);
       }
       loadPaymentMethods();
-   // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);
 
    const handlePaymentMethodChange = (method: string) => {
@@ -29,11 +31,62 @@ const PaymentMethodsOrderComponent: React.FC<PaymentMethodsOrderComponentProps> 
    }
    
    return (
-      <Grid2 container sx={{m:3, display:'flex', justifyContent:'center', gap:3}} spacing={2}>
-         <Grid2 xs={8} sx={{border:'1px solid black', borderRadius:1}}>
+      <Grid2 container sx={{m:3, display:'flex', justifyContent:'center', gap:2}} spacing={2}>
+         <Grid2 xs={12} sx={{border:'1px solid black', borderRadius:1}}>
             <Typography fontFamily={'Public Sans'} fontWeight={500} fontSize={20}>Seus cartões</Typography>
-            <Divider sx={{mb:5}}/>
-            {/* TODO: seus cartões aqui */}
+            <Divider sx={{mb:3}}/>
+            <Grid2 container xs={12} spacing={2}>
+               {
+                  //TODO: credit cards was not updated in real time
+                  userContext.user?.creditCards.length ?
+                     userContext.user?.creditCards.map((card, index) => {
+                        return(
+                           <Grid2 key={index} xs={4}>
+                              <Card 
+                                 sx={{
+                                    width:'100%', 
+                                    mb:2, 
+                                    border:'1px solid #2d2d2d', 
+                                    height:'160px'
+                                 }}
+                              >
+                                 <CardContent>
+                                    <Typography fontFamily={'Public Sans'} fontWeight={600} variant='h6'>
+                                       {card.cardNumber}
+                                    </Typography>
+                                    <Typography fontFamily={'Public Sans'}>
+                                       {card.cardName}
+                                    </Typography>
+                                    <Typography fontFamily={'Public Sans'}>
+                                       {card.cardFlag}
+                                    </Typography>
+                                    {
+                                       card.mainCard ?
+                                          <Chip
+                                             label='Principal'
+                                             sx={{bgcolor:'#484646', color:'#fff', mt:1}}
+                                          />
+                                       :
+                                          <></>
+                                    }
+                                 </CardContent>
+                              </Card>
+                           </Grid2>
+                        )
+                     })
+                     :
+                     <Grid2 xs={12} sx={{
+                        display:'flex', 
+                        justifyContent:'center', 
+                        alignItems:'start',
+                        height:70
+                     }}>
+                        <Typography fontFamily={'Public Sans'} fontWeight={500} fontSize={20}>
+                           Nenhum cartão cadastrado
+                        </Typography>
+                     </Grid2>
+               }
+            </Grid2>
          </Grid2>
          <Grid2 xs={12}>
             {paymentMethods.map((method, index)=> {
