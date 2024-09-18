@@ -6,7 +6,7 @@
          "price": "99,00",
          "category": "Sala de estar",
          "description": "A Cadeira Elegância Vintage é uma peça de mobiliário que combina com maestria o charme do passado com a funcionalidade contemporânea.",
-         "photoUrl": "https://source.unsplash.com/random/?chair,minimalist",
+         "photoUrl": "https://picsum.photos/500/800",
          "vendor": "Magazine Luiza"
       },
       {
@@ -15,7 +15,7 @@
          "price": "2499,00",
          "category": "Sala de estar",
          "description": "O Sofá Modular Urban oferece estilo e versatilidade para qualquer ambiente moderno.",
-         "photoUrl": "https://source.unsplash.com/random/?sofas,minimalist",
+         "photoUrl": "https://picsum.photos/500/800",
          "vendor": "Decoração Moderna"
       },
       {
@@ -24,7 +24,7 @@
          "price": "599,00",
          "category": "Sala de estar",
          "description": "A Mesa de Centro Minimalista é uma adição elegante a qualquer sala de estar contemporânea.",
-         "photoUrl": "https://source.unsplash.com/random/?table,minimalist",
+         "photoUrl": "https://picsum.photos/500/800",
          "vendor": "Mobília Design"
       },
       {
@@ -33,7 +33,7 @@
          "price": "1799,00",
          "category": "Quarto",
          "description": "A Estante Multiuso Wave une design inovador com funcionalidade para organizar seus objetos com estilo.",
-         "photoUrl": "https://source.unsplash.com/random/?bookshelf,minimalist",
+         "photoUrl": "https://picsum.photos/500/800",
          "vendor": "Inova Móveis"
       }
    ],
