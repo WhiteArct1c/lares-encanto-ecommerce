@@ -108,7 +108,12 @@ const OrderResumeComponent: React.FC<OrderResumeComponentProps> = ({redirectUrl,
                fontWeight={400}
                color={'#000'}
             >
-               {order?.order?.shippingPrice || 'Calculado no checkout'}
+               {
+                  order?.shipmentPrice === undefined || order?.shipmentPrice === 0 ?
+                     'Calculado no checkout'
+                  :
+                     `R$ ${order?.shipmentPrice}`
+               }
             </Typography>
          </Grid2>
          <Divider/>

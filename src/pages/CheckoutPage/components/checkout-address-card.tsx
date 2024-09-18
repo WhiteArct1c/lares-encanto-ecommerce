@@ -51,7 +51,7 @@ const CheckoutAddressCard: React.FC<CheckoutCustomerAddressesProps> = ({ index, 
             </CardContent>
          </Card>
       </Grid2>
-      );
+   );
 };
 
 export default CheckoutAddressCard;

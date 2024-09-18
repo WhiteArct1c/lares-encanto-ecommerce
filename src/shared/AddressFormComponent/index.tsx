@@ -95,7 +95,6 @@ const AddressFormComponent: React.FC<AddressFormComponentProps> = () => {
       return () => {
          handleSetOrderShipmentAddress()
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [])
 
    

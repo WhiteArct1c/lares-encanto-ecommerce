@@ -17,8 +17,8 @@ function App() {
           autoClose={2000}
           theme="dark"
         />
-        <ShoppingCartProvider>
-          <OrderProvider>
+        <OrderProvider>
+          <ShoppingCartProvider>
             <Grid2 xs={12}>
               <NavBar/>
             </Grid2>
@@ -32,11 +32,11 @@ function App() {
             >
               <Outlet/>
             </Grid2>
-          </OrderProvider>
-        </ShoppingCartProvider>
-          <Grid2 xs={12}>
-            <Footer/>
-          </Grid2>
+          </ShoppingCartProvider>
+        </OrderProvider>
+        <Grid2 xs={12}>
+          <Footer/>
+        </Grid2>
       </Grid2>
     </>
   )

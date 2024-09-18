@@ -1,6 +1,6 @@
 import { Box, Button, Step, StepButton, Stepper, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import OrderResumeComponent from '../../shared/OrderResumeComponent';
 import AddressFormComponent from '../../shared/AddressFormComponent';
 import ShippingOptionsComponent from '../../shared/ShippingOptionsComponent';
@@ -8,7 +8,6 @@ import PaymentMethodsOrderComponent from '../../shared/PaymentMethodsOrderCompon
 import { Link } from 'react-router-dom';
 import { ShoppingCartContext } from '../../contexts/ShoppingCartContext';
 import CheckoutCustomerAddresses from "./components/checkout-customer-addresses.tsx";
-import { OrderContext } from '../../contexts/OrderContext.tsx';
 
 interface CheckoutPageProps {
 
@@ -24,7 +23,6 @@ const CheckoutPage: React.FC<CheckoutPageProps> = () => {
    }>({});
 
    const cart = useContext(ShoppingCartContext);
-   const order = useContext(OrderContext);
 
    const totalSteps = () => {
       return steps.length;

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { ShoppingCartContext } from '../../contexts/ShoppingCartContext';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import {Box, Typography} from '@mui/material';
@@ -7,6 +7,7 @@ import './styles.css';
 import ProductItemCardComponent from '../../shared/ProductItemCardComponent';
 import OrderResumeComponent from '../../shared/OrderResumeComponent';
 import {ShoppingCart} from "@mui/icons-material";
+import { OrderContext } from '../../contexts/OrderContext';
 
 interface ShoppingCartPageProps {
    
@@ -15,6 +16,13 @@ interface ShoppingCartPageProps {
 const ShoppingCartPage: React.FC<ShoppingCartPageProps> = () => {
 
    const cart = useContext(ShoppingCartContext);
+   const order = useContext(OrderContext);
+
+   useEffect(() => {
+      if(cart!.cartProducts.length === 0){
+         order?.resetOrder();
+      }
+   }, [cart, order]);
 
    return (
       <Grid2 

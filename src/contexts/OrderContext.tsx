@@ -2,14 +2,17 @@ import { createContext, useState, ReactNode, useContext } from "react";
 import { IOrder } from "../utils/interfaces/IOrder";
 import { ShoppingCartContext } from "./ShoppingCartContext";
 import { IAddress } from "../utils/interfaces/IAddress";
+import { IShippingTypes } from "../utils/interfaces/IShippingTypes";
 
 interface OrderContextType {
    order: IOrder | undefined;
+   shipmentType: IShippingTypes | undefined;
    shipmentPrice: number;
    shipmentAddress: IAddress | undefined;
    createOrder: (cartTotalPrice: number, shipmentAddress: IAddress) => void
    saveOrder: () => void
    updateOrderTotalPrice: (price: number) => void
+   setOrderShipmentType: (type: IShippingTypes) => void
    setOrderShipmentPrice: (shipmentPrice: number) => void
    setOrderShipmentAddress: (address: IAddress) => void
    saveShippingAddress: (status: boolean) => void
@@ -25,6 +28,7 @@ export const OrderContext = createContext<OrderContextType | undefined>(undefine
 export const OrderProvider = ({ children }: OrderProviderProps) => {
    const [order, setOrder] = useState<IOrder>();
    const [saveShipmentAddress, setSaveShipmentAddress] = useState(false);
+   const [shipmentType, setShipmentType] = useState<IShippingTypes | undefined>(undefined);
    const [shipmentPrice, setShipmentPrice] = useState(0);
    const [shipmentAddress, setShipmentAddress] = useState<IAddress>();
 
@@ -50,6 +54,10 @@ export const OrderProvider = ({ children }: OrderProviderProps) => {
       order!.totalPrice += price;
    }
 
+   const setOrderShipmentType = (type: IShippingTypes) => {
+      setShipmentType(type);
+   }
+
    const setOrderShipmentPrice = (shipmentPrice: number) => {
       setShipmentPrice(shipmentPrice);
    }
@@ -73,11 +81,13 @@ export const OrderProvider = ({ children }: OrderProviderProps) => {
       <OrderContext.Provider value={
          {
             order,
+            shipmentType,
             shipmentPrice,
             shipmentAddress, 
             createOrder,
             saveOrder,
-            updateOrderTotalPrice, 
+            updateOrderTotalPrice,
+            setOrderShipmentType,
             setOrderShipmentPrice, 
             setOrderShipmentAddress,
             saveShippingAddress,
