@@ -1,14 +1,17 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Box, Button, Step, StepLabel, Stepper} from "@mui/material";
+import PresentationStepComponent from "../PresentationStepComponent";
+import UploadImageStepComponent from "../UploadImageStepComponent";
+import SelectResultsStepComponent from "../SelectResultsStepComponent";
 
 interface StepperComponentProps {}
 
 const StepperComponent: React.FunctionComponent<StepperComponentProps> = () => {
-    const [activeStep, setActiveStep] = React.useState(0);
-    const [skipped, setSkipped] = React.useState(new Set<number>());
+    const [activeStep, setActiveStep] = useState(0);
+    const [skipped, setSkipped] = useState(new Set<number>());
+    const [finishedTimeout, setFinishedTimeout] = useState<boolean>(false);
 
     const steps = [
-        'Apresentação',
         'Upload de imagem',
         'Escolha o resultado'
     ];
@@ -28,42 +31,59 @@ const StepperComponent: React.FunctionComponent<StepperComponentProps> = () => {
         setSkipped(newSkipped);
     };
 
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
+    // const handleBack = () => {
+    //     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    // };
+
+    useEffect(() => {
+        const id = setTimeout(() => {
+            setFinishedTimeout(true);
+        }, 5000);
+
+        return () => clearTimeout(id);
+    }, []);
 
     return (
-        <Box sx={{ width: '100%' }}>
-            <Stepper activeStep={activeStep}>
-                {steps.map((label, index) => {
-                    const stepProps: { completed?: boolean } = {};
-                    const labelProps: {
-                        optional?: React.ReactNode;
-                    } = {};
-                    if (isStepSkipped(index)) {
-                        stepProps.completed = false;
+        <>
+            {
+                !finishedTimeout && <PresentationStepComponent/>
+            }
+            {
+                finishedTimeout &&
+                <Box sx={{width: '100%'}}>
+                    <Stepper activeStep={activeStep}>
+                        {steps.map((label, index) => {
+                            const stepProps: { completed?: boolean } = {};
+                            const labelProps: {
+                                optional?: React.ReactNode;
+                            } = {};
+                            if (isStepSkipped(index)) {
+                                stepProps.completed = false;
+                            }
+                            return (
+                                <Step key={label} {...stepProps}>
+                                    <StepLabel {...labelProps}>{label}</StepLabel>
+                                </Step>
+                            );
+                        })}
+                    </Stepper>
+                    {
+                        activeStep === 0 ?
+                            <>
+                                <UploadImageStepComponent/>
+                                <Box sx={{width: '100%', display: 'flex', justifyContent: 'end'}}>
+                                    <Button onClick={handleNext} disabled={activeStep === steps.length}>
+                                        {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                                    </Button>
+                                </Box>
+                            </>
+                            : activeStep === 1 ?
+                                <SelectResultsStepComponent/>
+                                : <></>
                     }
-                    return (
-                        <Step key={label} {...stepProps}>
-                            <StepLabel {...labelProps}>{label}</StepLabel>
-                        </Step>
-                    );
-                })}
-            </Stepper>
-            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-                <Button
-                    color="inherit"
-                    disabled={activeStep === 0}
-                    onClick={handleBack}
-                    sx={{ mr: 1 }}
-                >
-                    Back
-                </Button>
-                <Button onClick={handleNext}>
-                    {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                </Button>
-            </Box>
-        </Box>
+                </Box>
+            }
+        </>
     );
 }
 
