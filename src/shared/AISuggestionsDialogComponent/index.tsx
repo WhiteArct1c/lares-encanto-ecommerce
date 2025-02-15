@@ -1,5 +1,5 @@
 import React from "react";
-import {Dialog, DialogContent} from "@mui/material";
+import {Dialog, DialogContent, DialogTitle, Typography} from "@mui/material";
 import StepperComponent from "./StepperComponent";
 
 interface AISuggestionsDialogComponentProps {
@@ -16,6 +16,24 @@ const AISuggestionsDialogComponent: React.FC<AISuggestionsDialogComponentProps> 
             open={open}
         >
             <DialogContent>
+                <DialogTitle
+                    sx={{
+                        width: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}
+                    className='animate__animated animate__fadeIn'
+
+                >
+                    <Typography
+                        fontFamily={'Lexend'}
+                        fontWeight={'bold'}
+                        fontSize={'3rem'}
+                    >
+                        LaresAI
+                    </Typography>
+                </DialogTitle>
                 <StepperComponent/>
             </DialogContent>
         </Dialog>
