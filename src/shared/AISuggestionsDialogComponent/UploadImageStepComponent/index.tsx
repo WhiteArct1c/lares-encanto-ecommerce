@@ -1,12 +1,20 @@
 import React from "react";
+import FileUploadArea from "./FileUploadArea";
 
 interface UploadImageStepComponentProps {}
 
 const UploadImageStepComponent: React.FC<UploadImageStepComponentProps> = () => {
 
+    const handleFileUpload = (files: File[]) => {
+        console.log(files);
+    }
+
     return (
         <>
-            upload aqui
+            <FileUploadArea
+                maxSizeMB={10}
+                onDrop={handleFileUpload}
+            />
         </>
     );
 }
