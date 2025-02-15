@@ -1,5 +1,5 @@
 import React from "react";
-import {Dialog, DialogContent, DialogTitle, Typography} from "@mui/material";
+import {Dialog, DialogContent} from "@mui/material";
 import StepperComponent from "./StepperComponent";
 
 interface AISuggestionsDialogComponentProps {
@@ -15,21 +15,6 @@ const AISuggestionsDialogComponent: React.FC<AISuggestionsDialogComponentProps> 
             onClose={onClose}
             open={open}
         >
-            <DialogTitle
-                component="h2"
-                sx={{
-                    display: "flex",
-                    justifyContent: "center"
-                }}
-            >
-                <Typography
-                    fontFamily={'Public Sans'}
-                    fontWeight={'bold'}
-                    fontSize={35}
-                >
-                    LARES AI
-                </Typography>
-            </DialogTitle>
             <DialogContent>
                 <StepperComponent/>
             </DialogContent>
