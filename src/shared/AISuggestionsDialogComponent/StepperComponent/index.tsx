@@ -20,16 +20,16 @@ const StepperComponent: React.FunctionComponent<StepperComponentProps> = () => {
         return skipped.has(step);
     };
 
-    const handleNext = () => {
-        let newSkipped = new Set<number>();
-        if (isStepSkipped(activeStep)) {
-            newSkipped = new Set(newSkipped.values());
-            newSkipped.delete(activeStep);
-        }
-
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        setSkipped(newSkipped);
-    };
+    // const handleNext = () => {
+    //     let newSkipped = new Set<number>();
+    //     if (isStepSkipped(activeStep)) {
+    //         newSkipped = new Set(newSkipped.values());
+    //         newSkipped.delete(activeStep);
+    //     }
+    //
+    //     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    //     setSkipped(newSkipped);
+    // };
 
     // const handleBack = () => {
     //     setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -50,7 +50,7 @@ const StepperComponent: React.FunctionComponent<StepperComponentProps> = () => {
             }
             {
                 finishedTimeout &&
-                <Box sx={{width: '100%'}}>
+                <Box sx={{width: '100%'}} className='animate__animated animate__fadeIn'>
                     <Stepper activeStep={activeStep}>
                         {steps.map((label, index) => {
                             const stepProps: { completed?: boolean } = {};
@@ -71,11 +71,6 @@ const StepperComponent: React.FunctionComponent<StepperComponentProps> = () => {
                         activeStep === 0 ?
                             <>
                                 <UploadImageStepComponent/>
-                                <Box sx={{width: '100%', display: 'flex', justifyContent: 'end'}}>
-                                    <Button onClick={handleNext} disabled={activeStep === steps.length}>
-                                        {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                                    </Button>
-                                </Box>
                             </>
                             : activeStep === 1 ?
                                 <SelectResultsStepComponent/>
