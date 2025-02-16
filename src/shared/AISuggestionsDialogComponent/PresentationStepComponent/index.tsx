@@ -18,7 +18,7 @@ const PresentationStepComponent: React.FC<PresentationStepComponentProps> = () =
             gap: 2
         }}>
             <img
-                src='src/assets/laresAi/SVG/laresAI%20-%20normal.svg'
+                src="/src/assets/laresAi/SVG/laresAI%20-%20normal.svg"
                 alt='laresAi'
                 style={{
                     width: '200px',

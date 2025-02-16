@@ -38,7 +38,7 @@ const UploadImageStepComponent: React.FC<UploadImageStepComponentProps> = ({next
                 }}
             >
                 <img
-                    src='src/assets/laresAi/SVG/laresAi%20-%20explicando.svg'
+                    src='/src/assets/laresAi/SVG/laresAi%20-%20explicando.svg'
                     alt='laresAi'
                     style={{
                         width: '150px'

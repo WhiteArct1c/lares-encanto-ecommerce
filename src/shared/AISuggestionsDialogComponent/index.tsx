@@ -4,7 +4,7 @@ import StepperComponent from "./StepperComponent";
 
 interface AISuggestionsDialogComponentProps {
     open: boolean;
-    onClose: (value: string) => void;
+    onClose: () => void;
 }
 
 const AISuggestionsDialogComponent: React.FC<AISuggestionsDialogComponentProps> = (props: AISuggestionsDialogComponentProps) => {
@@ -34,7 +34,9 @@ const AISuggestionsDialogComponent: React.FC<AISuggestionsDialogComponentProps> 
                         LaresAI
                     </Typography>
                 </DialogTitle>
-                <StepperComponent/>
+                <StepperComponent
+                    closeModal={onClose}
+                />
             </DialogContent>
         </Dialog>
     );
