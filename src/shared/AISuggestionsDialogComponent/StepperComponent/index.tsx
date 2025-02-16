@@ -1,8 +1,9 @@
-import React, {useEffect, useState} from "react";
-import {Box, Button, Step, StepLabel, Stepper} from "@mui/material";
+import React, {Suspense, useEffect, useState} from "react";
+import {Box, Step, StepLabel, Stepper} from "@mui/material";
 import PresentationStepComponent from "../PresentationStepComponent";
 import UploadImageStepComponent from "../UploadImageStepComponent";
 import SelectResultsStepComponent from "../SelectResultsStepComponent";
+import LoadingResultsComponent from "../UploadImageStepComponent/components/loading-results-component.tsx";
 
 interface StepperComponentProps {}
 
@@ -20,16 +21,16 @@ const StepperComponent: React.FunctionComponent<StepperComponentProps> = () => {
         return skipped.has(step);
     };
 
-    // const handleNext = () => {
-    //     let newSkipped = new Set<number>();
-    //     if (isStepSkipped(activeStep)) {
-    //         newSkipped = new Set(newSkipped.values());
-    //         newSkipped.delete(activeStep);
-    //     }
-    //
-    //     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    //     setSkipped(newSkipped);
-    // };
+    const handleNext = () => {
+        let newSkipped = new Set<number>();
+        if (isStepSkipped(activeStep)) {
+            newSkipped = new Set(newSkipped.values());
+            newSkipped.delete(activeStep);
+        }
+
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        setSkipped(newSkipped);
+    };
 
     // const handleBack = () => {
     //     setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -70,10 +71,16 @@ const StepperComponent: React.FunctionComponent<StepperComponentProps> = () => {
                     {
                         activeStep === 0 ?
                             <>
-                                <UploadImageStepComponent/>
+                                <UploadImageStepComponent
+                                    nextStep={handleNext}
+                                />
                             </>
                             : activeStep === 1 ?
-                                <SelectResultsStepComponent/>
+                                <Box sx={{width: '500px'}}>
+                                    <Suspense fallback={<LoadingResultsComponent/>}>
+                                        <SelectResultsStepComponent/>
+                                    </Suspense>
+                                </Box>
                                 : <></>
                     }
                 </Box>

@@ -42,13 +42,19 @@ const FileUploadArea: React.FC<FileUploadAreaProps> = ({maxSizeMB, onDrop}) => {
         <Box
             {...getRootProps()}
             sx={{
-                border: "2px dashed #90caf9", // Azul claro
+                width: '500px',
+                height: '300px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                border: "2px dashed #90caf9",
                 borderRadius: "8px",
                 padding: "20px",
                 textAlign: "center",
                 cursor: "pointer",
                 transition: "border 0.3s ease-in-out",
-                "&:hover": { borderColor: "#42a5f5" }, // Azul mais forte no hover
+                "&:hover": { borderColor: "#42a5f5" },
             }}
         >
             <input {...getInputProps()} />
@@ -56,7 +62,7 @@ const FileUploadArea: React.FC<FileUploadAreaProps> = ({maxSizeMB, onDrop}) => {
                 sx={{ fontSize: 50, color: "#90caf9", marginBottom: "10px" }}
             />
             <Typography variant="body1">
-                {isDragActive ? "Solte o arquivo aqui..." : "Arraste e solte imagens ou clique para selecionar"}
+                {isDragActive ? "Solte o arquivo aqui..." : "Arraste e solte imagens de móveis ou clique para selecionar"}
             </Typography>
             <Typography variant="caption" color="textSecondary">
                 Apenas JPG, JPEG e PNG - Tamanho máximo: {maxSizeMB}MB
