@@ -6,6 +6,7 @@ import LogoLaresEncanto from '../../assets/Lares_Encanto-removebg-preview.png'
 import {Link, useNavigate} from 'react-router-dom';
 import {ShoppingCartContext} from '../../contexts/ShoppingCartContext';
 import {AuthContext} from '../../contexts/Auth/AuthContext';
+import AISuggestionsDialogComponent from "../AISuggestionsDialogComponent";
 
 interface NavBarProps {
 }
@@ -15,6 +16,15 @@ const NavBar: React.FC<NavBarProps> = () => {
    const auth = useContext(AuthContext);
    const navigate = useNavigate();
    const [isAdmin, setIsAdmin] = useState(false);
+   const [open, setOpen] = useState(false);
+
+   const handleClickOpen = () => {
+      setOpen(true);
+   }
+
+   const handleClose = () => {
+      setOpen(false);
+   }
 
    const handleLogout = async () => {
       auth.signout();
@@ -157,10 +167,15 @@ const NavBar: React.FC<NavBarProps> = () => {
                               width: '200px',
                            }}
                            endIcon={<AutoAwesome color='primary'/>}
+                           onClick={handleClickOpen}
                            data-cy="navbar-btn-recommend"
                         >
                            me recomende!
                         </Button>
+                        <AISuggestionsDialogComponent
+                           open={open}
+                           onClose={handleClose}
+                        />
                      </Grid2>
                   </Grid2>
                </Grid2>
