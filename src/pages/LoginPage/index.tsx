@@ -45,7 +45,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
              if(role.data[0] === "USER"){
                  navigate('/products');
              }else{
-                 navigate('/dashboard');
+                 navigate('/admin/dashboard');
              }
              toast.success(data.message);
          }else{
