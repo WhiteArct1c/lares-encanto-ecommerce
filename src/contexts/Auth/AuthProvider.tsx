@@ -8,7 +8,7 @@ import {IUpdatePasswordRequest} from "../../utils/interfaces/request/IUpdatePass
 import {IAddCustomerAddressRequest} from "../../utils/interfaces/request/IAddCustomerAddressRequest";
 import {IUpdateCustomer} from "../../utils/interfaces/request/IUpdateCustomer";
 import {IUpdateAddressRequest} from "../../utils/interfaces/request/IUpdateAddressRequest.ts";
-import {CreditCardRequest} from "../../utils/types/request/customer-credit-card/CreditCardRequest.ts";
+import {CreditCardRequest} from "../../utils/types/request/CreditCard/CreditCardRequest.ts";
 
 export const AuthProvider = ({ children }: { children: JSX.Element }) => {
 

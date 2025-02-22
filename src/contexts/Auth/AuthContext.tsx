@@ -7,7 +7,7 @@ import { IAddCustomerAddressRequest } from '../../utils/interfaces/request/IAddC
 import { IUpdateCustomer } from '../../utils/interfaces/request/IUpdateCustomer';
 import {IUpdateAddressRequest} from "../../utils/interfaces/request/IUpdateAddressRequest.ts";
 import {ResponseAPI} from "../../utils/types/response/ResponseAPI.ts";
-import {CreditCardRequest} from "../../utils/types/request/customer-credit-card/CreditCardRequest.ts";
+import {CreditCardRequest} from "../../utils/types/request/CreditCard/CreditCardRequest.ts";
 
 export type AuthContextType = {
    user: ResponseCustomer | null;

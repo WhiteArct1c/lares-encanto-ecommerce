@@ -15,7 +15,7 @@ import {
    Typography
 } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import React, {FocusEvent, useContext, useState} from 'react';
+import React, {ChangeEvent, FocusEvent, useContext, useState} from 'react';
 import {AuthContext} from "../../contexts/Auth/AuthContext.tsx";
 import {Controller, useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
@@ -32,7 +32,7 @@ import {countries, tiposDeResidencia} from "../../utils/addressTypes.ts";
 import MyProfileSidenavComponent from '../../shared/MyProfileSidenavComponent';
 import {IUpdateAddressRequest} from "../../utils/interfaces/request/IUpdateAddressRequest.ts";
 import { addressCategoryTranslate } from '../../utils/addressCategoryTranslate.ts';
-import { CREATED, OK } from '../../utils/types/apiCodes.ts';
+import { OK } from '../../utils/types/apiCodes.ts';
 
 interface MyProfilePageProps {
 
