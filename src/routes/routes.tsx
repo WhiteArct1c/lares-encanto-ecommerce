@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import {createBrowserRouter, Outlet} from "react-router-dom";
 import App from "../App";
 import RegisterUserForm from "../pages/RegisterUserPage";
 import ProductsPage from "../pages/ProductsPage";
@@ -14,6 +14,7 @@ import AdminDashboardPage from "../pages/AdminDashboardPage";
 import MyCardsPage from "../pages/MyCardsPage";
 import AdminOrdersPage from "../pages/AdminOrdersPage";
 import AdminCustomersManagement from "../pages/AdminCustomersManagement";
+import AdminProductsPage from "../pages/AdminProductsPage";
 
 export const router = createBrowserRouter([
    {
@@ -61,17 +62,27 @@ export const router = createBrowserRouter([
             element: <RequireAuth><MyCardsPage /></RequireAuth>,
          },
          {
-            path:'/dashboard',
-            element:<RequireAuth><AdminDashboardPage/></RequireAuth>
+            path: '/admin',
+            element: <RequireAuth><Outlet /></RequireAuth>, // Usando Outlet para renderizar as sub-rotas
+            children: [
+               {
+                  path: 'dashboard',
+                  element: <AdminDashboardPage />,
+               },
+               {
+                  path: 'orders',
+                  element: <AdminOrdersPage />,
+               },
+               {
+                  path: 'users',
+                  element: <AdminCustomersManagement />,
+               },
+               {
+                  path: 'products',
+                  element: <AdminProductsPage />
+               }
+            ],
          },
-         {
-            path:'/orders',
-            element:<RequireAuth><AdminOrdersPage/></RequireAuth>
-         },
-         {
-            path: '/users',
-            element: <RequireAuth><AdminCustomersManagement /></RequireAuth>
-         }
       ]
    }
-])
+]);
